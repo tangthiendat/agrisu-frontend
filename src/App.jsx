@@ -1,6 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ConfigProvider } from "antd";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import AppLayout from "./ui/AppLayout";
 import Error from "./ui/Error";
@@ -64,16 +67,53 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    staleTime: 1000 * 60,
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
   },
 });
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <ConfigProvider
+      theme={{
+        token: {
+          fontFamily: "Poppins, sans-serif",
+        },
+        components: {
+          Table: {
+            headerBg: "var(--color-grey-200)",
+            cellPaddingBlockMD: 10,
+            cellPaddingBlockSM: 6,
+            borderColor: "var(--color-grey-200)",
+          },
+          Button: {
+            onlyIconSize: 14,
+            onlyIconSizeSM: 10,
+            paddingInlineSM: 10,
+            defaultBorderColor: "var(--color-grey-300)",
+          },
+          Typography: {
+            fontSizeHeading1: "2rem",
+            fontSizeHeading2: "1.5rem",
+            fontSizeHeading3: "1.25rem",
+          },
+          Modal: {
+            titleFontSize: "1.25rem",
+            titleLineHeight: 2.5,
+          },
+          Collapse: {
+            headerBg: "var(--color-grey-100)",
+          },
+        },
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <RouterProvider router={router} />
+        <ToastContainer position="bottom-right" autoClose={3000} />
+      </QueryClientProvider>
+    </ConfigProvider>
   );
 }
 

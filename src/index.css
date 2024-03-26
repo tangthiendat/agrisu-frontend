@@ -25,21 +25,45 @@
     --color-brand-800: #1e40af;
     --color-brand-900: #1e3a8a;
 
+    --color-red-500: #f44336;
+    --color-green-500: #22c55e;
+
     --border-radius-tiny: 3px;
     --border-radius-sm: 5px;
     --border-radius-md: 7px;
     --border-radius-lg: 9px;
+
+    --color-blue-100: #e0f2fe;
   }
 
+  /* Loader */
+  .loader {
+    width: 3.5rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(farthest-side, var(--color-brand-500) 94%, #0000) top/8px
+        8px no-repeat,
+      conic-gradient(#0000 30%, var(--color-brand-500));
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      #0000 calc(100% - 8px),
+      #000 0
+    );
+    mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+    animation: l13 1s infinite linear;
+  }
+
+  @keyframes l13 {
+    100% {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* Navbar */
   .nav-link:link,
   .nav-link:visited {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-
-    color: var(--color-grey-200);
-    font-size: 0.9rem;
-    padding: 0.4rem 0.6rem;
+    @apply flex items-center gap-2 px-3 py-2 text-[1rem] text-[var(--color-grey-200)];
     transition: all 0.3s;
   }
 
@@ -47,12 +71,18 @@
   .nav-link:active,
   .nav-link.active:link,
   .nav-link.active:visited {
-    background-color: var(--color-brand-600);
-    border-radius: var(--border-radius-md);
+    @apply rounded-[var(--border-radius-md)] bg-[var(--color-brand-600)];
   }
 
   .nav-link svg {
-    width: 1.8rem;
-    height: 1.8rem;
+    @apply h-[1.6rem] w-[1.6rem];
+  }
+
+  .icon {
+    @apply h-6 w-6 cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply bg-dodger-blue-500 text-gray-50;
   }
 }
