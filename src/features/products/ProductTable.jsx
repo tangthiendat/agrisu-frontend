@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { MdOutlineEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
+import { MdOutlineEdit, MdDelete } from "react-icons/md";
 import { Select, Space, Table, Tooltip } from "antd";
 
 import Spinner from "../../ui/Spinner";
 import { useProducts } from "./useProducts";
+import UpdateProduct from "./UpdateProduct";
 
 function ProductTable() {
   const { isLoading, products } = useProducts();
@@ -105,9 +105,7 @@ function ProductTable() {
       render: (record) => {
         return (
           <Space size="middle">
-            <Tooltip title="Chỉnh sửa" placement="bottom">
-              <MdOutlineEdit className="icon" color="var(--color-green-500)" />
-            </Tooltip>
+            <UpdateProduct product={record} />
             <Tooltip title="Xóa" placement="bottom">
               <MdDelete className="icon" color="var(--color-red-500)" />
             </Tooltip>

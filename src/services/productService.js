@@ -11,6 +11,11 @@ class ProductService {
   async create(newProduct) {
     return (await axios.post(`${API_BASE_URL}/api/products/`, newProduct)).data;
   }
+
+  async update(productId ,updatedProduct) {
+    return (await axios.put(`${API_BASE_URL}/api/products/${productId}`, updatedProduct))
+      .data;
+  }
 }
 
 export const productService = new ProductService();

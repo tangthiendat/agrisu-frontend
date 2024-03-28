@@ -1,39 +1,34 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
-import { Button, Form, Modal } from "antd";
-
+import { MdOutlineEdit } from "react-icons/md";
+import { Form, Modal, Tooltip } from "antd";
 import UpdateProductForm from "./UpdateProductForm";
-
-function AddProduct() {
+function UpdateProduct({ product }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [addProductForm] = Form.useForm();
-
+  const [updateProductForm] = Form.useForm();
   function showModal() {
     setIsOpenModal(true);
   }
 
   function handleCancel() {
-    addProductForm.resetFields();
+    updateProductForm.resetFields();
     setIsOpenModal(false);
   }
-
   return (
     <>
-      <Button
-        type="primary"
-        className="btn-primary h-10"
-        icon={<FaPlus />}
-        onClick={showModal}
-      >
-        Thêm sản phẩm
-      </Button>
+      <Tooltip title="Chỉnh sửa" placement="bottom">
+        <MdOutlineEdit
+          className="icon"
+          color="var(--color-green-500)"
+          onClick={showModal}
+        />
+      </Tooltip>
       <Modal
         open={isOpenModal}
-        title="Thêm sản phẩm"
-        width={1000}
-        okText="Thêm"
         destroyOnClose
+        title="Cập nhật sản phẩm"
+        width={1000}
+        okText="Cập nhật"
         okButtonProps={{
           form: "updateProductForm",
           htmlType: "submit",
@@ -43,12 +38,13 @@ function AddProduct() {
         onCancel={handleCancel}
       >
         <UpdateProductForm
-          form={addProductForm}
+          form={updateProductForm}
           setIsOpenModal={setIsOpenModal}
+          productToUpdate={product}
         />
       </Modal>
     </>
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;
