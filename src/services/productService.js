@@ -12,8 +12,16 @@ class ProductService {
     return (await axios.post(`${API_BASE_URL}/api/products/`, newProduct)).data;
   }
 
-  async update(productId ,updatedProduct) {
-    return (await axios.put(`${API_BASE_URL}/api/products/${productId}`, updatedProduct))
+  async update(productId, updatedProduct) {
+    return (
+      await axios.put(
+        `${API_BASE_URL}/api/products/${productId}`,
+        updatedProduct,
+      )
+    ).data;
+  }
+  async delete(productId) {
+    return (await axios.delete(`${API_BASE_URL}/api/products/${productId}`))
       .data;
   }
 }

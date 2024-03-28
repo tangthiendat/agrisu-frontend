@@ -116,7 +116,6 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
   return (
     <Form
       form={form}
-      // preserve={false}
       name="updateProductForm"
       onKeyDown={preventSubmission}
       onFinish={handleFinish}

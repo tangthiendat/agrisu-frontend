@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Modal } from "antd";
 
 import UpdateProductForm from "./UpdateProductForm";
@@ -23,7 +23,7 @@ function AddProduct() {
       <Button
         type="primary"
         className="btn-primary h-10"
-        icon={<FaPlus />}
+        icon={<PlusOutlined />}
         onClick={showModal}
       >
         Thêm sản phẩm
