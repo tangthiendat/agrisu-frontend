@@ -96,21 +96,27 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
     );
 
     if (isUpdateSession) {
-      updateProduct(
-        { id: productToUpdate.productId, product: submittedProduct },
-        {
-          onSettled: () => {
-            form.resetFields();
-          },
-        },
-      );
-    } else {
-      createProduct(submittedProduct, {
-        onSettled: () => {
-          form.resetFields();
-        },
+      // updateProduct(
+      //   { id: productToUpdate.productId, product: submittedProduct },
+      //   {
+      //     onSettled: () => {
+      //       form.resetFields();
+      //     },
+      //   },
+      // );
+      updateProduct({
+        id: productToUpdate.productId,
+        product: submittedProduct,
       });
+    } else {
+      // createProduct(submittedProduct, {
+      //   onSettled: () => {
+      //     form.resetFields();
+      //   },
+      // });
+      createProduct(submittedProduct);
     }
+    form.resetFields();
   }
 
   return (

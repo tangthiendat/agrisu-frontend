@@ -1,23 +1,27 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Select, Space, Table } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
-import Spinner from "../../ui/Spinner";
+// import Spinner from "../../ui/Spinner";
 import { useProducts } from "./useProducts";
+import { useCountProducts } from "./useCountProducts";
 import UpdateProduct from "./UpdateProduct";
 import DeleteProduct from "./DeleteProduct";
+import Spinner from "../../ui/Spinner";
 
 function ProductTable() {
-  const { isLoading, products } = useProducts();
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const { productsNum } = useCountProducts();
+  const { isLoading, products } = useProducts(
+    pagination.current,
+    pagination.pageSize,
+  );
   const [productsDataSource, setProductsDataSource] = useState(products);
 
   useEffect(() => {
     setProductsDataSource(products);
   }, [products]);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
 
   function handleUnitChange(productId, newProductUnitId) {
     setProductsDataSource((products) =>
@@ -118,6 +122,20 @@ function ProductTable() {
       rowKey={(record) => record.productId}
       dataSource={productsDataSource}
       columns={columns}
+      pagination={{
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        total: productsNum,
+        showSizeChanger: true,
+        showTotal: (total) => `Tổng ${total} sản phẩm`,
+        onChange: (page, pageSize) => {
+          setPagination({ current: page, pageSize });
+        },
+      }}
+      loading={{
+        indicator: <Spinner />,
+        spinning: isLoading,
+      }}
       size="middle"
     />
   );

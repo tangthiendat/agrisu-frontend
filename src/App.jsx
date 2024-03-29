@@ -111,7 +111,11 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <RouterProvider router={router} />
-        <ToastContainer position="bottom-right" autoClose={3000} />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          theme="colored"
+        />
       </QueryClientProvider>
     </ConfigProvider>
   );

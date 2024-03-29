@@ -4,7 +4,7 @@ import Main from "./Main";
 import Sidebar from "./Sidebar";
 function AppLayout() {
   return (
-    <div className="flex h-screen w-screen flex-row ">
+    <div className="flex min-h-screen w-screen flex-row ">
       <Sidebar />
       <Main>
         <Header />
