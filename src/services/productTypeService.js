@@ -5,7 +5,7 @@ const API_BASE_URL =
 
 class ProductTypeService {
   async getAll() {
-    return (await axios.get(`${API_BASE_URL}/api/product-types/`)).data;
+    return (await axios.get(`${API_BASE_URL}/api/product-types`)).data;
   }
 }
 
