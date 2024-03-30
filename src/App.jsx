@@ -82,16 +82,16 @@ function App() {
         },
         components: {
           Table: {
-            headerBg: "var(--color-grey-200)",
+            headerBg: "#e5e7eb",
             cellPaddingBlockMD: 10,
             cellPaddingBlockSM: 6,
-            borderColor: "var(--color-grey-200)",
+            borderColor: "#e5e7eb",
           },
           Button: {
             onlyIconSize: 14,
             onlyIconSizeSM: 10,
             paddingInlineSM: 10,
-            defaultBorderColor: "var(--color-grey-300)",
+            defaultBorderColor: "#d1d5db",
           },
           Typography: {
             fontSizeHeading1: "2rem",
@@ -103,7 +103,7 @@ function App() {
             titleLineHeight: 2.5,
           },
           Collapse: {
-            headerBg: "var(--color-grey-100)",
+            headerBg: "#f3f4f6",
           },
         },
       }}

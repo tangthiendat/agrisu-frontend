@@ -11,5 +11,5 @@ export function formatCurrency(value) {
 }
 
 export function parseCurrency(value) {
-  return parseFloat(value.replace(/\$\s?|(,*)/g, ""));
+  return value.replace(/\$\s?|(,*)/g, "");
 }

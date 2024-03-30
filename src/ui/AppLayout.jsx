@@ -4,11 +4,11 @@ import Main from "./Main";
 import Sidebar from "./Sidebar";
 function AppLayout() {
   return (
-    <div className="flex min-h-screen w-screen flex-row ">
+    <div className="max-w-screen flex min-h-screen flex-row ">
       <Sidebar />
       <Main>
         <Header />
-        <div className=" px-10 py-6">
+        <div className="mx-4 my-6 ">
           <Outlet />
         </div>
       </Main>

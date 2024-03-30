@@ -12,11 +12,11 @@ import {
   Select,
 } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { roundUp } from "../../utils/helper";
-import { useUnits } from "./useUnits";
-import { useProductTypes } from "./useProductTypes";
-import { useCreateProduct } from "./useCreateProduct";
-import { useUpdateProduct } from "./useUpdateProduct";
+import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper";
+import { useUnits } from "./hooks/useUnits";
+import { useProductTypes } from "./hooks/useProductTypes";
+import { useCreateProduct } from "./hooks/useCreateProduct";
+import { useUpdateProduct } from "./hooks/useUpdateProduct";
 
 function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
   const { units } = useUnits();
@@ -96,27 +96,21 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
     );
 
     if (isUpdateSession) {
-      // updateProduct(
-      //   { id: productToUpdate.productId, product: submittedProduct },
-      //   {
-      //     onSettled: () => {
-      //       form.resetFields();
-      //     },
-      //   },
-      // );
-      updateProduct({
-        id: productToUpdate.productId,
-        product: submittedProduct,
-      });
+      updateProduct(
+        { id: productToUpdate.productId, product: submittedProduct },
+        {
+          onSettled: () => {
+            form.resetFields();
+          },
+        },
+      );
     } else {
-      // createProduct(submittedProduct, {
-      //   onSettled: () => {
-      //     form.resetFields();
-      //   },
-      // });
-      createProduct(submittedProduct);
+      createProduct(submittedProduct, {
+        onSettled: () => {
+          form.resetFields();
+        },
+      });
     }
-    form.resetFields();
   }
 
   return (
@@ -242,15 +236,8 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
                                     >
                                       <InputNumber
                                         className="w-full"
-                                        formatter={(value) =>
-                                          `${value}`.replace(
-                                            /\B(?=(\d{3})+(?!\d))/g,
-                                            ",",
-                                          )
-                                        }
-                                        parser={(value) =>
-                                          value.replace(/\$\s?|(,*)/g, "")
-                                        }
+                                        formatter={formatCurrency}
+                                        parser={parseCurrency}
                                         min={0}
                                         max={1000000000}
                                         addonAfter="VND"
@@ -262,15 +249,8 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
                                     >
                                       <InputNumber
                                         className="w-full"
-                                        formatter={(value) =>
-                                          `${value}`.replace(
-                                            /\B(?=(\d{3})+(?!\d))/g,
-                                            ",",
-                                          )
-                                        }
-                                        parser={(value) =>
-                                          value.replace(/\$\s?|(,*)/g, "")
-                                        }
+                                        formatter={formatCurrency}
+                                        parser={parseCurrency}
                                         min={0}
                                         max={1000000000}
                                         addonAfter="VND"

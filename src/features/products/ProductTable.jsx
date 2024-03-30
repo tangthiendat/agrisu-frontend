@@ -4,11 +4,12 @@ import { Select, Space, Table } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 // import Spinner from "../../ui/Spinner";
-import { useProducts } from "./useProducts";
-import { useCountProducts } from "./useCountProducts";
+import { useProducts } from "./hooks/useProducts";
+import { useCountProducts } from "./hooks/useCountProducts";
 import UpdateProduct from "./UpdateProduct";
 import DeleteProduct from "./DeleteProduct";
 import Spinner from "../../ui/Spinner";
+import { formatCurrency } from "../../utils/helper";
 
 function ProductTable() {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -43,7 +44,7 @@ function ProductTable() {
       title: "Mã sản phẩm",
       dataIndex: "productId",
       key: "productId",
-      width: "15%",
+      width: "10%",
     },
     {
       title: "Tên sản phẩm",
@@ -55,7 +56,7 @@ function ProductTable() {
       title: "Đơn vị tính",
       dataIndex: "productUnits",
       key: "productUnits",
-      with: "15%",
+      width: "10%",
       render: (productUnits, record) => {
         return (
           <Select
@@ -76,6 +77,7 @@ function ProductTable() {
         );
       },
     },
+
     {
       title: "Loại sản phẩm",
       dataIndex: "productType",
@@ -83,6 +85,15 @@ function ProductTable() {
       width: "20%",
       render: (productType) => {
         return productType.productTypeName;
+      },
+    },
+    {
+      title: "Giá bán",
+      dataIndex: "displayedProductUnit",
+      key: "sellingPrice",
+      width: "15%",
+      render: (displayedProductUnit) => {
+        return formatCurrency(displayedProductUnit.sellingPrice);
       },
     },
     {
@@ -104,7 +115,7 @@ function ProductTable() {
     },
     {
       key: "action",
-      width: "20%",
+      width: "10%",
       className: "text-center",
       render: (record) => {
         return (

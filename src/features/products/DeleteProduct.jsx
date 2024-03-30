@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { Popconfirm, Tooltip } from "antd";
 import { MdDelete } from "react-icons/md";
-import { useDeleteProduct } from "./useDeleteProduct";
+import { useDeleteProduct } from "./hooks/useDeleteProduct";
 
 function DeleteProduct({ productId }) {
   const { deleteProduct } = useDeleteProduct();

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { productService } from "../../services/productService";
+import { productService } from "../../../services/productService";
 import { toast } from "react-toastify";
 
 export function useUpdateProduct() {
