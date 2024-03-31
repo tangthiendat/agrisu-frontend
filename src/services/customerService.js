@@ -1,32 +1,22 @@
-import axios from "axios";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+import { createApiClient } from "./api";
 
 class CustomerService {
+  constructor() {
+    this.api = createApiClient("/api/customers");
+  }
+
   async getCustomers(page, pageSize) {
-    return (
-      await axios.get(
-        `${API_BASE_URL}/api/customers?page=${page - 1}&pageSize=${pageSize}`,
-      )
-    ).data;
+    return this.api.get("", { params: { page: page - 1, pageSize } });
   }
   async create(newCustomer) {
-    return (await axios.post(`${API_BASE_URL}/api/customers`, newCustomer))
-      .data;
+    return this.api.post("", newCustomer);
   }
 
   async update(customerId, updatedCustomer) {
-    return (
-      await axios.put(
-        `${API_BASE_URL}/api/customers/${customerId}`,
-        updatedCustomer,
-      )
-    ).data;
+    return this.api.put(`/${customerId}`, updatedCustomer);
   }
   async delete(customerId) {
-    return (await axios.delete(`${API_BASE_URL}/api/customers/${customerId}`))
-      .data;
+    return this.api.delete(`/${customerId}`);
   }
 }
 

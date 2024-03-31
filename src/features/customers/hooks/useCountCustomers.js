@@ -3,7 +3,7 @@ import { customerService } from "../../../services/customerService";
 
 export function useCountCustomer() {
   const { data: customersNum } = useQuery({
-    queryKey: "customersNum",
+    queryKey: ["customersNum"],
     queryFn: customerService.count,
   });
   return { customersNum };
