@@ -1,6 +1,8 @@
+import { Layout } from "antd";
+
 /* eslint-disable react/prop-types */
 function Main({ children }) {
-  return <main className="flex-1 bg-neutral-100">{children}</main>;
+  return <Layout.Content>{children}</Layout.Content>;
 }
 
 export default Main;
