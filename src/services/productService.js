@@ -1,28 +1,32 @@
-import { createApiClient } from "./api";
+import axios from "axios";
+
+const BASE_API_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
 class ProductService {
-  constructor() {
-    this.api = createApiClient("/api/products");
-  }
-
   async getProducts(page, pageSize) {
-    return (await this.api.get("", { params: { page: page - 1, pageSize } }))
-      .data;
+    return (
+      await axios.get(`${BASE_API_URL}/products`, {
+        params: { page: page - 1, pageSize },
+      })
+    ).data;
   }
 
   async create(newProduct) {
-    return (await this.api.post("", newProduct)).data;
+    return (await axios.post(`${BASE_API_URL}/products`, newProduct)).data;
   }
 
   async update(productId, updatedProduct) {
-    return (await this.api.put(`/${productId}`, updatedProduct)).data;
+    return (
+      await axios.put(`${BASE_API_URL}/products/${productId}`, updatedProduct)
+    ).data;
   }
   async delete(productId) {
-    return (await this.api.delete(`/${productId}`)).data;
+    return (await axios.delete(`${BASE_API_URL}/products/${productId}`)).data;
   }
 
   async count() {
-    return (await this.api.get("/count")).data;
+    return (await axios.get(`${BASE_API_URL}/products/count`)).data;
   }
 }
 

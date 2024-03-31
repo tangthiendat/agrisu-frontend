@@ -1,11 +1,9 @@
-import { createApiClient } from "./api";
-
+import axios from "axios";
+const BASE_API_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 class UnitService {
-  constructor() {
-    this.api = createApiClient("/api/units");
-  }
   async getAll() {
-    return this.api.get("");
+    return (await axios.get(`${BASE_API_URL}/units`)).data;
   }
 }
 
