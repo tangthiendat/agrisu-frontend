@@ -5,13 +5,13 @@ import { MdDelete } from "react-icons/md";
 import { useDeleteProduct } from "./hooks/useDeleteProduct";
 
 function DeleteProduct({ productId }) {
-  const { deleteProduct } = useDeleteProduct();
+  const { deleteProduct, isDeleting } = useDeleteProduct();
   return (
     <Popconfirm
       title="Xóa sản phẩm"
       description="Bạn có chắc muốn xóa sản phẩm này không?"
       okText="Xóa"
-      okButtonProps={{ danger: true }}
+      okButtonProps={{ danger: true, loading: isDeleting }}
       onConfirm={() => deleteProduct(productId)}
       cancelText="Hủy"
     >

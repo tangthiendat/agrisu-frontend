@@ -6,7 +6,7 @@ import AddProduct from "../features/products/AddProduct";
 const { Title } = Typography;
 function Products() {
   return (
-    <div className="container">
+    <div className="card min-h-screen">
       <Title className="mb-2">Sản phẩm</Title>
       <div className="mb-4 flex content-center items-center justify-end">
         <AddProduct />

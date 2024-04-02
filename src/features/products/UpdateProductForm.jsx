@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -8,6 +9,7 @@ import {
   Form,
   Input,
   InputNumber,
+  Modal,
   Row,
   Select,
 } from "antd";
@@ -15,15 +17,11 @@ import { CloseOutlined } from "@ant-design/icons";
 import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper";
 import { useUnits } from "./hooks/useUnits";
 import { useProductTypes } from "./hooks/useProductTypes";
-import { useCreateProduct } from "./hooks/useCreateProduct";
-import { useUpdateProduct } from "./hooks/useUpdateProduct";
 
-function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
+function UpdateProductForm({ form, productToUpdate = {}, onFinish }) {
   const { units } = useUnits();
   const { productTypes } = useProductTypes();
-  const { createProduct } = useCreateProduct();
-  const { updateProduct } = useUpdateProduct();
-  const isUpdateSession = Object.keys(productToUpdate).length > 0;
+  const isUpdateSession = Boolean(productToUpdate.productId);
 
   if (isUpdateSession) {
     form.setFieldsValue({
@@ -51,10 +49,10 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
     }
   }
   //Update the original price and selling price of the product unit when the base quantity changes based on the first product unit
-  function handleBaseQuantityChange(newBaseQuantity, fieldListItem) {
+  function handleBaseQuantityChange(newBaseQuantity, formListItemIndex) {
     const productUnits = form.getFieldValue("productUnits");
     const updatedProductUnits = productUnits.map((productUnit, index) => {
-      if (fieldListItem > 0 && index === fieldListItem) {
+      if (formListItemIndex > 0 && index === formListItemIndex) {
         return {
           ...productUnit,
           baseQuantity: newBaseQuantity,
@@ -75,10 +73,54 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
     });
   }
 
+  function handleIsDefaultChange(isDefault, formListItemIndex) {
+    const productUnits = form.getFieldValue("productUnits");
+    const updatedProductUnits = productUnits.map((productUnit, index) => {
+      if (index === formListItemIndex) {
+        return {
+          ...productUnit,
+          isDefault,
+        };
+      }
+      return { ...productUnit, isDefault: false };
+    });
+    form.setFieldsValue({
+      productUnits: updatedProductUnits,
+    });
+  }
+
   function handleFinish(submittedProduct) {
-    //Close the form modal
-    setIsOpenModal(false);
-    //Update the submitted product with product type, units, and isDefault
+    //Check whether the product has product units
+    const hasProductUnit = submittedProduct.productUnits?.length > 0;
+    //Check whether the product has a default unit
+    if (hasProductUnit) {
+      const hasDefaultUnit = submittedProduct.productUnits.some(
+        (productUnit) => productUnit.isDefault,
+      );
+      if (!hasDefaultUnit) {
+        Modal.error({
+          title: "Lỗi",
+          content: "Hãy chọn một đơn vị tính mặc định cho sản phẩm.",
+          centered: true,
+          okButtonProps: {
+            className: "btn-primary",
+          },
+        });
+        return;
+      }
+    } else {
+      Modal.error({
+        title: "Lỗi",
+        content: "Hãy thêm ít nhất một đơn vị tính cho sản phẩm.",
+        centered: true,
+        okButtonProps: {
+          className: "btn-primary",
+        },
+      });
+      return;
+    }
+
+    //Update the submitted product with product type and units
     submittedProduct.productType = productTypes.find(
       (productTypes) =>
         productTypes.productTypeId ===
@@ -89,210 +131,227 @@ function UpdateProductForm({ form, setIsOpenModal, productToUpdate = {} }) {
         return {
           ...productUnit,
           unit: units.find((unit) => unit.unitId === productUnit.unit.unitId),
-          isDefault:
-            productUnit.isDefault === undefined ? false : productUnit.isDefault,
         };
       },
     );
 
-    if (isUpdateSession) {
-      updateProduct(
-        { id: productToUpdate.productId, product: submittedProduct },
-        {
-          onSettled: () => {
-            form.resetFields();
-          },
-        },
-      );
-    } else {
-      createProduct(submittedProduct, {
-        onSettled: () => {
-          form.resetFields();
+    const hasBlankField = submittedProduct.productUnits.some((productUnit) =>
+      Object.keys(productUnit).some(
+        (key) => key !== "isDefault" && !productUnit[key],
+      ),
+    );
+    if (hasBlankField) {
+      Modal.error({
+        title: "Lỗi",
+        content: "Hãy điền đầy đủ thông tin cho các đơn vị tính.",
+        centered: true,
+        okButtonProps: {
+          className: "btn-primary",
         },
       });
+      return;
     }
+
+    //Handle update or create product based on the session
+    onFinish(submittedProduct);
   }
 
   return (
-    <Form
-      form={form}
-      name="updateProductForm"
-      onKeyDown={preventSubmission}
-      onFinish={handleFinish}
-      labelCol={{ span: 7 }}
-      initialValues={{ stockQuantity: 0 }}
-    >
-      <Row gutter={24}>
-        <Col span={12}>
-          <Form.Item label="Mã sản phẩm" name="productId">
-            <Input
-              disabled={!isUpdateSession}
-              className="w-[50%]"
-              placeholder="Mã tự động"
-            />
-          </Form.Item>
-          <Form.Item
-            label="Tên sản phẩm"
-            name="productName"
-            rules={[{ required: true, message: "Hãy nhập tên sản phẩm." }]}
-          >
-            <Input allowClear className="w-[80%]" />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            label="Loại sản phẩm"
-            name={["productType", "productTypeId"]}
-            rules={[
-              {
-                required: true,
-                message: "Hãy chọn loại sản phẩm",
-              },
-            ]}
-          >
-            <Select
-              allowClear
-              style={{ width: "60%" }}
-              options={productTypes?.map((productType) => ({
-                key: productType.productTypeId,
-                value: productType.productTypeId,
-                label: productType.productTypeName,
-              }))}
-            ></Select>
-          </Form.Item>
-          <Form.Item
-            label="Tồn kho"
-            name="stockQuantity"
-            tooltip="Số lượng tồn kho tương ứng với đơn vị tính mặc định"
-          >
-            <InputNumber className="w-[30%]" min={0} max={1000000} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row className="mt-3">
-        <Col span={24}>
-          <Collapse
-            size="small"
-            items={[
-              {
-                key: "1",
-                label: "Đơn vị tính",
-                children: (
-                  <Form.Item>
-                    <Form.List name="productUnits">
-                      {(unitFields, { add: addUnit, remove: removeUnit }) => {
-                        return (
-                          <>
-                            <div className="flex flex-col ">
-                              {unitFields.length > 0 && (
-                                <div className="mb-2 flex items-center justify-between font-semibold">
-                                  <div className="basis-[10%] ">Đơn vị</div>
-                                  <div className="basis-[12%]">
-                                    Giá trị cơ bản
+    <>
+      <Form
+        form={form}
+        name="updateProductForm"
+        onKeyDown={preventSubmission}
+        onFinish={handleFinish}
+        labelCol={{ span: 7 }}
+        initialValues={{ stockQuantity: 0 }}
+      >
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item label="Mã sản phẩm" name="productId">
+              <Input
+                disabled={!isUpdateSession}
+                className="w-[50%]"
+                placeholder="Mã tự động"
+              />
+            </Form.Item>
+            <Form.Item
+              label="Tên sản phẩm"
+              name="productName"
+              rules={[{ required: true, message: "Hãy nhập tên sản phẩm." }]}
+            >
+              <Input allowClear className="w-[80%]" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Loại sản phẩm"
+              name={["productType", "productTypeId"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Hãy chọn loại sản phẩm.",
+                },
+              ]}
+            >
+              <Select
+                allowClear
+                style={{ width: "60%" }}
+                options={productTypes?.map((productType) => ({
+                  key: productType.productTypeId,
+                  value: productType.productTypeId,
+                  label: productType.productTypeName,
+                }))}
+              ></Select>
+            </Form.Item>
+            <Form.Item
+              label="Tồn kho"
+              name="stockQuantity"
+              tooltip="Số lượng tồn kho tương ứng với đơn vị tính mặc định"
+            >
+              <InputNumber className="w-[30%]" min={0} max={1000000} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col span={24}>
+            <Collapse
+              size="small"
+              defaultActiveKey={["1"]}
+              items={[
+                {
+                  key: "1",
+                  label: "Đơn vị tính",
+                  children: (
+                    <Form.Item>
+                      <Form.List name="productUnits">
+                        {(unitFields, { add: addUnit, remove: removeUnit }) => {
+                          return (
+                            <>
+                              <div className="flex flex-col ">
+                                {unitFields.length > 0 && (
+                                  <div className="mb-2 flex items-center justify-between font-semibold">
+                                    <div className="basis-[10%] ">Đơn vị</div>
+                                    <div className="basis-[12%]">
+                                      Giá trị cơ bản
+                                    </div>
+                                    <div className="basis-[20%]">Giá vốn</div>
+                                    <div className="basis-[20%]">Giá bán</div>
+                                    <div className="basis-[10%]"></div>
+                                    <div className="basis-[2%]"></div>
                                   </div>
-                                  <div className="basis-[20%]">Giá vốn</div>
-                                  <div className="basis-[20%]">Giá bán</div>
-                                  <div className="basis-[10%]"></div>
-                                  <div className="basis-[2%]"></div>
-                                </div>
-                              )}
-                              {unitFields.map((unitField) => {
-                                return (
-                                  <div
-                                    className="flex items-center justify-between"
-                                    key={unitField.key}
-                                  >
-                                    <Form.Item
-                                      className="basis-[10%]"
-                                      name={[unitField.name, "unit", "unitId"]}
+                                )}
+                                {unitFields.map((unitField) => {
+                                  return (
+                                    <div
+                                      className="flex items-center justify-between"
+                                      key={unitField.key}
                                     >
-                                      <Select
-                                        options={units?.map((unit) => ({
-                                          key: unit.unitId,
-                                          value: unit.unitId,
-                                          label: unit.unitName,
-                                        }))}
-                                      ></Select>
-                                    </Form.Item>
-                                    <Form.Item
-                                      className="basis-[12%]"
-                                      name={[unitField.name, "baseQuantity"]}
-                                    >
-                                      <InputNumber
-                                        className="w-full"
-                                        min={0}
-                                        max={1000000}
-                                        onChange={(value) =>
-                                          handleBaseQuantityChange(
-                                            value,
-                                            unitField.name,
-                                          )
-                                        }
-                                      />
-                                    </Form.Item>
-                                    <Form.Item
-                                      className="basis-[20%]"
-                                      name={[unitField.name, "originalPrice"]}
-                                    >
-                                      <InputNumber
-                                        className="w-full"
-                                        formatter={formatCurrency}
-                                        parser={parseCurrency}
-                                        min={0}
-                                        max={1000000000}
-                                        addonAfter="VND"
-                                      />
-                                    </Form.Item>
-                                    <Form.Item
-                                      className="basis-[20%]"
-                                      name={[unitField.name, "sellingPrice"]}
-                                    >
-                                      <InputNumber
-                                        className="w-full"
-                                        formatter={formatCurrency}
-                                        parser={parseCurrency}
-                                        min={0}
-                                        max={1000000000}
-                                        addonAfter="VND"
-                                      />
-                                    </Form.Item>
-                                    <Form.Item
-                                      className="basis-[10%]"
-                                      name={[unitField.name, "isDefault"]}
-                                      valuePropName="checked"
-                                    >
-                                      <Checkbox>Mặc định</Checkbox>
-                                    </Form.Item>
-                                    <Form.Item className="basis-[2%]">
-                                      <CloseOutlined
-                                        onClick={() =>
-                                          removeUnit(unitField.name)
-                                        }
-                                      />
-                                    </Form.Item>
-                                  </div>
-                                );
-                              })}
+                                      <Form.Item
+                                        className="basis-[10%]"
+                                        name={[
+                                          unitField.name,
+                                          "unit",
+                                          "unitId",
+                                        ]}
+                                      >
+                                        <Select
+                                          options={units?.map((unit) => ({
+                                            key: unit.unitId,
+                                            value: unit.unitId,
+                                            label: unit.unitName,
+                                          }))}
+                                        ></Select>
+                                      </Form.Item>
+                                      <Form.Item
+                                        className="basis-[12%]"
+                                        name={[unitField.name, "baseQuantity"]}
+                                      >
+                                        <InputNumber
+                                          className="w-full"
+                                          min={0}
+                                          max={1000000}
+                                          onChange={(value) =>
+                                            handleBaseQuantityChange(
+                                              value,
+                                              unitField.name,
+                                            )
+                                          }
+                                        />
+                                      </Form.Item>
+                                      <Form.Item
+                                        className="basis-[20%]"
+                                        name={[unitField.name, "originalPrice"]}
+                                      >
+                                        <InputNumber
+                                          className="w-full"
+                                          formatter={formatCurrency}
+                                          parser={parseCurrency}
+                                          min={0}
+                                          max={1000000000}
+                                          addonAfter="VND"
+                                        />
+                                      </Form.Item>
+                                      <Form.Item
+                                        className="basis-[20%]"
+                                        name={[unitField.name, "sellingPrice"]}
+                                      >
+                                        <InputNumber
+                                          className="w-full"
+                                          formatter={formatCurrency}
+                                          parser={parseCurrency}
+                                          min={0}
+                                          max={1000000000}
+                                          addonAfter="VND"
+                                        />
+                                      </Form.Item>
+                                      <Form.Item
+                                        className="basis-[10%]"
+                                        name={[unitField.name, "isDefault"]}
+                                        valuePropName="checked"
+                                      >
+                                        <Checkbox
+                                          onChange={(e) =>
+                                            handleIsDefaultChange(
+                                              e.target.checked,
+                                              unitField.name,
+                                            )
+                                          }
+                                        >
+                                          Mặc định
+                                        </Checkbox>
+                                      </Form.Item>
+                                      <Form.Item className="basis-[2%]">
+                                        <CloseOutlined
+                                          onClick={() =>
+                                            removeUnit(unitField.name)
+                                          }
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                  );
+                                })}
 
-                              <Button
-                                className="w-[150px]"
-                                onClick={() => addUnit()}
-                              >
-                                + Thêm đơn vị tính
-                              </Button>
-                            </div>
-                          </>
-                        );
-                      }}
-                    </Form.List>
-                  </Form.Item>
-                ),
-              },
-            ]}
-          ></Collapse>
-        </Col>
-      </Row>
-    </Form>
+                                <Button
+                                  className="w-[150px]"
+                                  onClick={() => addUnit()}
+                                >
+                                  + Thêm đơn vị tính
+                                </Button>
+                              </div>
+                            </>
+                          );
+                        }}
+                      </Form.List>
+                    </Form.Item>
+                  ),
+                },
+              ]}
+            ></Collapse>
+          </Col>
+        </Row>
+      </Form>
+    </>
   );
 }
 

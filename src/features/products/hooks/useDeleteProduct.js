@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 export function useDeleteProduct() {
   const queryClient = useQueryClient();
-  const { mutate: deleteProduct } = useMutation({
+  const { mutate: deleteProduct, isPending: isDeleting } = useMutation({
     mutationFn: productService.delete,
     onSuccess: () => {
       toast.success("Xóa sản phẩm thành công");
@@ -14,5 +14,5 @@ export function useDeleteProduct() {
       toast.error("Có lỗi xảy ra khi xóa sản phẩm");
     },
   });
-  return { deleteProduct };
+  return { deleteProduct, isDeleting };
 }

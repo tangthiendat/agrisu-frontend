@@ -3,8 +3,10 @@ import { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { Form, Modal, Tooltip } from "antd";
 import UpdateProductForm from "./UpdateProductForm";
+import { useUpdateProduct } from "./hooks/useUpdateProduct";
 function UpdateProduct({ product }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { isUpdating, updateProduct } = useUpdateProduct();
   const [updateProductForm] = Form.useForm();
   function showModal() {
     setIsOpenModal(true);
@@ -14,6 +16,19 @@ function UpdateProduct({ product }) {
     updateProductForm.resetFields();
     setIsOpenModal(false);
   }
+
+  function handleUpdateProduct(submittedProduct) {
+    updateProduct(
+      { id: product.productId, product: submittedProduct },
+      {
+        onSettled: () => {
+          updateProductForm.resetFields();
+          setIsOpenModal(false);
+        },
+      },
+    );
+  }
+
   return (
     <>
       <Tooltip title="Chỉnh sửa" placement="bottom">
@@ -33,6 +48,7 @@ function UpdateProduct({ product }) {
           form: "updateProductForm",
           htmlType: "submit",
           className: "btn-primary",
+          loading: isUpdating,
         }}
         cancelText="Hủy"
         onCancel={handleCancel}
@@ -41,6 +57,7 @@ function UpdateProduct({ product }) {
           form={updateProductForm}
           setIsOpenModal={setIsOpenModal}
           productToUpdate={product}
+          onFinish={handleUpdateProduct}
         />
       </Modal>
     </>
