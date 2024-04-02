@@ -28,6 +28,14 @@ class ProductService {
   async count() {
     return (await axios.get(`${BASE_API_URL}/products/count`)).data;
   }
+
+  async search(name) {
+    return (
+      await axios.get(`${BASE_API_URL}/products/search`, {
+        params: { name },
+      })
+    ).data;
+  }
 }
 
 export const productService = new ProductService();

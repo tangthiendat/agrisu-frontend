@@ -21,13 +21,12 @@ function AddProduct() {
   }
 
   function handleCreateProduct(submittedProduct) {
-    console.log("submittedProduct", submittedProduct);
-    //  createProduct(submittedProduct, {
-    //    onSettled: () => {
-    //      addProductForm.resetFields();
-    //      setIsOpenModal(false);
-    //    },
-    //  });
+    createProduct(submittedProduct, {
+      onSettled: () => {
+        addProductForm.resetFields();
+        setIsOpenModal(false);
+      },
+    });
   }
 
   return (

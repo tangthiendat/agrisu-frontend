@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ConfigProvider } from "antd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Router from "./router/AppRouter";
+import AppRouter from "./router/AppRouter";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,7 +61,7 @@ function App() {
     >
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <Router />
+        <AppRouter />
         <ToastContainer
           position="bottom-right"
           autoClose={3000}
