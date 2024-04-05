@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -17,11 +16,15 @@ import { CloseOutlined } from "@ant-design/icons";
 import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper";
 import { useUnits } from "./hooks/useUnits";
 import { useProductTypes } from "./hooks/useProductTypes";
+import { useUpdateProduct } from "./hooks/useUpdateProduct";
+import { useCreateProduct } from "./hooks/useCreateProduct";
 
-function UpdateProductForm({ form, productToUpdate = {}, onFinish }) {
+function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
   const { units } = useUnits();
   const { productTypes } = useProductTypes();
   const isUpdateSession = Boolean(productToUpdate.productId);
+  const { updateProduct } = useUpdateProduct();
+  const { createProduct } = useCreateProduct();
 
   if (isUpdateSession) {
     form.setFieldsValue({
@@ -131,6 +134,7 @@ function UpdateProductForm({ form, productToUpdate = {}, onFinish }) {
         return {
           ...productUnit,
           unit: units.find((unit) => unit.unitId === productUnit.unit.unitId),
+          isDefault: productUnit.isDefault || false,
         };
       },
     );
@@ -152,8 +156,21 @@ function UpdateProductForm({ form, productToUpdate = {}, onFinish }) {
       return;
     }
 
+    setIsOpenModal(false);
+
     //Handle update or create product based on the session
-    onFinish(submittedProduct);
+    if (isUpdateSession) {
+      updateProduct({
+        id: productToUpdate.productId,
+        product: submittedProduct,
+      });
+    } else {
+      createProduct(submittedProduct, {
+        onSettled: () => {
+          form.resetFields();
+        },
+      });
+    }
   }
 
   return (
@@ -171,6 +188,7 @@ function UpdateProductForm({ form, productToUpdate = {}, onFinish }) {
             <Form.Item label="Mã sản phẩm" name="productId">
               <Input
                 disabled={!isUpdateSession}
+                readOnly={isUpdateSession}
                 className="w-[50%]"
                 placeholder="Mã tự động"
               />
@@ -202,7 +220,7 @@ function UpdateProductForm({ form, productToUpdate = {}, onFinish }) {
                   value: productType.productTypeId,
                   label: productType.productTypeName,
                 }))}
-              ></Select>
+              />
             </Form.Item>
             <Form.Item
               label="Tồn kho"

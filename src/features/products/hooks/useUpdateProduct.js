@@ -6,6 +6,7 @@ export function useUpdateProduct() {
   const queryClient = useQueryClient();
   const { mutate: updateProduct, isPending: isUpdating } = useMutation({
     mutationFn: ({ id, product }) => productService.update(id, product),
+
     onSuccess: () => {
       toast.success("Cập nhật sản phẩm thành công");
       queryClient.invalidateQueries("products");

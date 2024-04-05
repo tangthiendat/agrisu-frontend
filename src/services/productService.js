@@ -29,10 +29,10 @@ class ProductService {
     return (await axios.get(`${BASE_API_URL}/products/count`)).data;
   }
 
-  async search(name) {
+  async search(query) {
     return (
       await axios.get(`${BASE_API_URL}/products/search`, {
-        params: { name },
+        params: { query },
       })
     ).data;
   }

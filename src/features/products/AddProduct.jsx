@@ -4,11 +4,9 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Modal } from "antd";
 
 import UpdateProductForm from "./UpdateProductForm";
-import { useCreateProduct } from "./hooks/useCreateProduct";
 
 function AddProduct() {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const { isCreating, createProduct } = useCreateProduct();
   const [addProductForm] = Form.useForm();
 
   function showModal() {
@@ -18,15 +16,6 @@ function AddProduct() {
   function handleCancel() {
     addProductForm.resetFields();
     setIsOpenModal(false);
-  }
-
-  function handleCreateProduct(submittedProduct) {
-    createProduct(submittedProduct, {
-      onSettled: () => {
-        addProductForm.resetFields();
-        setIsOpenModal(false);
-      },
-    });
   }
 
   return (
@@ -49,14 +38,13 @@ function AddProduct() {
           form: "updateProductForm",
           htmlType: "submit",
           className: "btn-primary",
-          loading: isCreating,
         }}
         cancelText="Hủy"
         onCancel={handleCancel}
       >
         <UpdateProductForm
           form={addProductForm}
-          onFinish={handleCreateProduct}
+          setIsOpenModal={setIsOpenModal}
         />
       </Modal>
     </>
