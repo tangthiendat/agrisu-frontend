@@ -16,6 +16,7 @@ function AddCustomer() {
     addCustomerForm.resetFields();
     setIsOpenModal(false);
   }
+
   return (
     <>
       <Button
