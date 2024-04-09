@@ -7,6 +7,7 @@ import { useCreateCustomer } from "./hooks/useCreateCustomer";
 
 function UpdateCustomerForm({ form, setIsOpenModal }) {
   const { createCustomer } = useCreateCustomer();
+
   function preventSubmission(e) {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -14,7 +15,6 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
   }
 
   function handleFinish(submittedCustomer) {
-    console.log(submittedCustomer);
     setIsOpenModal(false);
     createCustomer(submittedCustomer, {
       onSettled: () => {
@@ -34,7 +34,7 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
       <Row gutter={24}>
         <Col span={12}>
           <Form.Item label="Mã khách hàng" name="customerId">
-            <Input placeholder="Mã tự động" className="w-[50%]"></Input>
+            <Input placeholder="Mã tự động" className="w-[50%]" />
           </Form.Item>
           <Form.Item
             label="Tên khách hàng"
@@ -46,7 +46,7 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
               },
             ]}
           >
-            <Input className="w-[80%]"></Input>
+            <Input className="w-[80%]" />
           </Form.Item>
           <Form.Item
             label="Số điện thoại"
@@ -62,7 +62,7 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
               },
             ]}
           >
-            <Input allowClear className="w-[60%]"></Input>
+            <Input allowClear className="w-[60%]" />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -71,7 +71,7 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
               allowClear
               autoSize={{ minRows: 2, maxRows: 4 }}
               className="w-[90%]"
-            ></TextArea>
+            />
           </Form.Item>
           <Form.Item label="Công nợ bắt đầu" name="receivable">
             <InputNumber
@@ -81,7 +81,7 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
               min={0}
               max={1000000000000}
               addonAfter="VND"
-            ></InputNumber>
+            />
           </Form.Item>
         </Col>
       </Row>

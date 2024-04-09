@@ -6,7 +6,7 @@ function AppLayout() {
     <div className="max-w-screen min-h-screen bg-neutral-100">
       <Header />
       <Main>
-        <div className="mx-4 my-6 shadow-md">
+        <div className="mx-4 my-6">
           <Outlet />
         </div>
       </Main>

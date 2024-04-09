@@ -6,9 +6,6 @@ export default {
       sans: "Open Sans, sans-serif",
     },
     extend: {
-      height: {
-        screen: "100dvh",
-      },
       colors: {
         "dodger-blue": {
           DEFAULT: "#1677FF",
