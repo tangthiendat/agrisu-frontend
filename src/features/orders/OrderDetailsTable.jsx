@@ -1,26 +1,25 @@
 import { InputNumber, Select, Table, Tooltip } from "antd";
-import { useOrderStore } from "../../stores/useOrderStore";
-import { formatCurrency } from "../../utils/helper";
+import { useDispatch, useSelector } from "react-redux";
 import { MdDelete } from "react-icons/md";
+import { removeItem, updateItemQuantity, updateItemUnit } from "./orderSlice";
+import { formatCurrency } from "../../utils/helper";
 function OrderDetailsTable() {
-  const cart = useOrderStore((state) => state.cart);
-  const updateItemUnit = useOrderStore((state) => state.updateItemUnit);
-  const updateItemQuantity = useOrderStore((state) => state.updateItemQuantity);
-  const removeItem = useOrderStore((state) => state.removeItem);
+  const orderDetails = useSelector((state) => state.order.orderDetails);
+  const dispatch = useDispatch();
 
   function handleQuantityChange(product, quantity) {
-    const defaultProuductUnit = product.productUnits.find(
+    const defaultProductUnit = product.productUnits.find(
       (productUnit) => productUnit.isDefault,
     );
     const currentStockQuantity = parseFloat(
-      (product.stockQuantity * defaultProuductUnit.baseQuantity) /
+      (product.stockQuantity * defaultProductUnit.baseQuantity) /
         product.displayedProductUnit.baseQuantity,
     );
     //check if the quantity is greater than the current stock quantity
     if (quantity > currentStockQuantity) {
       return;
     }
-    updateItemQuantity(product.productId, quantity);
+    dispatch(updateItemQuantity({ productId: product.productId, quantity }));
   }
 
   const columns = [
@@ -54,9 +53,12 @@ function OrderDetailsTable() {
               const selectedProductUnit = record.product.productUnits.find(
                 (productUnit) => productUnit.unit.unitId === newUnitId,
               );
-              updateItemUnit(
-                record.product.productId,
-                selectedProductUnit.unit,
+
+              dispatch(
+                updateItemUnit({
+                  productId: record.product.productId,
+                  unit: selectedProductUnit.unit,
+                }),
               );
             }}
           />
@@ -82,11 +84,13 @@ function OrderDetailsTable() {
       title: "Đơn giá",
       dataIndex: "unitPrice",
       key: "unitPrice",
+      width: "15%",
       render: (unitPrice) => formatCurrency(unitPrice),
     },
     {
       title: "Thành tiền",
       key: "amount",
+      width: "15%",
       render: (record) => (
         <span className="font-semibold">
           {formatCurrency(record.unitPrice * record.quantity)}
@@ -100,7 +104,7 @@ function OrderDetailsTable() {
           <MdDelete
             className="icon"
             color="var(--color-red-500)"
-            onClick={() => removeItem(record.product.productId)}
+            onClick={() => dispatch(removeItem(record.product.productId))}
           />
         </Tooltip>
       ),
@@ -110,7 +114,7 @@ function OrderDetailsTable() {
   return (
     <Table
       rowKey={(record) => record.product.productId}
-      dataSource={cart}
+      dataSource={orderDetails}
       columns={columns}
       pagination={false}
       size="middle"

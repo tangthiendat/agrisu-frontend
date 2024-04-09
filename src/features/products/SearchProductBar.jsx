@@ -1,19 +1,21 @@
 import { useCallback, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { AutoComplete, Modal, Space, Tooltip, Button, Form } from "antd";
 import { debounce } from "lodash";
 import { PlusOutlined } from "@ant-design/icons";
 import { useSearchProducts } from "./hooks/useSearchProducts";
 import { formatCurrency } from "../../utils/helper";
-import { useOrderStore } from "../../stores/useOrderStore";
 import UpdateProductForm from "./UpdateProductForm";
+import { addItem } from "../orders/orderSlice";
 
 function SearchProductBar() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedProducts } = useSearchProducts(searchQuery);
-  const cart = useOrderStore((state) => state.cart);
-  const addToCart = useOrderStore((state) => state.addToCart);
+
+  const orderDetails = useSelector((state) => state.order.orderDetails);
+  const dispatch = useDispatch();
   const [updateProductForm] = Form.useForm();
 
   function handleSearch(value) {
@@ -54,7 +56,7 @@ function SearchProductBar() {
     );
 
     //check if the selected product is in cart
-    const isProductInCart = cart.some(
+    const isProductInCart = orderDetails.some(
       (cartItem) => cartItem.product.productId === selectedProduct.productId,
     );
     if (isProductInCart) {
@@ -80,12 +82,14 @@ function SearchProductBar() {
       setSearchQuery("");
       return;
     }
-    addToCart({
-      product: selectedProduct,
-      quantity: 1,
-      unit: selectedProduct.displayedProductUnit.unit,
-      unitPrice: selectedProduct.displayedProductUnit.sellingPrice,
-    });
+    dispatch(
+      addItem({
+        product: selectedProduct,
+        quantity: 1,
+        unit: selectedProduct.displayedProductUnit.unit,
+        unitPrice: selectedProduct.displayedProductUnit.sellingPrice,
+      }),
+    );
     setSearchQuery("");
   }
 

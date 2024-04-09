@@ -16,10 +16,6 @@ class OrderService {
     return (await axios.post(`${BASE_API_URL}/orders`, newOrder)).data;
   }
 
-  async update(orderId, updatedOrder) {
-    return (await axios.put(`${BASE_API_URL}/orders/${orderId}`, updatedOrder))
-      .data;
-  }
   async delete(orderId) {
     return (await axios.delete(`${BASE_API_URL}/orders/${orderId}`)).data;
   }

@@ -3,9 +3,10 @@ import { useCallback, useState } from "react";
 import { debounce } from "lodash";
 import { AutoComplete, Button, Form, Modal, Space, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
 import { useSearchCustomers } from "./hooks/useSearchCustomers";
-import { useOrderStore } from "../../stores/useOrderStore";
 import UpdateCustomerForm from "./UpdateCustomerForm";
+import { setCustomer } from "../orders/orderSlice";
 
 function SearchCustomerBar() {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -13,7 +14,8 @@ function SearchCustomerBar() {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedCustomers } = useSearchCustomers(searchQuery);
-  const setCustomer = useOrderStore((state) => state.setCustomer);
+  const dispatch = useDispatch();
+  //   const setCustomer = useOrderStore((state) => state.setCustomer);
 
   function handleSearch(value) {
     setSearchQuery(value);
@@ -30,7 +32,7 @@ function SearchCustomerBar() {
     const selectedCustomer = searchedCustomers.find(
       (customer) => customer.customerId === value,
     );
-    setCustomer(selectedCustomer);
+    dispatch(setCustomer(selectedCustomer));
     setInputValue(selectedCustomer.customerName);
     setSearchQuery("");
   }
@@ -55,6 +57,7 @@ function SearchCustomerBar() {
         onSearch={debouncedHandleSearch}
         options={customerOptions}
         onSelect={handleSelect}
+        onClear={() => dispatch(setCustomer(null))}
       />
       <Tooltip title="Thêm khách hàng" placement="bottom">
         <Button

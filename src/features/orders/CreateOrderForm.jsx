@@ -1,21 +1,25 @@
 /* eslint-disable react/prop-types */
-import { Form, InputNumber, Radio } from "antd";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { useOrderStore } from "../../stores/useOrderStore";
 import { useEffect, useState } from "react";
+import { Form, InputNumber, Radio, Modal } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { formatCurrency, parseCurrency } from "../../utils/helper";
+import { clearOrder, getOrderTotalValue } from "./orderSlice";
+import { useCreateOrder } from "./hooks/useCreateOrder";
 
 function CreateOrderForm({ form }) {
-  const totalCartPrice = useOrderStore((state) => state.totalCartPrice());
-  const cart = useOrderStore((state) => state.cart);
-  const customer = useOrderStore((state) => state.customer);
+  const totalOrderValue = useSelector(getOrderTotalValue);
+  const orderDetails = useSelector((state) => state.order.orderDetails);
+  const customer = useSelector((state) => state.order.customer);
   const [isPaid, setIsPaid] = useState(true);
   const [change, setChange] = useState(0);
+  const dispatch = useDispatch();
+  const { createOrder } = useCreateOrder();
 
   useEffect(() => {
     form.setFieldsValue({
-      totalValue: totalCartPrice,
+      totalValue: totalOrderValue,
     });
-  }, [totalCartPrice, form]);
+  }, [totalOrderValue, form]);
 
   function handleSaleFormChange(e) {
     if (e.target.value === "retail") {
@@ -27,18 +31,55 @@ function CreateOrderForm({ form }) {
   }
 
   function handleCustomerPaymentChange(customerPayment) {
-    if (customerPayment >= totalCartPrice) {
-      setChange(customerPayment - totalCartPrice);
+    if (customerPayment >= totalOrderValue) {
+      setChange(customerPayment - totalOrderValue);
     } else {
       setChange(0);
     }
   }
 
   function handleFinish(submittedOrder) {
+    if (orderDetails.length == 0) {
+      Modal.error({
+        title: "Không thể tạo hóa đơn",
+        content: "Vui lòng chọn chi tiết hóa đơn.",
+        okButtonProps: {
+          className: "btn-primary",
+        },
+      });
+      return;
+    }
+    if (!customer) {
+      Modal.error({
+        title: "Không thể tạo hóa đơn",
+        content: "Vui lòng chọn khách hàng.",
+        okButtonProps: {
+          className: "btn-primary",
+        },
+      });
+      return;
+    }
+    if (isPaid && change <= 0) {
+      Modal.error({
+        title: "Không thể tạo hóa đơn",
+        content: "Số tiền khách hàng trả không hợp lệ.",
+        okButtonProps: {
+          className: "btn-primary",
+        },
+      });
+      return;
+    }
+
     submittedOrder.customer = customer;
-    submittedOrder.orderDetails = cart;
+    submittedOrder.orderDetails = orderDetails;
     submittedOrder.isPaid = isPaid;
-    console.log(submittedOrder);
+    createOrder(submittedOrder, {
+      onSuccess: () => {
+        form.resetFields();
+        dispatch(clearOrder());
+        setChange(0);
+      },
+    });
   }
 
   return (
@@ -46,11 +87,12 @@ function CreateOrderForm({ form }) {
       form={form}
       name="createOrderForm"
       onFinish={handleFinish}
+      initialValues={{ customerPayment: 0 }}
       labelCol={{ span: 7 }}
       wrapperCol={{ span: 11, offset: 6 }}
     >
       <Form.Item
-        label="Tổng tiền hàng"
+        label="Tổng tiền"
         name="totalValue"
         className="w-full"
         colon={false}
@@ -63,18 +105,6 @@ function CreateOrderForm({ form }) {
           min={0}
           max={1000000000000}
           addonAfter="VND"
-        />
-      </Form.Item>
-      <Form.Item label="Khách thanh toán" name="customerPayment" colon={false}>
-        <InputNumber
-          className="w-full"
-          readOnly={!isPaid}
-          formatter={formatCurrency}
-          parser={parseCurrency}
-          min={0}
-          max={1000000000000}
-          addonAfter="VND"
-          onChange={handleCustomerPaymentChange}
         />
       </Form.Item>
       <Form.Item
@@ -94,7 +124,26 @@ function CreateOrderForm({ form }) {
           onChange={handleSaleFormChange}
         />
       </Form.Item>
-      <Form.Item hidden={!isPaid} label="Tiền thừa" colon={false}>
+
+      <Form.Item
+        hidden={!isPaid}
+        label="Thanh toán"
+        name="customerPayment"
+        colon={false}
+      >
+        <InputNumber
+          className="w-full"
+          readOnly={!isPaid}
+          formatter={formatCurrency}
+          parser={parseCurrency}
+          min={0}
+          max={1000000000000}
+          addonAfter="VND"
+          onChange={handleCustomerPaymentChange}
+        />
+      </Form.Item>
+
+      <Form.Item hidden={!isPaid} label="Còn lại" colon={false}>
         <InputNumber
           className="w-full"
           readOnly={true}
@@ -106,11 +155,29 @@ function CreateOrderForm({ form }) {
           addonAfter="VND"
         />
       </Form.Item>
-      <Form.Item hidden={isPaid} label="Tính vào công nợ" colon={false}>
+
+      <Form.Item hidden={isPaid} label="Nợ cũ" colon={false}>
         <InputNumber
           className="w-full"
           readOnly={true}
-          value={totalCartPrice}
+          value={customer?.receivable || 0}
+          formatter={formatCurrency}
+          parser={parseCurrency}
+          min={0}
+          max={1000000000000}
+          addonAfter="VND"
+        />
+      </Form.Item>
+
+      <Form.Item hidden={isPaid} label="Nợ sau" colon={false}>
+        <InputNumber
+          className="w-full"
+          readOnly={true}
+          value={
+            customer && orderDetails.length > 0
+              ? customer.receivable + totalOrderValue
+              : 0
+          }
           formatter={formatCurrency}
           parser={parseCurrency}
           min={0}
