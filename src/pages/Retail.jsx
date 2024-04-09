@@ -9,7 +9,6 @@ import { clearOrderDetails } from "../features/orders/orderSlice";
 import { useCreateOrder } from "../features/orders/hooks/useCreateOrder";
 
 function Retail() {
-  //   const clearCart = useOrderStore((state) => state.clearCart);
   const dispatch = useDispatch();
   const { isCreating } = useCreateOrder();
 

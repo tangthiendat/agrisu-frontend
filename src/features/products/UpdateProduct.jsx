@@ -16,18 +16,6 @@ function UpdateProduct({ product }) {
     setIsOpenModal(false);
   }
 
-  //   function handleFinish(submittedProduct) {
-  //     updateProduct(
-  //       { id: product.productId, product: submittedProduct },
-  //       {
-  //         onSettled: () => {
-  //           updateProductForm.resetFields();
-  //           setIsOpenModal(false);
-  //         },
-  //       },
-  //     );
-  //   }
-
   return (
     <>
       <Tooltip title="Chỉnh sửa" placement="bottom">

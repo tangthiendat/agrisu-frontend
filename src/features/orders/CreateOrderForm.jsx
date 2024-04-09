@@ -59,7 +59,7 @@ function CreateOrderForm({ form }) {
       });
       return;
     }
-    if (isPaid && change <= 0) {
+    if (isPaid && submittedOrder.customerPayment < totalOrderValue) {
       Modal.error({
         title: "Không thể tạo hóa đơn",
         content: "Số tiền khách hàng trả không hợp lệ.",
