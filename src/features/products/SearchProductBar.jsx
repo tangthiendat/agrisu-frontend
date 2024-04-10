@@ -13,6 +13,7 @@ function SearchProductBar() {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedProducts } = useSearchProducts(searchQuery);
+  const [modal, contextHolder] = Modal.useModal();
 
   const orderDetails = useSelector((state) => state.order.orderDetails);
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ function SearchProductBar() {
       (cartItem) => cartItem.product.productId === selectedProduct.productId,
     );
     if (isProductInCart) {
-      Modal.error({
+      modal.error({
         title: "Sản phẩm đã có trong giỏ hàng",
         content: "Vui lòng chọn sản phẩm khác.",
         okButtonProps: {
@@ -72,7 +73,7 @@ function SearchProductBar() {
     }
 
     if (selectedProduct.stockQuantity === 0) {
-      Modal.error({
+      modal.error({
         title: "Sản phẩm đã hết hàng",
         content: "Vui lòng chọn sản phẩm khác.",
         okButtonProps: {
@@ -103,43 +104,46 @@ function SearchProductBar() {
   }
 
   return (
-    <Space.Compact className="w-[40%]">
-      <AutoComplete
-        value={inputValue}
-        className="w-full"
-        placeholder="Tìm sản phẩm..."
-        options={productOptions}
-        onSelect={handleSelect}
-        allowClear
-        onChange={setInputValue}
-        onSearch={debouncedHandleSearch}
-      />
-      <Tooltip title="Thêm sản phẩm" placement="bottom">
-        <Button
-          style={{ borderRadius: "0 0.375rem 0.375rem 0" }}
-          icon={<PlusOutlined onClick={showModal} />}
+    <>
+      {contextHolder}
+      <Space.Compact className="w-[40%]">
+        <AutoComplete
+          value={inputValue}
+          className="w-full"
+          placeholder="Tìm sản phẩm..."
+          options={productOptions}
+          onSelect={handleSelect}
+          allowClear
+          onChange={setInputValue}
+          onSearch={debouncedHandleSearch}
         />
-      </Tooltip>
-      <Modal
-        open={isOpenModal}
-        title="Thêm sản phẩm"
-        width={1000}
-        okText="Thêm"
-        destroyOnClose
-        okButtonProps={{
-          form: "updateProductForm",
-          htmlType: "submit",
-          className: "btn-primary",
-        }}
-        cancelText="Hủy"
-        onCancel={handleCancel}
-      >
-        <UpdateProductForm
-          form={updateProductForm}
-          setIsOpenModal={setIsOpenModal}
-        />
-      </Modal>
-    </Space.Compact>
+        <Tooltip title="Thêm sản phẩm" placement="bottom">
+          <Button
+            style={{ borderRadius: "0 0.375rem 0.375rem 0" }}
+            icon={<PlusOutlined onClick={showModal} />}
+          />
+        </Tooltip>
+        <Modal
+          open={isOpenModal}
+          title={<span className="text-xl">Thêm sản phẩm</span>}
+          width={1000}
+          okText="Thêm"
+          destroyOnClose
+          okButtonProps={{
+            form: "updateProductForm",
+            htmlType: "submit",
+            className: "btn-primary",
+          }}
+          cancelText="Hủy"
+          onCancel={handleCancel}
+        >
+          <UpdateProductForm
+            form={updateProductForm}
+            setIsOpenModal={setIsOpenModal}
+          />
+        </Modal>
+      </Space.Compact>
+    </>
   );
 }
 

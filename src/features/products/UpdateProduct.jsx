@@ -28,7 +28,7 @@ function UpdateProduct({ product }) {
       <Modal
         open={isOpenModal}
         destroyOnClose
-        title="Cập nhật sản phẩm"
+        title={<span className="text-xl">Cập nhật sản phẩm</span>}
         width={1000}
         okText="Cập nhật"
         okButtonProps={{

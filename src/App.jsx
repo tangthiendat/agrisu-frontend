@@ -49,10 +49,6 @@ function App() {
             fontSizeHeading2: "1.5rem",
             fontSizeHeading3: "1.25rem",
           },
-          Modal: {
-            titleFontSize: "1.25rem",
-            titleLineHeight: 2.5,
-          },
           Collapse: {
             headerBg: "#f3f4f6",
           },

@@ -25,6 +25,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
   const isUpdateSession = Boolean(productToUpdate.productId);
   const { updateProduct } = useUpdateProduct();
   const { createProduct } = useCreateProduct();
+  const [modal, contextHolder] = Modal.useModal();
 
   if (isUpdateSession) {
     form.setFieldsValue({
@@ -101,7 +102,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
         (productUnit) => productUnit.isDefault,
       );
       if (!hasDefaultUnit) {
-        Modal.error({
+        modal.error({
           title: "Lỗi",
           content: "Hãy chọn một đơn vị tính mặc định cho sản phẩm.",
           centered: true,
@@ -112,7 +113,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
         return;
       }
     } else {
-      Modal.error({
+      modal.error({
         title: "Lỗi",
         content: "Hãy thêm ít nhất một đơn vị tính cho sản phẩm.",
         centered: true,
@@ -145,7 +146,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
       ),
     );
     if (hasBlankField) {
-      Modal.error({
+      modal.error({
         title: "Lỗi",
         content: "Hãy điền đầy đủ thông tin cho các đơn vị tính.",
         centered: true,
@@ -175,6 +176,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
 
   return (
     <>
+      {contextHolder}
       <Form
         form={form}
         name="updateProductForm"

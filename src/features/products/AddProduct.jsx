@@ -30,7 +30,7 @@ function AddProduct() {
       </Button>
       <Modal
         open={isOpenModal}
-        title="Thêm sản phẩm"
+        title={<span className="text-xl">Thêm sản phẩm</span>}
         width={1000}
         okText="Thêm"
         destroyOnClose
