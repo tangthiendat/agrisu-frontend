@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Col, Form, Input, InputNumber, Row } from "antd";
+import { Col, Form, Input, InputNumber, Row, Space, Button } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { useCreateCustomer } from "./hooks/useCreateCustomer";
@@ -16,16 +16,19 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
 
   function handleFinish(submittedCustomer) {
     setIsOpenModal(false);
-    createCustomer(submittedCustomer, {
-      onSettled: () => {
-        form.resetFields();
-      },
-    });
+    form.resetFields();
+    createCustomer(submittedCustomer);
+  }
+
+  function handleCancel() {
+    form.resetFields();
+    setIsOpenModal(false);
   }
 
   return (
     <Form
       name="updateCustomerForm"
+      form={form}
       onKeyDown={preventSubmission}
       onFinish={handleFinish}
       labelCol={{ span: 7 }}
@@ -85,6 +88,14 @@ function UpdateCustomerForm({ form, setIsOpenModal }) {
           </Form.Item>
         </Col>
       </Row>
+      <Form.Item className="text-right">
+        <Space>
+          <Button onClick={handleCancel}>Hủy</Button>
+          <Button type="primary" className="btn-primary" htmlType="submit">
+            Thêm
+          </Button>
+        </Space>
+      </Form.Item>
     </Form>
   );
 }

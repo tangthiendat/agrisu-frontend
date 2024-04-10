@@ -4,7 +4,7 @@ import { Form, InputNumber, Radio, Modal } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { clearOrder, getOrderTotalValue } from "./orderSlice";
-// import { useCreateOrder } from "./hooks/useCreateOrder";
+import { useCreateOrder } from "./hooks/useCreateOrder";
 
 function CreateOrderForm({ form }) {
   const totalOrderValue = useSelector(getOrderTotalValue);
@@ -13,7 +13,7 @@ function CreateOrderForm({ form }) {
   const [isPaid, setIsPaid] = useState(true);
   const [change, setChange] = useState(0);
   const dispatch = useDispatch();
-  //   const { createOrder } = useCreateOrder();
+  const { createOrder } = useCreateOrder();
   const [modal, contextHolder] = Modal.useModal();
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function CreateOrderForm({ form }) {
     form.resetFields();
     dispatch(clearOrder());
     setChange(0);
-    //  createOrder(submittedOrder);
+    createOrder(submittedOrder);
     console.log(submittedOrder);
   }
 

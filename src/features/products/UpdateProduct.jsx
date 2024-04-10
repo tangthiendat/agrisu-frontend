@@ -30,13 +30,7 @@ function UpdateProduct({ product }) {
         destroyOnClose
         title={<span className="text-xl">Cập nhật sản phẩm</span>}
         width={1000}
-        okText="Cập nhật"
-        okButtonProps={{
-          form: "updateProductForm",
-          htmlType: "submit",
-          className: "btn-primary",
-        }}
-        cancelText="Hủy"
+        footer={null}
         onCancel={handleCancel}
       >
         <UpdateProductForm

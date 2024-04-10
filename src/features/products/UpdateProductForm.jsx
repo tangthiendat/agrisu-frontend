@@ -11,6 +11,7 @@ import {
   Modal,
   Row,
   Select,
+  Space,
 } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper";
@@ -174,6 +175,11 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
     }
   }
 
+  function handleCancel() {
+    form.resetFields();
+    setIsOpenModal(false);
+  }
+
   return (
     <>
       {contextHolder}
@@ -233,6 +239,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
             </Form.Item>
           </Col>
         </Row>
+
         <Row className="mt-3">
           <Col span={24}>
             <Collapse
@@ -370,6 +377,14 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
             ></Collapse>
           </Col>
         </Row>
+        <Form.Item className="mt-5 text-right">
+          <Space>
+            <Button onClick={handleCancel}>Hủy</Button>
+            <Button type="primary" htmlType="submit" className="btn-primary ">
+              {isUpdateSession ? "Cập nhật" : "Thêm"}
+            </Button>
+          </Space>
+        </Form.Item>
       </Form>
     </>
   );

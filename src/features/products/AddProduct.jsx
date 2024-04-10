@@ -32,14 +32,8 @@ function AddProduct() {
         open={isOpenModal}
         title={<span className="text-xl">Thêm sản phẩm</span>}
         width={1000}
-        okText="Thêm"
+        footer={null}
         destroyOnClose
-        okButtonProps={{
-          form: "updateProductForm",
-          htmlType: "submit",
-          className: "btn-primary",
-        }}
-        cancelText="Hủy"
         onCancel={handleCancel}
       >
         <UpdateProductForm
