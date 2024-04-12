@@ -19,14 +19,19 @@ function CreateOrderForm({ form }) {
   useEffect(() => {
     form.setFieldsValue({
       totalValue: totalOrderValue,
+      customerNextDebt:
+        customer && orderDetails.length > 0
+          ? customer.receivable + totalOrderValue
+          : customer?.receivable || 0,
     });
-  }, [totalOrderValue, form]);
+  }, [totalOrderValue, form, customer, orderDetails.length]);
 
   function handleSaleFormChange(e) {
     if (e.target.value === "retail") {
       setIsPaid(true);
     } else {
       setIsPaid(false);
+      setChange(0);
       form.setFieldsValue({ customerPayment: 0 });
     }
   }
@@ -73,11 +78,13 @@ function CreateOrderForm({ form }) {
     submittedOrder.customer = customer;
     submittedOrder.orderDetails = orderDetails;
     submittedOrder.isPaid = isPaid;
+    if (isPaid) {
+      submittedOrder.customerNextDebt = customer.receivable;
+    }
     form.resetFields();
     dispatch(clearOrder());
     setChange(0);
     createOrder(submittedOrder);
-    console.log(submittedOrder);
   }
 
   return (
@@ -169,15 +176,15 @@ function CreateOrderForm({ form }) {
           />
         </Form.Item>
 
-        <Form.Item hidden={isPaid} label="Nợ sau" colon={false}>
+        <Form.Item
+          hidden={isPaid}
+          label="Nợ sau"
+          name="customerNextDebt"
+          colon={false}
+        >
           <InputNumber
             className="w-full"
             readOnly={true}
-            value={
-              customer && orderDetails.length > 0
-                ? customer.receivable + totalOrderValue
-                : 0
-            }
             formatter={formatCurrency}
             parser={parseCurrency}
             min={0}
