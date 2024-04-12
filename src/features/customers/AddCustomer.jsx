@@ -29,7 +29,7 @@ function AddCustomer() {
       </Button>
       <Modal
         open={isOpenModal}
-        title="Thêm khách hàng"
+        title={<span className="text-xl">Thêm khách hàng</span>}
         width={1000}
         destroyOnClose
         footer={null}
