@@ -45,13 +45,9 @@ function CustomerTable() {
     },
     {
       title: "Tổng bán",
+      dataIndex: "totalSales",
       width: "15%",
-      render: (_, record) => {
-        const totalSales =
-          record.orders.reduce(
-            (totalSales, order) => totalSales + order.totalValue,
-            0,
-          ) || 0;
+      render: (totalSales) => {
         return formatCurrency(totalSales);
       },
     },
