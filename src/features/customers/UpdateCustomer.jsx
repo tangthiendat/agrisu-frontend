@@ -3,6 +3,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { Tooltip, Form, Modal, Tabs } from "antd";
 import { useState } from "react";
 import UpdateCustomerForm from "./UpdateCustomerForm";
+import CustomerHistory from "./CustomerHistory";
 
 function UpdateCustomer({ customer }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -31,8 +32,8 @@ function UpdateCustomer({ customer }) {
     },
     {
       key: "2",
-      label: "Công nợ",
-      children: <div>History</div>,
+      label: "Lịch sử",
+      children: <CustomerHistory customer={customer} />,
     },
   ];
 
