@@ -36,6 +36,11 @@ class CustomerService {
   async count() {
     return (await axios.get(`${BASE_API_URL}/customers/count`)).data;
   }
+
+  async getHistory(customerId) {
+    return (await axios.get(`${BASE_API_URL}/customers/${customerId}/history`))
+      .data;
+  }
 }
 
 export const customerService = new CustomerService();

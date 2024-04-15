@@ -91,7 +91,7 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
         <Space>
           <Button onClick={handleCancel}>Hủy</Button>
           <Button type="primary" className="btn-primary" htmlType="submit">
-            Thêm
+            Tạo phiếu thu
           </Button>
         </Space>
       </Form.Item>

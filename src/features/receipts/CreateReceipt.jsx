@@ -20,8 +20,9 @@ function CreateReceipt({ customer }) {
   return (
     <>
       <Button type="primary" className="btn-primary" onClick={showModal}>
-        Tạo phiếu thu
+        Thanh toán
       </Button>
+
       <Modal
         open={isOpenModal}
         title={<span className="text-xl">Lập phiếu thu</span>}

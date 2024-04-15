@@ -1,13 +1,19 @@
 /* eslint-disable react/prop-types */
+import { Button, Space } from "antd";
 import CreateReceipt from "../receipts/CreateReceipt";
+import CustomerHistoryTable from "./CustomerHistoryTable";
 
-function CustomerHistory({ customer }) {
+function CustomerHistory({ customer, onCancel }) {
   return (
-    <div>
+    <>
+      <CustomerHistoryTable customerId={customer.customerId} />
       <div className="text-right">
-        <CreateReceipt customer={customer} />
+        <Space>
+          <Button onClick={onCancel}>Đóng</Button>
+          <CreateReceipt customer={customer} />
+        </Space>
       </div>
-    </div>
+    </>
   );
 }
 

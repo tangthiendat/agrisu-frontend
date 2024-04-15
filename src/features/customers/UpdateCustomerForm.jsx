@@ -6,7 +6,12 @@ import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { useCreateCustomer } from "./hooks/useCreateCustomer";
 import { useUpdateCustomer } from "./hooks/useUpdateCustomer";
 
-function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
+function UpdateCustomerForm({
+  form,
+  setIsOpenModal,
+  customerToUpdate = {},
+  onCancel,
+}) {
   const { createCustomer } = useCreateCustomer();
   const { updateCustomer } = useUpdateCustomer();
   const isUpdateSession = Boolean(customerToUpdate.customerId);
@@ -40,11 +45,6 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
     } else {
       createCustomer(submittedCustomer);
     }
-  }
-
-  function handleCancel() {
-    form.resetFields();
-    setIsOpenModal(false);
   }
 
   return (
@@ -115,7 +115,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
       </Row>
       <Form.Item className="text-right">
         <Space>
-          <Button onClick={handleCancel}>Hủy</Button>
+          <Button onClick={onCancel}>Hủy</Button>
           <Button type="primary" className="btn-primary" htmlType="submit">
             Thêm
           </Button>
