@@ -65,16 +65,6 @@ function CreateOrderForm({ form }) {
       });
       return;
     }
-    if (isPaid && submittedOrder.customerPayment < totalOrderValue) {
-      modal.error({
-        title: "Không thể tạo hóa đơn",
-        content: "Số tiền khách hàng trả không hợp lệ.",
-        okButtonProps: {
-          className: "btn-primary",
-        },
-      });
-      return;
-    }
     submittedOrder.customer = customer;
     submittedOrder.orderDetails = orderDetails;
     submittedOrder.isPaid = isPaid;
@@ -96,7 +86,7 @@ function CreateOrderForm({ form }) {
         onFinish={handleFinish}
         initialValues={{ customerPayment: 0 }}
         labelCol={{ span: 7 }}
-        wrapperCol={{ span: 11, offset: 6 }}
+        wrapperCol={{ span: 12, offset: 5 }}
       >
         <Form.Item
           label="Tổng tiền"
@@ -136,6 +126,16 @@ function CreateOrderForm({ form }) {
           hidden={!isPaid}
           label="Thanh toán"
           name="customerPayment"
+          rules={[
+            {
+              validator: (_, value) => {
+                if (isPaid && value < totalOrderValue) {
+                  return Promise.reject("Số tiền thanh toán không hợp lệ");
+                }
+                return Promise.resolve();
+              },
+            },
+          ]}
           colon={false}
         >
           <InputNumber
