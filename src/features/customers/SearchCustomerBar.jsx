@@ -15,7 +15,6 @@ function SearchCustomerBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedCustomers } = useSearchCustomers(searchQuery);
   const dispatch = useDispatch();
-  //   const setCustomer = useOrderStore((state) => state.setCustomer);
 
   function handleSearch(value) {
     setSearchQuery(value);
@@ -67,7 +66,7 @@ function SearchCustomerBar() {
       </Tooltip>
       <Modal
         open={isOpenModal}
-        title="Thêm khách hàng"
+        title={<span className="text-xl">Thêm khách hàng</span>}
         width={1000}
         okText="Thêm"
         destroyOnClose

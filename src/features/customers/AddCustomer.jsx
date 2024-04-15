@@ -29,16 +29,10 @@ function AddCustomer() {
       </Button>
       <Modal
         open={isOpenModal}
-        title="Thêm khách hàng"
+        title={<span className="text-xl">Thêm khách hàng</span>}
         width={1000}
-        okText="Thêm"
         destroyOnClose
-        okButtonProps={{
-          form: "updateCustomerForm",
-          htmlType: "submit",
-          className: "btn-primary",
-        }}
-        cancelText="Hủy"
+        footer={null}
         onCancel={handleCancel}
       >
         <UpdateCustomerForm

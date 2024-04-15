@@ -16,18 +16,6 @@ function UpdateProduct({ product }) {
     setIsOpenModal(false);
   }
 
-  //   function handleFinish(submittedProduct) {
-  //     updateProduct(
-  //       { id: product.productId, product: submittedProduct },
-  //       {
-  //         onSettled: () => {
-  //           updateProductForm.resetFields();
-  //           setIsOpenModal(false);
-  //         },
-  //       },
-  //     );
-  //   }
-
   return (
     <>
       <Tooltip title="Chỉnh sửa" placement="bottom">
@@ -40,15 +28,9 @@ function UpdateProduct({ product }) {
       <Modal
         open={isOpenModal}
         destroyOnClose
-        title="Cập nhật sản phẩm"
+        title={<span className="text-xl">Cập nhật sản phẩm</span>}
         width={1000}
-        okText="Cập nhật"
-        okButtonProps={{
-          form: "updateProductForm",
-          htmlType: "submit",
-          className: "btn-primary",
-        }}
-        cancelText="Hủy"
+        footer={null}
         onCancel={handleCancel}
       >
         <UpdateProductForm

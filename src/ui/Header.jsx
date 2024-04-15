@@ -54,8 +54,8 @@ const items = [
     ],
   },
   {
-    label: <NavLink to="/cash-book">Sổ quỹ</NavLink>,
-    key: "cash-book",
+    label: <NavLink to="/cash-flow">Sổ quỹ</NavLink>,
+    key: "cash-flow",
     icon: <AiOutlineTransaction />,
   },
   {

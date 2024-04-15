@@ -11,6 +11,7 @@ import {
   Modal,
   Row,
   Select,
+  Space,
 } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper";
@@ -25,6 +26,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
   const isUpdateSession = Boolean(productToUpdate.productId);
   const { updateProduct } = useUpdateProduct();
   const { createProduct } = useCreateProduct();
+  const [modal, contextHolder] = Modal.useModal();
 
   if (isUpdateSession) {
     form.setFieldsValue({
@@ -101,7 +103,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
         (productUnit) => productUnit.isDefault,
       );
       if (!hasDefaultUnit) {
-        Modal.error({
+        modal.error({
           title: "Lỗi",
           content: "Hãy chọn một đơn vị tính mặc định cho sản phẩm.",
           centered: true,
@@ -112,7 +114,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
         return;
       }
     } else {
-      Modal.error({
+      modal.error({
         title: "Lỗi",
         content: "Hãy thêm ít nhất một đơn vị tính cho sản phẩm.",
         centered: true,
@@ -145,7 +147,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
       ),
     );
     if (hasBlankField) {
-      Modal.error({
+      modal.error({
         title: "Lỗi",
         content: "Hãy điền đầy đủ thông tin cho các đơn vị tính.",
         centered: true,
@@ -173,8 +175,14 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
     }
   }
 
+  function handleCancel() {
+    form.resetFields();
+    setIsOpenModal(false);
+  }
+
   return (
     <>
+      {contextHolder}
       <Form
         form={form}
         name="updateProductForm"
@@ -231,6 +239,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
             </Form.Item>
           </Col>
         </Row>
+
         <Row className="mt-3">
           <Col span={24}>
             <Collapse
@@ -368,6 +377,14 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
             ></Collapse>
           </Col>
         </Row>
+        <Form.Item className="mt-5 text-right">
+          <Space>
+            <Button onClick={handleCancel}>Hủy</Button>
+            <Button type="primary" htmlType="submit" className="btn-primary ">
+              {isUpdateSession ? "Cập nhật" : "Thêm"}
+            </Button>
+          </Space>
+        </Form.Item>
       </Form>
     </>
   );

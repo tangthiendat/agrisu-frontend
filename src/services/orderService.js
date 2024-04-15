@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_API_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api/v1";
 
 class OrderService {
   async getOrders(page, pageSize) {
@@ -22,6 +22,10 @@ class OrderService {
 
   async count() {
     return (await axios.get(`${BASE_API_URL}/orders/count`)).data;
+  }
+  async getOrdersByCustomer(customerId) {
+    return (await axios.get(`${BASE_API_URL}/orders/customer/${customerId}`))
+      .data;
   }
 }
 

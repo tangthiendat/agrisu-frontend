@@ -14,18 +14,24 @@ function CreateOrderForm({ form }) {
   const [change, setChange] = useState(0);
   const dispatch = useDispatch();
   const { createOrder } = useCreateOrder();
+  const [modal, contextHolder] = Modal.useModal();
 
   useEffect(() => {
     form.setFieldsValue({
       totalValue: totalOrderValue,
+      customerNextDebt:
+        customer && orderDetails.length > 0
+          ? customer.receivable + totalOrderValue
+          : customer?.receivable || 0,
     });
-  }, [totalOrderValue, form]);
+  }, [totalOrderValue, form, customer, orderDetails.length]);
 
   function handleSaleFormChange(e) {
     if (e.target.value === "retail") {
       setIsPaid(true);
     } else {
       setIsPaid(false);
+      setChange(0);
       form.setFieldsValue({ customerPayment: 0 });
     }
   }
@@ -40,7 +46,7 @@ function CreateOrderForm({ form }) {
 
   function handleFinish(submittedOrder) {
     if (orderDetails.length == 0) {
-      Modal.error({
+      modal.error({
         title: "Không thể tạo hóa đơn",
         content: "Vui lòng chọn chi tiết hóa đơn.",
         okButtonProps: {
@@ -50,7 +56,7 @@ function CreateOrderForm({ form }) {
       return;
     }
     if (!customer) {
-      Modal.error({
+      modal.error({
         title: "Không thể tạo hóa đơn",
         content: "Vui lòng chọn khách hàng.",
         okButtonProps: {
@@ -59,133 +65,135 @@ function CreateOrderForm({ form }) {
       });
       return;
     }
-    if (isPaid && change <= 0) {
-      Modal.error({
-        title: "Không thể tạo hóa đơn",
-        content: "Số tiền khách hàng trả không hợp lệ.",
-        okButtonProps: {
-          className: "btn-primary",
-        },
-      });
-      return;
-    }
-
     submittedOrder.customer = customer;
     submittedOrder.orderDetails = orderDetails;
     submittedOrder.isPaid = isPaid;
-    createOrder(submittedOrder, {
-      onSuccess: () => {
-        form.resetFields();
-        dispatch(clearOrder());
-        setChange(0);
-      },
-    });
+    if (isPaid) {
+      submittedOrder.customerNextDebt = customer.receivable;
+    }
+    form.resetFields();
+    dispatch(clearOrder());
+    setChange(0);
+    createOrder(submittedOrder);
   }
 
   return (
-    <Form
-      form={form}
-      name="createOrderForm"
-      onFinish={handleFinish}
-      initialValues={{ customerPayment: 0 }}
-      labelCol={{ span: 7 }}
-      wrapperCol={{ span: 11, offset: 6 }}
-    >
-      <Form.Item
-        label="Tổng tiền"
-        name="totalValue"
-        className="w-full"
-        colon={false}
+    <>
+      {contextHolder}
+      <Form
+        form={form}
+        name="createOrderForm"
+        onFinish={handleFinish}
+        initialValues={{ customerPayment: 0 }}
+        labelCol={{ span: 7 }}
+        wrapperCol={{ span: 12, offset: 5 }}
       >
-        <InputNumber
+        <Form.Item
+          label="Tổng tiền"
+          name="totalValue"
           className="w-full"
-          readOnly={true}
-          formatter={formatCurrency}
-          parser={parseCurrency}
-          min={0}
-          max={1000000000000}
-          addonAfter="VND"
-        />
-      </Form.Item>
-      <Form.Item
-        label="Hình thức"
-        valuePropName="checked"
-        colon={false}
-        wrapperCol={{ span: 9, offset: 8 }}
-      >
-        <Radio.Group
-          optionType="button"
-          buttonStyle="solid"
-          defaultValue="retail"
-          options={[
-            { value: "retail", label: "Bán lẻ" },
-            { value: "debt", label: "Bán nợ" },
+          colon={false}
+        >
+          <InputNumber
+            className="w-full"
+            readOnly={true}
+            formatter={formatCurrency}
+            parser={parseCurrency}
+            min={0}
+            max={1000000000000}
+            addonAfter="VND"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Hình thức"
+          valuePropName="checked"
+          colon={false}
+          wrapperCol={{ span: 9, offset: 8 }}
+        >
+          <Radio.Group
+            optionType="button"
+            buttonStyle="solid"
+            defaultValue="retail"
+            options={[
+              { value: "retail", label: "Bán lẻ" },
+              { value: "debt", label: "Bán nợ" },
+            ]}
+            onChange={handleSaleFormChange}
+          />
+        </Form.Item>
+
+        <Form.Item
+          hidden={!isPaid}
+          label="Thanh toán"
+          name="customerPayment"
+          rules={[
+            {
+              validator: (_, value) => {
+                if (isPaid && value < totalOrderValue) {
+                  return Promise.reject("Số tiền thanh toán không hợp lệ");
+                }
+                return Promise.resolve();
+              },
+            },
           ]}
-          onChange={handleSaleFormChange}
-        />
-      </Form.Item>
+          colon={false}
+        >
+          <InputNumber
+            className="w-full"
+            readOnly={!isPaid}
+            formatter={formatCurrency}
+            parser={parseCurrency}
+            min={0}
+            max={1000000000000}
+            addonAfter="VND"
+            onChange={handleCustomerPaymentChange}
+          />
+        </Form.Item>
 
-      <Form.Item
-        hidden={!isPaid}
-        label="Thanh toán"
-        name="customerPayment"
-        colon={false}
-      >
-        <InputNumber
-          className="w-full"
-          readOnly={!isPaid}
-          formatter={formatCurrency}
-          parser={parseCurrency}
-          min={0}
-          max={1000000000000}
-          addonAfter="VND"
-          onChange={handleCustomerPaymentChange}
-        />
-      </Form.Item>
+        <Form.Item hidden={!isPaid} label="Còn lại" colon={false}>
+          <InputNumber
+            className="w-full"
+            readOnly={true}
+            value={change}
+            formatter={formatCurrency}
+            parser={parseCurrency}
+            min={0}
+            max={1000000000000}
+            addonAfter="VND"
+          />
+        </Form.Item>
 
-      <Form.Item hidden={!isPaid} label="Còn lại" colon={false}>
-        <InputNumber
-          className="w-full"
-          readOnly={true}
-          value={change}
-          formatter={formatCurrency}
-          parser={parseCurrency}
-          min={0}
-          max={1000000000000}
-          addonAfter="VND"
-        />
-      </Form.Item>
+        <Form.Item hidden={isPaid} label="Nợ cũ" colon={false}>
+          <InputNumber
+            className="w-full"
+            readOnly={true}
+            value={customer?.receivable || 0}
+            formatter={formatCurrency}
+            parser={parseCurrency}
+            min={0}
+            max={1000000000000}
+            addonAfter="VND"
+          />
+        </Form.Item>
 
-      <Form.Item hidden={isPaid} label="Nợ cũ" colon={false}>
-        <InputNumber
-          className="w-full"
-          readOnly={true}
-          value={customer?.receivable || 0}
-          formatter={formatCurrency}
-          parser={parseCurrency}
-          min={0}
-          max={1000000000000}
-          addonAfter="VND"
-        />
-      </Form.Item>
-
-      <Form.Item hidden={isPaid} label="Nợ sau" colon={false}>
-        <InputNumber
-          className="w-full"
-          readOnly={true}
-          value={
-            customer && orderDetails.length > 0
-              ? customer.receivable + totalOrderValue
-              : 0
-          }
-          formatter={formatCurrency}
-          parser={parseCurrency}
-          min={0}
-          max={1000000000000}
-          addonAfter="VND"
-        />
-      </Form.Item>
-    </Form>
+        <Form.Item
+          hidden={isPaid}
+          label="Nợ sau"
+          name="customerNextDebt"
+          colon={false}
+        >
+          <InputNumber
+            className="w-full"
+            readOnly={true}
+            formatter={formatCurrency}
+            parser={parseCurrency}
+            min={0}
+            max={1000000000000}
+            addonAfter="VND"
+          />
+        </Form.Item>
+      </Form>
+    </>
   );
 }
 

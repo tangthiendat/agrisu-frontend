@@ -6,13 +6,9 @@ import OrderDetailsTable from "../features/orders/OrderDetailsTable";
 import SearchCustomerBar from "../features/customers/SearchCustomerBar";
 import CreateOrderForm from "../features/orders/CreateOrderForm";
 import { clearOrderDetails } from "../features/orders/orderSlice";
-import { useCreateOrder } from "../features/orders/hooks/useCreateOrder";
 
 function Retail() {
-  //   const clearCart = useOrderStore((state) => state.clearCart);
   const dispatch = useDispatch();
-  const { isCreating } = useCreateOrder();
-
   const [createOrderForm] = Form.useForm();
   return (
     <div className="flex items-center justify-between">
@@ -40,7 +36,6 @@ function Retail() {
           type="primary"
           htmlType="submit"
           form="createOrderForm"
-          loading={isCreating}
           block
         >
           THANH TOÁN

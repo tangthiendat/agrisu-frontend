@@ -8,7 +8,7 @@ import Suppliers from "../pages/Suppliers";
 import Customers from "../pages/Customers";
 import Retail from "../pages/Retail";
 import Invoices from "../pages/Invoices";
-import CashBook from "../pages/CashBook";
+import CashFlow from "../pages/CashFlow";
 import GoodReceipt from "../pages/GoodReceipt";
 
 const router = createBrowserRouter([
@@ -58,9 +58,9 @@ const router = createBrowserRouter([
         element: <GoodReceipt />,
       },
       {
-        path: "/cash-book",
+        path: "/cash-flow",
         errorElement: <Error />,
-        element: <CashBook />,
+        element: <CashFlow />,
       },
     ],
   },

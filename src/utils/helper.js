@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 export function roundUp(value) {
   return Math.ceil(value);
 }
@@ -12,4 +13,8 @@ export function formatCurrency(value) {
 
 export function parseCurrency(value) {
   return value.replace(/\$\s?|(,*)/g, "");
+}
+
+export function formatDateTime(value) {
+  return format(new Date(value), "dd/MM/yyyy HH:mm");
 }

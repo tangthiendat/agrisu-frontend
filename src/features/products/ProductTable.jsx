@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Select, Space, Table } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 
-// import Spinner from "../../ui/Spinner";
 import { useProducts } from "./hooks/useProducts";
 import { useCountProducts } from "./hooks/useCountProducts";
 import UpdateProduct from "./UpdateProduct";
