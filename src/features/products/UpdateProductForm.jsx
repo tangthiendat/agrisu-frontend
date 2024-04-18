@@ -32,9 +32,6 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
     form.setFieldsValue({
       productId: productToUpdate.productId,
       productName: productToUpdate.productName,
-      productType: {
-        productTypeId: productToUpdate.productType.productTypeId,
-      },
       stockQuantity: productToUpdate.stockQuantity,
       productUnits: productToUpdate.productUnits.map((productUnit) => {
         return {
@@ -125,12 +122,6 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
       return;
     }
 
-    //Update the submitted product with product type and units
-    submittedProduct.productType = productTypes.find(
-      (productTypes) =>
-        productTypes.productTypeId ===
-        submittedProduct.productType.productTypeId,
-    );
     submittedProduct.productUnits = submittedProduct.productUnits.map(
       (productUnit) => {
         return {
@@ -210,26 +201,6 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item
-              label="Loại sản phẩm"
-              name={["productType", "productTypeId"]}
-              rules={[
-                {
-                  required: true,
-                  message: "Hãy chọn loại sản phẩm.",
-                },
-              ]}
-            >
-              <Select
-                allowClear
-                style={{ width: "60%" }}
-                options={productTypes?.map((productType) => ({
-                  key: productType.productTypeId,
-                  value: productType.productTypeId,
-                  label: productType.productTypeName,
-                }))}
-              />
-            </Form.Item>
             <Form.Item
               label="Tồn kho"
               name="stockQuantity"

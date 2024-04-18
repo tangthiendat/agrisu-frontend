@@ -54,7 +54,7 @@ function ProductTable() {
       title: "Đơn vị tính",
       dataIndex: "productUnits",
       key: "productUnits",
-      width: "10%",
+      width: "15%",
       render: (productUnits, record) => {
         return (
           <Select
@@ -77,15 +77,6 @@ function ProductTable() {
     },
 
     {
-      title: "Loại sản phẩm",
-      dataIndex: "productType",
-      key: "productType",
-      width: "20%",
-      render: (productType) => {
-        return productType.productTypeName;
-      },
-    },
-    {
       title: "Giá bán",
       dataIndex: "displayedProductUnit",
       key: "sellingPrice",
@@ -98,7 +89,7 @@ function ProductTable() {
       title: "Số lượng tồn",
       dataIndex: "stockQuantity",
       key: "stockQuantity",
-      width: "10%",
+      width: "15%",
       render: (stockQuantity, record) => {
         const defaultProductUnit = record.productUnits.find(
           (productUnit) => productUnit.isDefault,
