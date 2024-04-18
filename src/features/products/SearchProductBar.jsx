@@ -1,15 +1,12 @@
 import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { AutoComplete, Modal, Space, Tooltip, Button, Form } from "antd";
+import { AutoComplete, Modal } from "antd";
 import { debounce } from "lodash";
-import { PlusOutlined } from "@ant-design/icons";
 import { useSearchProducts } from "./hooks/useSearchProducts";
 import { formatCurrency } from "../../utils/helper";
-import UpdateProductForm from "./UpdateProductForm";
 import { addItem } from "../orders/orderSlice";
 
 function SearchProductBar() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedProducts } = useSearchProducts(searchQuery);
@@ -17,7 +14,6 @@ function SearchProductBar() {
 
   const orderDetails = useSelector((state) => state.order.orderDetails);
   const dispatch = useDispatch();
-  const [updateProductForm] = Form.useForm();
 
   function handleSearch(value) {
     setSearchQuery(value);
@@ -94,55 +90,19 @@ function SearchProductBar() {
     setSearchQuery("");
   }
 
-  function showModal() {
-    setIsOpenModal(true);
-  }
-
-  function handleCancel() {
-    updateProductForm.resetFields();
-    setIsOpenModal(false);
-  }
-
   return (
     <>
       {contextHolder}
-      <Space.Compact className="w-[40%]">
-        <AutoComplete
-          value={inputValue}
-          className="w-full"
-          placeholder="Tìm sản phẩm..."
-          options={productOptions}
-          onSelect={handleSelect}
-          allowClear
-          onChange={setInputValue}
-          onSearch={debouncedHandleSearch}
-        />
-        <Tooltip title="Thêm sản phẩm" placement="bottom">
-          <Button
-            style={{ borderRadius: "0 0.375rem 0.375rem 0" }}
-            icon={<PlusOutlined onClick={showModal} />}
-          />
-        </Tooltip>
-        <Modal
-          open={isOpenModal}
-          title={<span className="text-xl">Thêm sản phẩm</span>}
-          width={1000}
-          okText="Thêm"
-          destroyOnClose
-          okButtonProps={{
-            form: "updateProductForm",
-            htmlType: "submit",
-            className: "btn-primary",
-          }}
-          cancelText="Hủy"
-          onCancel={handleCancel}
-        >
-          <UpdateProductForm
-            form={updateProductForm}
-            setIsOpenModal={setIsOpenModal}
-          />
-        </Modal>
-      </Space.Compact>
+      <AutoComplete
+        value={inputValue}
+        className="w-full"
+        placeholder="Tìm sản phẩm..."
+        options={productOptions}
+        onSelect={handleSelect}
+        allowClear
+        onChange={setInputValue}
+        onSearch={debouncedHandleSearch}
+      />
     </>
   );
 }
