@@ -1,19 +1,14 @@
+/* eslint-disable react/prop-types */
 import { useCallback, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AutoComplete, Modal } from "antd";
+import { AutoComplete } from "antd";
 import { debounce } from "lodash";
 import { useSearchProducts } from "./hooks/useSearchProducts";
 import { formatCurrency } from "../../utils/helper";
-import { addItem } from "../orders/orderSlice";
 
-function SearchProductBar() {
+function SearchProductBar({ onSelectProduct }) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedProducts } = useSearchProducts(searchQuery);
-  const [modal, contextHolder] = Modal.useModal();
-
-  const orderDetails = useSelector((state) => state.order.orderDetails);
-  const dispatch = useDispatch();
 
   function handleSearch(value) {
     setSearchQuery(value);
@@ -51,59 +46,21 @@ function SearchProductBar() {
     const selectedProduct = searchedProducts.find(
       (product) => product.productId === value,
     );
-
-    //check if the selected product is in cart
-    const isProductInCart = orderDetails.some(
-      (cartItem) => cartItem.product.productId === selectedProduct.productId,
-    );
-    if (isProductInCart) {
-      modal.error({
-        title: "Sản phẩm đã có trong giỏ hàng",
-        content: "Vui lòng chọn sản phẩm khác.",
-        okButtonProps: {
-          className: "btn-primary",
-        },
-      });
-      setSearchQuery("");
-      return;
-    }
-
-    if (selectedProduct.stockQuantity === 0) {
-      modal.error({
-        title: "Sản phẩm đã hết hàng",
-        content: "Vui lòng chọn sản phẩm khác.",
-        okButtonProps: {
-          className: "btn-primary",
-        },
-      });
-      setSearchQuery("");
-      return;
-    }
-    dispatch(
-      addItem({
-        product: selectedProduct,
-        quantity: 1,
-        unit: selectedProduct.displayedProductUnit.unit,
-        unitPrice: selectedProduct.displayedProductUnit.sellingPrice,
-      }),
-    );
+    onSelectProduct(selectedProduct);
     setSearchQuery("");
   }
 
   return (
-    <>
-      {contextHolder}
-      <AutoComplete
-        value={inputValue}
-        className="w-full"
-        placeholder="Tìm sản phẩm..."
-        options={productOptions}
-        onSelect={handleSelect}
-        allowClear
-        onChange={setInputValue}
-        onSearch={debouncedHandleSearch}
-      />
-    </>
+    <AutoComplete
+      value={inputValue}
+      className="w-full"
+      placeholder="Tìm sản phẩm..."
+      options={productOptions}
+      onSelect={handleSelect}
+      allowClear
+      onChange={setInputValue}
+      onSearch={debouncedHandleSearch}
+    />
   );
 }
 
