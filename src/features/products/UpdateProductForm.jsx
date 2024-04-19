@@ -20,19 +20,22 @@ import { useUpdateProduct } from "./hooks/useUpdateProduct";
 import { useCreateProduct } from "./hooks/useCreateProduct";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedProduct } from "./productSlice";
+import { useEffect } from "react";
 
 function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
   const { units } = useUnits();
   const isUpdateSession = Boolean(productToUpdate.productId);
-  const { updateProduct } = useUpdateProduct();
-  const { createProduct } = useCreateProduct();
+  const { updateProduct, isUpdating } = useUpdateProduct();
+  const { createProduct, isCreating } = useCreateProduct();
   const [modal, contextHolder] = Modal.useModal();
   const dispatch = useDispatch();
   const selectedProduct = useSelector((state) => state.product.selectedProduct);
 
-  if (isUpdateSession) {
-    form.setFieldsValue(productToUpdate);
-  }
+  useEffect(() => {
+    if (isUpdateSession) {
+      form.setFieldsValue(productToUpdate);
+    }
+  }, [form, isUpdateSession, productToUpdate]);
 
   function preventSubmission(e) {
     if (e.key === "Enter") {
@@ -352,7 +355,12 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
         <Form.Item className="mt-5 text-right">
           <Space>
             <Button onClick={handleCancel}>Hủy</Button>
-            <Button type="primary" htmlType="submit" className="btn-primary ">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="btn-primary"
+              loading={isCreating || isUpdating}
+            >
               {isUpdateSession ? "Cập nhật" : "Thêm"}
             </Button>
           </Space>
