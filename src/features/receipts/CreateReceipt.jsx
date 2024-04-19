@@ -9,6 +9,15 @@ import { useState } from "react";
 function CreateReceipt({ customer }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [createReceiptForm] = Form.useForm();
+
+  if (!customer) {
+    return (
+      <Button type="primary" className="btn-primary" disabled>
+        Thanh toán
+      </Button>
+    );
+  }
+
   function showModal() {
     setIsOpenModal(true);
   }

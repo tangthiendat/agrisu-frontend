@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 export function useCreateReceipt() {
   const queryClient = useQueryClient();
-  const { mutate: createReceipt } = useMutation({
+  const { mutate: createReceipt, isPending: isCreating } = useMutation({
     mutationFn: receiptService.create,
     onSuccess: () => {
       toast.success("Tạo phiếu thu thành công");
@@ -14,5 +14,5 @@ export function useCreateReceipt() {
       toast.error("Có lỗi xảy ra khi tạo phiếu thu");
     },
   });
-  return { createReceipt };
+  return { createReceipt, isCreating };
 }

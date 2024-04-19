@@ -4,7 +4,7 @@ import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { useCreateReceipt } from "./hooks/useCreateReceipt";
 
 function CreateReceiptForm({ form, customer, setIsOpenModal }) {
-  const { createReceipt } = useCreateReceipt();
+  const { createReceipt, isCreating } = useCreateReceipt();
 
   function handlePaidAmountChange(paidAmount) {
     const customerNextDebt = customer.receivable - paidAmount;
@@ -18,10 +18,10 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
 
   function handleFinish(submittedReceipt) {
     submittedReceipt.customer = customer;
-    setIsOpenModal(false);
     createReceipt(submittedReceipt, {
-      onSettled: () => {
+      onSuccess: () => {
         form.resetFields();
+        setIsOpenModal(false);
       },
     });
   }
@@ -90,7 +90,12 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
       <Form.Item className="text-right">
         <Space>
           <Button onClick={handleCancel}>Hủy</Button>
-          <Button type="primary" className="btn-primary" htmlType="submit">
+          <Button
+            type="primary"
+            className="btn-primary"
+            htmlType="submit"
+            loading={isCreating}
+          >
             Tạo phiếu thu
           </Button>
         </Space>
