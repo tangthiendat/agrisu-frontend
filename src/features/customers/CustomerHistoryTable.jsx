@@ -28,7 +28,11 @@ function CustomerHistoryTable({ customerId }) {
       title: "Giá trị",
       dataIndex: "value",
       key: "value",
-      render: (value) => formatCurrency(value),
+      render: (value) => (
+        <span className={`${value > 0 ? "text-green-500" : "text-red-500"}`}>
+          {formatCurrency(value)}
+        </span>
+      ),
     },
     {
       title: "Dư nợ khách hàng",
@@ -48,7 +52,7 @@ function CustomerHistoryTable({ customerId }) {
         indicator: <Spinner />,
         spinning: isLoading,
       }}
-      scroll={{ y: 500 }}
+      scroll={{ y: 300 }}
     />
   );
 }

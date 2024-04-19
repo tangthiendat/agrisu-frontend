@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Space, Table } from "antd";
 import UpdateCustomer from "./UpdateCustomer";
 import DeleteCustomer from "./DeleteCustomer";
@@ -14,6 +15,9 @@ function CustomerTable() {
     pagination.pageSize,
   );
   const { customersNum } = useCountCustomers();
+  const selectedCustomer = useSelector(
+    (state) => state.customer.selectedCustomer,
+  );
   const columns = [
     {
       title: "Mã khách hàng",
@@ -66,7 +70,7 @@ function CustomerTable() {
     <Table
       rowKey={(record) => record.customerId}
       columns={columns}
-      dataSource={customers}
+      dataSource={selectedCustomer.length > 0 ? selectedCustomer : customers}
       pagination={{
         current: pagination.current,
         pageSize: pagination.pageSize,

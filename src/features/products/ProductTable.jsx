@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Select, Space, Table } from "antd";
@@ -8,6 +9,7 @@ import UpdateProduct from "./UpdateProduct";
 import DeleteProduct from "./DeleteProduct";
 import Spinner from "../../ui/Spinner";
 import { formatCurrency } from "../../utils/helper";
+import { useSelector } from "react-redux";
 
 function ProductTable() {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -17,7 +19,7 @@ function ProductTable() {
     pagination.pageSize,
   );
   const [productsDataSource, setProductsDataSource] = useState(products);
-
+  const selectedProduct = useSelector((state) => state.product.selectedProduct);
   useEffect(() => {
     setProductsDataSource(products);
   }, [products]);
@@ -54,7 +56,7 @@ function ProductTable() {
       title: "Đơn vị tính",
       dataIndex: "productUnits",
       key: "productUnits",
-      width: "10%",
+      width: "15%",
       render: (productUnits, record) => {
         return (
           <Select
@@ -77,15 +79,6 @@ function ProductTable() {
     },
 
     {
-      title: "Loại sản phẩm",
-      dataIndex: "productType",
-      key: "productType",
-      width: "20%",
-      render: (productType) => {
-        return productType.productTypeName;
-      },
-    },
-    {
       title: "Giá bán",
       dataIndex: "displayedProductUnit",
       key: "sellingPrice",
@@ -98,7 +91,7 @@ function ProductTable() {
       title: "Số lượng tồn",
       dataIndex: "stockQuantity",
       key: "stockQuantity",
-      width: "10%",
+      width: "15%",
       render: (stockQuantity, record) => {
         const defaultProductUnit = record.productUnits.find(
           (productUnit) => productUnit.isDefault,
@@ -129,7 +122,9 @@ function ProductTable() {
   return (
     <Table
       rowKey={(record) => record.productId}
-      dataSource={productsDataSource}
+      dataSource={
+        selectedProduct.length > 0 ? selectedProduct : productsDataSource
+      }
       columns={columns}
       pagination={{
         current: pagination.current,

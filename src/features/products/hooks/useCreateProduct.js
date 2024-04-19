@@ -4,7 +4,7 @@ import { productService } from "../../../services/productService";
 
 export function useCreateProduct() {
   const queryClient = useQueryClient();
-  const { mutate: createProduct } = useMutation({
+  const { mutate: createProduct, isPending: isCreating } = useMutation({
     mutationFn: productService.create,
     onSuccess: () => {
       toast.success("Thêm sản phẩm thành công");
@@ -15,5 +15,5 @@ export function useCreateProduct() {
     },
   });
 
-  return { createProduct };
+  return { createProduct, isCreating };
 }
