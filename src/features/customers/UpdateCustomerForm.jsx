@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Col, Form, Input, InputNumber, Row, Space, Button } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { useCreateCustomer } from "./hooks/useCreateCustomer";
 import { useUpdateCustomer } from "./hooks/useUpdateCustomer";
+import { setSelectedCustomer } from "./customerSlice";
 
 function UpdateCustomerForm({
   form,
@@ -12,19 +15,19 @@ function UpdateCustomerForm({
   customerToUpdate = {},
   onCancel,
 }) {
-  const { createCustomer } = useCreateCustomer();
-  const { updateCustomer } = useUpdateCustomer();
+  const { createCustomer, isCreating } = useCreateCustomer();
+  const { updateCustomer, isUpdating } = useUpdateCustomer();
   const isUpdateSession = Boolean(customerToUpdate.customerId);
+  const selectedCustomer = useSelector(
+    (state) => state.customer.selectedCustomer,
+  );
+  const dispatch = useDispatch();
 
-  if (isUpdateSession) {
-    form.setFieldsValue({
-      customerId: customerToUpdate.customerId,
-      customerName: customerToUpdate.customerName,
-      phoneNumber: customerToUpdate.phoneNumber,
-      address: customerToUpdate.address,
-      receivable: customerToUpdate.receivable,
-    });
-  }
+  useEffect(() => {
+    if (isUpdateSession) {
+      form.setFieldsValue(customerToUpdate);
+    }
+  }, [customerToUpdate, form, isUpdateSession]);
 
   function preventSubmission(e) {
     if (e.key === "Enter") {
@@ -33,16 +36,29 @@ function UpdateCustomerForm({
   }
 
   function handleFinish(submittedCustomer) {
-    setIsOpenModal(false);
-    form.resetFields();
-
     if (isUpdateSession) {
-      updateCustomer({
-        id: customerToUpdate.customerId,
-        customer: submittedCustomer,
-      });
+      updateCustomer(
+        {
+          id: customerToUpdate.customerId,
+          customer: submittedCustomer,
+        },
+        {
+          onSuccess: () => {
+            submittedCustomer.totalSales = customerToUpdate.totalSales;
+            if (selectedCustomer.length > 0) {
+              dispatch(setSelectedCustomer([submittedCustomer]));
+            }
+            setIsOpenModal(false);
+          },
+        },
+      );
     } else {
-      createCustomer(submittedCustomer);
+      createCustomer(submittedCustomer, {
+        onSuccess: () => {
+          form.resetFields();
+          setIsOpenModal(false);
+        },
+      });
     }
   }
 
@@ -115,7 +131,12 @@ function UpdateCustomerForm({
       <Form.Item className="text-right">
         <Space>
           <Button onClick={onCancel}>Hủy</Button>
-          <Button type="primary" className="btn-primary" htmlType="submit">
+          <Button
+            type="primary"
+            className="btn-primary"
+            htmlType="submit"
+            loading={isCreating || isUpdating}
+          >
             Thêm
           </Button>
         </Space>

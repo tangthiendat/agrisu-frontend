@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 export function useUpdateCustomer() {
   const queryClient = useQueryClient();
-  const { mutate: updateCustomer } = useMutation({
+  const { mutate: updateCustomer, isPending: isUpdating } = useMutation({
     mutationFn: ({ id, customer }) => customerService.update(id, customer),
     onSuccess: () => {
       toast.success("Cập nhật khách hàng thành công");
@@ -14,5 +14,5 @@ export function useUpdateCustomer() {
       toast.error("Có lỗi xảy ra khi cập nhật khách hàng");
     },
   });
-  return { updateCustomer };
+  return { updateCustomer, isUpdating };
 }
