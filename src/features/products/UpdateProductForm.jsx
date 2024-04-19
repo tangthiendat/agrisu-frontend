@@ -16,33 +16,22 @@ import {
 import { CloseOutlined } from "@ant-design/icons";
 import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper";
 import { useUnits } from "./hooks/useUnits";
-import { useProductTypes } from "./hooks/useProductTypes";
 import { useUpdateProduct } from "./hooks/useUpdateProduct";
 import { useCreateProduct } from "./hooks/useCreateProduct";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedProduct } from "./productSlice";
 
 function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
   const { units } = useUnits();
-  const { productTypes } = useProductTypes();
   const isUpdateSession = Boolean(productToUpdate.productId);
   const { updateProduct } = useUpdateProduct();
   const { createProduct } = useCreateProduct();
   const [modal, contextHolder] = Modal.useModal();
+  const dispatch = useDispatch();
+  const selectedProduct = useSelector((state) => state.product.selectedProduct);
 
   if (isUpdateSession) {
-    form.setFieldsValue({
-      productId: productToUpdate.productId,
-      productName: productToUpdate.productName,
-      stockQuantity: productToUpdate.stockQuantity,
-      productUnits: productToUpdate.productUnits.map((productUnit) => {
-        return {
-          ...productUnit,
-          unit: {
-            unitId: productUnit.unit.unitId,
-          },
-          isDefault: productUnit.isDefault,
-        };
-      }),
-    });
+    form.setFieldsValue(productToUpdate);
   }
 
   function preventSubmission(e) {
@@ -101,7 +90,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
       );
       if (!hasDefaultUnit) {
         modal.error({
-          title: "Lỗi",
+          title: "Thiếu thông tin",
           content: "Hãy chọn một đơn vị tính mặc định cho sản phẩm.",
           centered: true,
           okButtonProps: {
@@ -112,7 +101,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
       }
     } else {
       modal.error({
-        title: "Lỗi",
+        title: "Thiếu thông tin",
         content: "Hãy thêm ít nhất một đơn vị tính cho sản phẩm.",
         centered: true,
         okButtonProps: {
@@ -131,6 +120,9 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
         };
       },
     );
+    submittedProduct.displayedProductUnit = submittedProduct.productUnits.find(
+      (productUnit) => productUnit.isDefault,
+    );
 
     const hasBlankField = submittedProduct.productUnits.some((productUnit) =>
       Object.keys(productUnit).some(
@@ -139,7 +131,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
     );
     if (hasBlankField) {
       modal.error({
-        title: "Lỗi",
+        title: "Thiếu thông tin",
         content: "Hãy điền đầy đủ thông tin cho các đơn vị tính.",
         centered: true,
         okButtonProps: {
@@ -149,18 +141,27 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
       return;
     }
 
-    setIsOpenModal(false);
-
     //Handle update or create product based on the session
     if (isUpdateSession) {
-      updateProduct({
-        id: productToUpdate.productId,
-        product: submittedProduct,
-      });
+      updateProduct(
+        {
+          id: productToUpdate.productId,
+          product: submittedProduct,
+        },
+        {
+          onSuccess: () => {
+            if (selectedProduct.length > 0) {
+              dispatch(setSelectedProduct([submittedProduct]));
+            }
+            setIsOpenModal(false);
+          },
+        },
+      );
     } else {
       createProduct(submittedProduct, {
-        onSettled: () => {
+        onSuccess: () => {
           form.resetFields();
+          setIsOpenModal(false);
         },
       });
     }

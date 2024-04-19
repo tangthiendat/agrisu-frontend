@@ -37,7 +37,7 @@ function SearchOrderDetail() {
       );
       if (isProductInCart) {
         modal.error({
-          title: "Sản phẩm đã có trong giỏ hàng",
+          title: "Sản phẩm đã tồn tại trong giỏ hàng",
           content: "Vui lòng chọn sản phẩm khác.",
           okButtonProps: {
             className: "btn-primary",

@@ -37,7 +37,6 @@ function UpdateCustomerForm({
     form.resetFields();
 
     if (isUpdateSession) {
-      console.log("submittedCustomer", submittedCustomer);
       updateCustomer({
         id: customerToUpdate.customerId,
         customer: submittedCustomer,
