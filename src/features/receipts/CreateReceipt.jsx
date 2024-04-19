@@ -10,7 +10,7 @@ function CreateReceipt({ customer }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [createReceiptForm] = Form.useForm();
 
-  if (!customer) {
+  if (!customer || customer.receivable === 0) {
     return (
       <Button type="primary" className="btn-primary" disabled>
         Thanh toán
