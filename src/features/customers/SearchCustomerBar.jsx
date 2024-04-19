@@ -39,7 +39,7 @@ function SearchCustomerBar({ onSelectCustomer, onClear }) {
   return (
     <AutoComplete
       value={inputValue}
-      className="w-[60%]"
+      className="w-full"
       placeholder="Tìm khách hàng..."
       allowClear
       onChange={setInputValue}

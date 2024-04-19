@@ -26,7 +26,9 @@ function Retail() {
         <OrderDetailsTable />
       </div>
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
-        <SearchOrderCustomer />
+        <div className="flex items-center justify-between">
+          <SearchOrderCustomer />
+        </div>
         <div className="flex-1">
           <CreateOrderForm form={createOrderForm} />
         </div>

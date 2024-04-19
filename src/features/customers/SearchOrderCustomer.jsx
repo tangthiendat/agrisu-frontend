@@ -29,7 +29,7 @@ function SearchOrderCustomer() {
   }
 
   return (
-    <Space.Compact className="">
+    <Space.Compact className="w-[65%]">
       <SearchCustomerBar
         onSelectCustomer={handleSelectCustomer}
         onClear={handleClear}
