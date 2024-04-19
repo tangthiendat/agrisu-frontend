@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AutoComplete } from "antd";
 import { debounce } from "lodash";
 import { useSearchProducts } from "./hooks/useSearchProducts";
@@ -10,9 +10,11 @@ function SearchProductBar({ onSelectProduct, onClear }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedProducts } = useSearchProducts(searchQuery);
 
-  if (inputValue === "") {
-    onClear?.();
-  }
+  useEffect(() => {
+    if (inputValue === "") {
+      onClear?.();
+    }
+  }, [inputValue, onClear]);
 
   function handleSearch(value) {
     setSearchQuery(value);
@@ -64,7 +66,6 @@ function SearchProductBar({ onSelectProduct, onClear }) {
       allowClear
       onChange={setInputValue}
       onSearch={debouncedHandleSearch}
-      onClear={() => setSearchQuery("")}
     />
   );
 }

@@ -2,10 +2,10 @@
 import { Button, Form } from "antd";
 import { useDispatch } from "react-redux";
 import OrderDetailsTable from "../features/orders/OrderDetailsTable";
-import SearchCustomerBar from "../features/customers/SearchCustomerBar";
 import CreateOrderForm from "../features/orders/CreateOrderForm";
 import { clearOrderDetails } from "../features/orders/orderSlice";
 import SearchOrderDetail from "../features/products/SearchOrderDetail";
+import SearchOrderCustomer from "../features/customers/SearchOrderCustomer";
 
 function Retail() {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function Retail() {
         <OrderDetailsTable />
       </div>
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
-        <SearchCustomerBar />
+        <SearchOrderCustomer />
         <div className="flex-1">
           <CreateOrderForm form={createOrderForm} />
         </div>
