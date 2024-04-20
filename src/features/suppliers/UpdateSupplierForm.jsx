@@ -1,33 +1,27 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Col, Form, Input, InputNumber, Row, Space, Button } from "antd";
+import { Button, Col, Form, Input, InputNumber, Row, Space } from "antd";
+import { useCreateSupplier } from "./hooks/useCreateSupplier";
 import TextArea from "antd/es/input/TextArea";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { useCreateCustomer } from "./hooks/useCreateCustomer";
-import { useUpdateCustomer } from "./hooks/useUpdateCustomer";
-import { setSelectedCustomer } from "./customerSlice";
+import { useUpdateSupplier } from "./hooks/useUpdateSupplier";
 
-function UpdateCustomerForm({
+/* eslint-disable react/prop-types */
+function UpdateSupplierForm({
   form,
+  supplierToUpdate = {},
   setIsOpenModal,
-  customerToUpdate = {},
   onCancel,
 }) {
-  const { createCustomer, isCreating } = useCreateCustomer();
-  const { updateCustomer, isUpdating } = useUpdateCustomer();
-  const isUpdateSession = Boolean(customerToUpdate.customerId);
-  const selectedCustomer = useSelector(
-    (state) => state.customer.selectedCustomer,
-  );
-  const dispatch = useDispatch();
+  const { createSupplier, isCreating } = useCreateSupplier();
+  const { updateSupplier, isUpdating } = useUpdateSupplier();
+  const isUpdateSession = Boolean(supplierToUpdate.supplierId);
 
   useEffect(() => {
     if (isUpdateSession) {
-      form.setFieldsValue(customerToUpdate);
+      form.setFieldsValue(supplierToUpdate);
     }
-  }, [customerToUpdate, form, isUpdateSession]);
+  }, [supplierToUpdate, isUpdateSession, form]);
 
   function preventSubmission(e) {
     if (e.key === "Enter") {
@@ -35,25 +29,21 @@ function UpdateCustomerForm({
     }
   }
 
-  function handleFinish(submittedCustomer) {
+  function handleFinish(submittedSupplier) {
     if (isUpdateSession) {
-      updateCustomer(
+      updateSupplier(
         {
-          id: customerToUpdate.customerId,
-          customer: submittedCustomer,
+          id: supplierToUpdate.supplierId,
+          supplier: submittedSupplier,
         },
         {
           onSuccess: () => {
-            submittedCustomer.totalSales = customerToUpdate.totalSales;
-            if (selectedCustomer.length > 0) {
-              dispatch(setSelectedCustomer([submittedCustomer]));
-            }
             setIsOpenModal(false);
           },
         },
       );
     } else {
-      createCustomer(submittedCustomer, {
+      createSupplier(submittedSupplier, {
         onSuccess: () => {
           form.resetFields();
           setIsOpenModal(false);
@@ -69,11 +59,11 @@ function UpdateCustomerForm({
       onKeyDown={preventSubmission}
       onFinish={handleFinish}
       labelCol={{ span: 7 }}
-      initialValues={{ receivable: 0 }}
+      initialValues={{ payable: 0 }}
     >
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item label="Mã khách hàng" name="customerId">
+          <Form.Item label="Mã nhà cung cấp" name="supplierId">
             <Input
               placeholder="Mã tự động"
               className="w-[50%]"
@@ -81,12 +71,12 @@ function UpdateCustomerForm({
             />
           </Form.Item>
           <Form.Item
-            label="Tên khách hàng"
-            name="customerName"
+            label="Tên nhà cung cấp"
+            name="supplierName"
             rules={[
               {
                 required: true,
-                message: "Hãy nhập tên khách hàng",
+                message: "Hãy nhập tên nhà cung cấp",
               },
             ]}
           >
@@ -108,8 +98,6 @@ function UpdateCustomerForm({
           >
             <Input allowClear className="w-[60%]" />
           </Form.Item>
-        </Col>
-        <Col span={12}>
           <Form.Item label="Địa chỉ" name="address">
             <TextArea
               allowClear
@@ -117,9 +105,14 @@ function UpdateCustomerForm({
               className="w-[90%]"
             />
           </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Mã số thuế" name="taxCode">
+            <Input allowClear className="w-[60%]" />
+          </Form.Item>
           <Form.Item
             label={`Công nợ${isUpdateSession ? "" : " bắt đầu"}`}
-            name="receivable"
+            name="payable"
           >
             <InputNumber
               className="w-[55%]"
@@ -149,4 +142,4 @@ function UpdateCustomerForm({
   );
 }
 
-export default UpdateCustomerForm;
+export default UpdateSupplierForm;
