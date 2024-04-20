@@ -5,7 +5,11 @@ import { debounce } from "lodash";
 import { useSearchProducts } from "./hooks/useSearchProducts";
 import { formatCurrency } from "../../utils/helper";
 
-function SearchProductBar({ onSelectProduct, onClear }) {
+function SearchProductBar({
+  onSelectProduct,
+  onClear,
+  showSelectedLabel = true,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedProducts } = useSearchProducts(searchQuery);
@@ -52,7 +56,11 @@ function SearchProductBar({ onSelectProduct, onClear }) {
       (product) => product.productId === value,
     );
     onSelectProduct(selectedProduct);
-    setInputValue(selectedProduct.productName);
+    if (showSelectedLabel) {
+      setInputValue(selectedProduct.productName);
+    } else {
+      setInputValue("");
+    }
     setSearchQuery("");
   }
 

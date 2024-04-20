@@ -1,10 +1,10 @@
 import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import UpdateCustomerForm from "./UpdateCustomerForm";
-import SearchCustomerBar from "./SearchCustomerBar";
+import UpdateCustomerForm from "../customers/UpdateCustomerForm";
+import SearchCustomerBar from "../customers/SearchCustomerBar";
 import { useDispatch } from "react-redux";
-import { setCustomer } from "../orders/orderSlice";
+import { setCustomer } from "./orderSlice";
 
 function SearchOrderCustomer() {
   const [isOpenModal, setIsOpenModal] = useState(false);

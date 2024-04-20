@@ -5,7 +5,11 @@ import { debounce } from "lodash";
 import { AutoComplete } from "antd";
 import { useSearchCustomers } from "./hooks/useSearchCustomers";
 
-function SearchCustomerBar({ onSelectCustomer, onClear }) {
+function SearchCustomerBar({
+  onSelectCustomer,
+  onClear,
+  showSelectedLabel = true,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { searchedCustomers } = useSearchCustomers(searchQuery);
@@ -32,7 +36,11 @@ function SearchCustomerBar({ onSelectCustomer, onClear }) {
       (customer) => customer.customerId === value,
     );
     onSelectCustomer(selectedCustomer);
-    setInputValue(selectedCustomer.customerName);
+    if (showSelectedLabel) {
+      setInputValue(selectedCustomer.customerName);
+    } else {
+      setInputValue("");
+    }
     setSearchQuery("");
   }
 

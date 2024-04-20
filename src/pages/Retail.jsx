@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import OrderDetailsTable from "../features/orders/OrderDetailsTable";
 import CreateOrderForm from "../features/orders/CreateOrderForm";
 import { clearOrderDetails } from "../features/orders/orderSlice";
-import SearchOrderDetail from "../features/products/SearchOrderDetail";
-import SearchOrderCustomer from "../features/customers/SearchOrderCustomer";
+import SearchOrderDetail from "../features/orders/SearchOrderDetail";
+import SearchOrderCustomer from "../features/orders/SearchOrderCustomer";
 import CreateReceipt from "../features/receipts/CreateReceipt";
 
 function Retail() {
