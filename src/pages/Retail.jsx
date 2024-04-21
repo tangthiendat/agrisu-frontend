@@ -3,15 +3,27 @@ import { Button, Form } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import OrderDetailsTable from "../features/orders/OrderDetailsTable";
 import CreateOrderForm from "../features/orders/CreateOrderForm";
-import { clearOrderDetails } from "../features/orders/orderSlice";
+import { clearOrder, clearOrderDetails } from "../features/orders/orderSlice";
 import SearchOrderDetail from "../features/orders/SearchOrderDetail";
 import SearchOrderCustomer from "../features/orders/SearchOrderCustomer";
 import CreateReceipt from "../features/receipts/CreateReceipt";
+import { useCreateOrder } from "../features/orders/hooks/useCreateOrder";
 
 function Retail() {
   const dispatch = useDispatch();
   const [createOrderForm] = Form.useForm();
   const customer = useSelector((state) => state.order.customer);
+  const { createOrder, isCreating } = useCreateOrder();
+
+  function handleFinish(submittedOrder) {
+    createOrder(submittedOrder, {
+      onSuccess: () => {
+        createOrderForm.resetFields();
+        dispatch(clearOrder());
+      },
+    });
+  }
+
   return (
     <div className="flex items-center justify-between">
       <div className="card min-h-[calc(100vh-64px-1.5rem*2)] basis-[68%] space-y-8">
@@ -33,7 +45,7 @@ function Retail() {
           <CreateReceipt customer={customer} />
         </div>
         <div className="flex-1">
-          <CreateOrderForm form={createOrderForm} />
+          <CreateOrderForm form={createOrderForm} onFinish={handleFinish} />
         </div>
 
         <Button
@@ -42,6 +54,7 @@ function Retail() {
           htmlType="submit"
           form="createOrderForm"
           block
+          loading={isCreating}
         >
           THANH TOÁN
         </Button>
