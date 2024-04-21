@@ -29,30 +29,28 @@ function CustomerTable() {
       title: "Tên khách hàng",
       dataIndex: "customerName",
       key: "customerName",
-      width: "25%",
+      width: "20%",
     },
-
     {
       title: "Số điện thoại",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
-      width: "20%",
+      width: "15%",
     },
     {
-      title: "Nợ hiện tại",
+      title: "Địa chỉ",
+      dataIndex: "address",
+      key: "address",
+      width: "25%",
+    },
+
+    {
+      title: "Công nợ",
       dataIndex: "receivable",
       key: "receivable",
       width: "15%",
       render: (receivable) => {
         return formatCurrency(receivable);
-      },
-    },
-    {
-      title: "Tổng bán",
-      dataIndex: "totalSales",
-      width: "15%",
-      render: (totalSales) => {
-        return formatCurrency(totalSales);
       },
     },
 
