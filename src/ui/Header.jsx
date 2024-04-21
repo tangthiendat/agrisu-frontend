@@ -46,11 +46,6 @@ const items = [
         key: "invoices",
         icon: <FaFileInvoiceDollar />,
       },
-      {
-        label: <NavLink to="/good-receipt">Nhập hàng</NavLink>,
-        key: "good-receipt",
-        icon: <MdTrolley />,
-      },
     ],
   },
   {
@@ -62,6 +57,11 @@ const items = [
     label: <NavLink to="/retail">Bán hàng</NavLink>,
     key: "retail",
     icon: <FaCartPlus />,
+  },
+  {
+    label: <NavLink to="/good-receipt">Nhập hàng</NavLink>,
+    key: "good-receipt",
+    icon: <MdTrolley />,
   },
 ];
 
