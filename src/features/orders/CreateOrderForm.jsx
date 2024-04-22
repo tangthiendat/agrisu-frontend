@@ -17,6 +17,7 @@ function CreateOrderForm({ form, onFinish }) {
   useEffect(() => {
     form.setFieldsValue({
       totalValue: totalOrderValue,
+      customerCurrentDebt: customer?.receivable || 0,
       customerNextDebt:
         customer && orderDetails.length > 0
           ? customer.receivable + totalOrderValue
@@ -159,11 +160,15 @@ function CreateOrderForm({ form, onFinish }) {
           />
         </Form.Item>
 
-        <Form.Item hidden={isPaid} label="Nợ cũ" colon={false}>
+        <Form.Item
+          hidden={isPaid}
+          label="Nợ cũ"
+          name="customerCurrentDebt"
+          colon={false}
+        >
           <InputNumber
             className="w-full"
             readOnly={true}
-            value={customer?.receivable || 0}
             formatter={formatCurrency}
             parser={parseCurrency}
             min={0}
