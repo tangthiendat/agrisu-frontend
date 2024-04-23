@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  customer: null,
+  supplier: null,
   goodReceiptDetails: [],
 };
 const goodReceiptSlice = createSlice({
@@ -61,3 +61,10 @@ export const {
   clearGoodReceipt,
 } = goodReceiptSlice.actions;
 export default goodReceiptSlice.reducer;
+
+export const getGoodReceiptTotalValue = (state) =>
+  state.goodReceipt.goodReceiptDetails.reduce(
+    (total, goodReceiptDetail) =>
+      total + goodReceiptDetail.unitPrice * goodReceiptDetail.quantity,
+    0,
+  );
