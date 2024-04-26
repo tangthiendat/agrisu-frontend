@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
-import Main from "./Main";
-function AppLayout() {
+import Header from "../ui/Header";
+import Main from "../ui/Main";
+function MainLayout() {
   return (
     <div className="max-w-screen min-h-screen bg-neutral-100">
       <Header />
@@ -14,4 +14,4 @@ function AppLayout() {
   );
 }
 
-export default AppLayout;
+export default MainLayout;

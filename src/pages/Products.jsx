@@ -1,11 +1,10 @@
-import { Typography } from "antd";
 import ProductTable from "../features/products/ProductTable";
 import AddProduct from "../features/products/AddProduct";
 import SearchProductBar from "../features/products/SearchProductBar";
 import { useDispatch } from "react-redux";
 import { setSelectedProduct } from "../features/products/productSlice";
+import Title from "antd/es/typography/Title";
 
-const { Title } = Typography;
 function Products() {
   const dispatch = useDispatch();
 

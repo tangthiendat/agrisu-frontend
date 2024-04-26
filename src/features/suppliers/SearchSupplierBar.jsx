@@ -1,18 +1,16 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useState } from "react";
-import { debounce } from "lodash";
+import { useSearchSuppliers } from "./hooks/useSearchSuppliers";
 import { AutoComplete } from "antd";
-import { useSearchCustomers } from "./hooks/useSearchCustomers";
-
-function SearchCustomerBar({
-  onSelectCustomer,
+import { debounce } from "lodash";
+function SearchSupplierBar({
+  onSelectSupplier,
   onClear,
   showSelectedLabel = true,
 }) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const { searchedCustomers } = useSearchCustomers(searchQuery);
+  const { searchedSuppliers } = useSearchSuppliers(searchQuery);
 
   useEffect(() => {
     if (inputValue === "") {
@@ -26,18 +24,18 @@ function SearchCustomerBar({
 
   const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), []);
 
-  const customerOptions = searchedCustomers?.map((customer) => ({
-    value: customer.customerId,
-    label: customer.customerName,
+  const supplierOptions = searchedSuppliers?.map((supplier) => ({
+    value: supplier.supplierId,
+    label: supplier.supplierName,
   }));
 
   function handleSelect(value) {
-    const selectedCustomer = searchedCustomers.find(
-      (customer) => customer.customerId === value,
+    const selectedSupplier = searchedSuppliers.find(
+      (supplier) => supplier.supplierId === value,
     );
-    onSelectCustomer(selectedCustomer);
+    onSelectSupplier(selectedSupplier);
     if (showSelectedLabel) {
-      setInputValue(selectedCustomer.customerName);
+      setInputValue(selectedSupplier.supplierName);
     } else {
       setInputValue("");
     }
@@ -48,14 +46,14 @@ function SearchCustomerBar({
     <AutoComplete
       value={inputValue}
       className="w-full"
-      placeholder="Tìm khách hàng..."
+      placeholder="Tìm nhà cung cấp..."
       allowClear
       onChange={setInputValue}
       onSearch={debouncedHandleSearch}
-      options={customerOptions}
+      options={supplierOptions}
       onSelect={handleSelect}
     />
   );
 }
 
-export default SearchCustomerBar;
+export default SearchSupplierBar;

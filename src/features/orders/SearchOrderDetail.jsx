@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import SearchProductBar from "./SearchProductBar";
-import UpdateProductForm from "./UpdateProductForm";
-import { addItem } from "../orders/orderSlice";
+import SearchProductBar from "../products/SearchProductBar";
+import UpdateProductForm from "../products/UpdateProductForm";
+import { addItem } from "./orderSlice";
 
 function SearchOrderDetail() {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -63,6 +63,7 @@ function SearchOrderDetail() {
         <SearchProductBar
           cartItems={orderDetails}
           onSelectProduct={handleSelectProduct}
+          showSelectedLabel={false}
         />
         <Tooltip title="Thêm sản phẩm" placement="bottom">
           <Button

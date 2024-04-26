@@ -1,24 +1,23 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Form, InputNumber, Radio, Modal } from "antd";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { clearOrder, getOrderTotalValue } from "./orderSlice";
-import { useCreateOrder } from "./hooks/useCreateOrder";
+import { getOrderTotalValue } from "./orderSlice";
 
-function CreateOrderForm({ form }) {
+function CreateOrderForm({ form, onFinish }) {
   const totalOrderValue = useSelector(getOrderTotalValue);
   const orderDetails = useSelector((state) => state.order.orderDetails);
   const customer = useSelector((state) => state.order.customer);
   const [isPaid, setIsPaid] = useState(true);
   const [change, setChange] = useState(0);
-  const dispatch = useDispatch();
-  const { createOrder } = useCreateOrder();
+
   const [modal, contextHolder] = Modal.useModal();
 
   useEffect(() => {
     form.setFieldsValue({
       totalValue: totalOrderValue,
+      customerCurrentDebt: customer?.receivable || 0,
       customerNextDebt:
         customer && orderDetails.length > 0
           ? customer.receivable + totalOrderValue
@@ -71,10 +70,8 @@ function CreateOrderForm({ form }) {
     if (isPaid) {
       submittedOrder.customerNextDebt = customer.receivable;
     }
-    form.resetFields();
-    dispatch(clearOrder());
     setChange(0);
-    createOrder(submittedOrder);
+    onFinish(submittedOrder);
   }
 
   return (
@@ -163,11 +160,15 @@ function CreateOrderForm({ form }) {
           />
         </Form.Item>
 
-        <Form.Item hidden={isPaid} label="Nợ cũ" colon={false}>
+        <Form.Item
+          hidden={isPaid}
+          label="Nợ cũ"
+          name="customerCurrentDebt"
+          colon={false}
+        >
           <InputNumber
             className="w-full"
             readOnly={true}
-            value={customer?.receivable || 0}
             formatter={formatCurrency}
             parser={parseCurrency}
             min={0}

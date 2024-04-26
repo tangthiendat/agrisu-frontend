@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import AppLayout from "../ui/AppLayout";
+import MainLayout from "../layouts/MainLayout";
 import Error from "../ui/Error";
 import Dashboard from "../pages/Dashboard";
 import Products from "../pages/Products";
@@ -13,7 +13,7 @@ import GoodReceipt from "../pages/GoodReceipt";
 
 const router = createBrowserRouter([
   {
-    element: <AppLayout />,
+    element: <MainLayout />,
     errorElement: <Error />,
     children: [
       {

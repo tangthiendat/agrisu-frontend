@@ -29,7 +29,7 @@ function App() {
             darkItemHoverBg: "#1677ff",
             horizontalItemHoverBg: "#1677ff",
             iconSize: 16,
-            itemPaddingInline: 24,
+            itemPaddingInline: 20,
           },
 
           Table: {
