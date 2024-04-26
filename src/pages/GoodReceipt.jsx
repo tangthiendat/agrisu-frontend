@@ -1,23 +1,23 @@
 /* eslint-disable no-unused-vars */
 import { Button, Form } from "antd";
 import { useDispatch } from "react-redux";
-import SearchGoodReceiptDetail from "../features/good-receipts/SearchGoodReceiptDetail";
-import { clearGoodReceiptDetails } from "../features/good-receipts/goodReceiptSlice";
-import GoodReceiptDetailTable from "../features/good-receipts/GoodReceiptDetailTable";
-import CreateGoodReceiptForm from "../features/good-receipts/CreateGoodReceiptForm";
-import { useCreateGoodReceipt } from "../features/good-receipts/hooks/useCreateGoodReceipt";
-import SearchGoodReceiptSupplier from "../features/good-receipts/SearchGoodReceiptSupplier";
+import SearchWarehouseReceiptDetail from "../features/warehouse-receipts/SearchWarehouseReceiptDetail";
+import { clearWarehouseReceiptDetails } from "../features/warehouse-receipts/warehouseReceiptSlice";
+import WarehouseReceiptDetailTable from "../features/warehouse-receipts/WarehouseReceiptDetailTable";
+import CreateWarehouseReceiptForm from "../features/warehouse-receipts/CreateWarehouseReceiptForm";
+import { useCreateWarehouseReceipt } from "../features/warehouse-receipts/hooks/useCreateWarehouseReceipt";
+import SearchWarehouseReceiptSupplier from "../features/warehouse-receipts/SearchWarehouseReceiptSupplier";
 
-function GoodReceipt() {
+function WarehouseReceipt() {
   const dispatch = useDispatch();
-  const [createGoodReceiptForm] = Form.useForm();
-  const { createGoodReceipt, isCreating } = useCreateGoodReceipt();
+  const [createWarehouseReceiptForm] = Form.useForm();
+  const { createWarehouseReceipt, isCreating } = useCreateWarehouseReceipt();
 
-  function handleFinish(submittedGoodReceipt) {
-    createGoodReceipt(submittedGoodReceipt, {
+  function handleFinish(submittedWarehouseReceipt) {
+    createWarehouseReceipt(submittedWarehouseReceipt, {
       onSuccess: () => {
-        createGoodReceiptForm.resetFields();
-        dispatch(clearGoodReceiptDetails());
+        createWarehouseReceiptForm.resetFields();
+        dispatch(clearWarehouseReceiptDetails());
       },
     });
   }
@@ -26,24 +26,24 @@ function GoodReceipt() {
     <div className="flex items-center justify-between">
       <div className="card min-h-[calc(100vh-64px-1.5rem*2)] basis-[68%] space-y-8">
         <div className="flex items-center justify-between">
-          <SearchGoodReceiptDetail />
+          <SearchWarehouseReceiptDetail />
           <Button
             type="primary"
             danger
-            onClick={() => dispatch(clearGoodReceiptDetails())}
+            onClick={() => dispatch(clearWarehouseReceiptDetails())}
           >
             Xóa tất cả chi tiết
           </Button>
         </div>
-        <GoodReceiptDetailTable />
+        <WarehouseReceiptDetailTable />
       </div>
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
         <div className="flex items-center justify-between">
-          <SearchGoodReceiptSupplier />
+          <SearchWarehouseReceiptSupplier />
         </div>
         <div className="flex-1">
-          <CreateGoodReceiptForm
-            form={createGoodReceiptForm}
+          <CreateWarehouseReceiptForm
+            form={createWarehouseReceiptForm}
             onFinish={handleFinish}
           />
         </div>
@@ -52,7 +52,7 @@ function GoodReceipt() {
           className="btn-primary h-12 text-base"
           type="primary"
           htmlType="submit"
-          form="createGoodReceiptForm"
+          form="createWarehouseReceiptForm"
           block
           loading={isCreating}
         >
@@ -63,4 +63,4 @@ function GoodReceipt() {
   );
 }
 
-export default GoodReceipt;
+export default WarehouseReceipt;

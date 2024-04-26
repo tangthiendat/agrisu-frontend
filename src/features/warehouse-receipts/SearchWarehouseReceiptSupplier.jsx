@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { useDispatch } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
-import { setSupplier } from "./goodReceiptSlice";
+import { setSupplier } from "./warehouseReceiptSlice";
 import SearchSupplierBar from "../suppliers/SearchSupplierBar";
 import UpdateSupplierForm from "../suppliers/UpdateSupplierForm";
 
-function SearchGoodReceiptSupplier() {
+function SearchWarehouseReceiptSupplier() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [addSupplierForm] = Form.useForm();
   const dispatch = useDispatch();
@@ -54,4 +54,4 @@ function SearchGoodReceiptSupplier() {
   );
 }
 
-export default SearchGoodReceiptSupplier;
+export default SearchWarehouseReceiptSupplier;

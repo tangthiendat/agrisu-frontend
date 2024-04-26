@@ -2,16 +2,16 @@ import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
-import { addItem } from "./goodReceiptSlice";
+import { addItem } from "./warehouseReceiptSlice";
 import SearchProductBar from "../products/SearchProductBar";
 import UpdateProductForm from "../products/UpdateProductForm";
 
-function SearchGoodReceiptDetail() {
+function SearchWarehouseReceiptDetail() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [updateProductForm] = Form.useForm();
   const [modal, contextHolder] = Modal.useModal();
-  const goodReceiptDetails = useSelector(
-    (state) => state.goodReceipt.goodReceiptDetails,
+  const warehouseReceiptDetails = useSelector(
+    (state) => state.warehouseReceipt.warehouseReceiptDetails,
   );
   const dispatch = useDispatch();
   function showModal() {
@@ -34,7 +34,7 @@ function SearchGoodReceiptDetail() {
       });
     } else {
       //check if the selected product is in cart
-      const isProductInCart = goodReceiptDetails.some(
+      const isProductInCart = warehouseReceiptDetails.some(
         (cartItem) => cartItem.product.productId === selectedProduct.productId,
       );
       if (isProductInCart) {
@@ -63,7 +63,7 @@ function SearchGoodReceiptDetail() {
       {contextHolder}
       <Space.Compact className="w-[40%]">
         <SearchProductBar
-          cartItems={goodReceiptDetails}
+          cartItems={warehouseReceiptDetails}
           onSelectProduct={handleSelectProduct}
           showSelectedLabel={false}
         />
@@ -97,4 +97,4 @@ function SearchGoodReceiptDetail() {
   );
 }
 
-export default SearchGoodReceiptDetail;
+export default SearchWarehouseReceiptDetail;
