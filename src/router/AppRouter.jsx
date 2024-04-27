@@ -33,27 +33,28 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
-        path: "/suppliers",
+        path: "partners/suppliers",
         errorElement: <Error />,
         element: <Suppliers />,
       },
       {
-        path: "/customers",
+        path: "partners/customers",
         errorElement: <Error />,
         element: <Customers />,
       },
+
       {
-        path: "/retail",
-        errorElement: <Error />,
-        element: <Retail />,
-      },
-      {
-        path: "/invoices",
+        path: "/transactions/invoices",
         errorElement: <Error />,
         element: <Invoices />,
       },
       {
-        path: "/warehouse-receipt",
+        path: "/sales/retail",
+        errorElement: <Error />,
+        element: <Retail />,
+      },
+      {
+        path: "/sales/warehouse-receipt",
         errorElement: <Error />,
         element: <WarehouseReceipt />,
       },
