@@ -9,7 +9,7 @@ import Customers from "../pages/Customers";
 import Retail from "../pages/Retail";
 import Invoices from "../pages/Invoices";
 import CashFlow from "../pages/CashFlow";
-import GoodReceipt from "../pages/GoodReceipt";
+import WarehouseReceipt from "../pages/WarehouseReceipt";
 
 const router = createBrowserRouter([
   {
@@ -53,9 +53,9 @@ const router = createBrowserRouter([
         element: <Invoices />,
       },
       {
-        path: "/good-receipt",
+        path: "/warehouse-receipt",
         errorElement: <Error />,
-        element: <GoodReceipt />,
+        element: <WarehouseReceipt />,
       },
       {
         path: "/cash-flow",
