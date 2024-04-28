@@ -7,6 +7,7 @@ import { FaFileInvoiceDollar, FaUser, FaUsers } from "react-icons/fa";
 import { FaBox, FaCartPlus } from "react-icons/fa6";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { FiActivity } from "react-icons/fi";
+import { TbTruckDelivery } from "react-icons/tb";
 import Logo from "./Logo";
 
 const items = [
@@ -68,6 +69,11 @@ const items = [
         label: <NavLink to="/sales/warehouse-receipt">Nhập kho</NavLink>,
         key: "warehouse-receipt",
         icon: <MdTrolley />,
+      },
+      {
+        label: <NavLink to="/sales/warehouse-export">Xuất kho</NavLink>,
+        key: "warehouse-export",
+        icon: <TbTruckDelivery />,
       },
     ],
   },

@@ -10,6 +10,7 @@ import Retail from "../pages/Retail";
 import Invoices from "../pages/Invoices";
 import CashFlow from "../pages/CashFlow";
 import WarehouseReceipt from "../pages/WarehouseReceipt";
+import WarehouseExport from "../pages/WarehouseExport";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,11 @@ const router = createBrowserRouter([
         path: "/sales/warehouse-receipt",
         errorElement: <Error />,
         element: <WarehouseReceipt />,
+      },
+      {
+        path: "/sales/warehouse-export",
+        errorElement: <Error />,
+        element: <WarehouseExport />,
       },
       {
         path: "/cash-flow",
