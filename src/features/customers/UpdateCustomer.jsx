@@ -27,13 +27,12 @@ function UpdateCustomer({ customer }) {
           customerToUpdate={customer}
           setIsOpenModal={setIsOpenModal}
           form={updateCustomerForm}
-          onCancel={handleCancel}
         />
       ),
     },
     {
       key: "2",
-      label: "Lịch sử",
+      label: "Công nợ",
       children: <CustomerHistory customer={customer} onCancel={handleCancel} />,
     },
   ];
