@@ -6,11 +6,11 @@ import Dashboard from "../pages/Dashboard";
 import Products from "../pages/Products";
 import Suppliers from "../pages/Suppliers";
 import Customers from "../pages/Customers";
-import Retail from "../pages/Retail";
+import NewOrder from "../pages/NewOrder";
 import Invoices from "../pages/Invoices";
 import CashFlow from "../pages/CashFlow";
-import WarehouseReceipt from "../pages/WarehouseReceipt";
-import WarehouseExport from "../pages/WarehouseExport";
+import NewWarehouseReceipt from "../pages/NewWarehouseReceipt";
+import NewWarehouseExport from "../pages/NewWarehouseExport";
 
 const router = createBrowserRouter([
   {
@@ -34,35 +34,34 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
-        path: "partners/suppliers",
+        path: "/partners/suppliers",
         errorElement: <Error />,
         element: <Suppliers />,
       },
       {
-        path: "partners/customers",
+        path: "/partners/customers",
         errorElement: <Error />,
         element: <Customers />,
       },
-
       {
         path: "/transactions/invoices",
         errorElement: <Error />,
         element: <Invoices />,
       },
       {
-        path: "/sales/retail",
+        path: "/sales/orders/new",
         errorElement: <Error />,
-        element: <Retail />,
+        element: <NewOrder />,
       },
       {
-        path: "/sales/warehouse-receipt",
+        path: "/sales/warehouse-receipts/new",
         errorElement: <Error />,
-        element: <WarehouseReceipt />,
+        element: <NewWarehouseReceipt />,
       },
       {
-        path: "/sales/warehouse-export",
+        path: "/sales/warehouse-exports/new",
         errorElement: <Error />,
-        element: <WarehouseExport />,
+        element: <NewWarehouseExport />,
       },
       {
         path: "/cash-flow",

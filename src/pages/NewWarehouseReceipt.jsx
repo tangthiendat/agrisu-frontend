@@ -8,7 +8,7 @@ import CreateWarehouseReceiptForm from "../features/warehouse-receipts/CreateWar
 import { useCreateWarehouseReceipt } from "../features/warehouse-receipts/hooks/useCreateWarehouseReceipt";
 import SearchWarehouseReceiptSupplier from "../features/warehouse-receipts/SearchWarehouseReceiptSupplier";
 
-function WarehouseReceipt() {
+function NewWarehouseReceipt() {
   const dispatch = useDispatch();
   const [createWarehouseReceiptForm] = Form.useForm();
   const { createWarehouseReceipt, isCreating } = useCreateWarehouseReceipt();
@@ -63,4 +63,4 @@ function WarehouseReceipt() {
   );
 }
 
-export default WarehouseReceipt;
+export default NewWarehouseReceipt;

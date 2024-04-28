@@ -11,7 +11,7 @@ import {
 } from "../features/warehouse-exports/warehouseExportSlice";
 import { useCreateWarehouseExport } from "../features/warehouse-exports/hooks/useCreateWarehouseExport";
 
-function WarehouseExport() {
+function NewWarehouseExport() {
   const dispatch = useDispatch();
   const [createWarehouseExportForm] = Form.useForm();
   const customer = useSelector((state) => state.warehouseExport.customer);
@@ -68,4 +68,4 @@ function WarehouseExport() {
   );
 }
 
-export default WarehouseExport;
+export default NewWarehouseExport;
