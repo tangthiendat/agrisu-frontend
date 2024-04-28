@@ -30,7 +30,10 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
     <Form
       form={form}
       labelCol={{ span: 7 }}
-      initialValues={{ customerNextDebt: 0 }}
+      initialValues={{
+        customerNextDebt: 0,
+        customerCurrentDebt: customer.receivable,
+      }}
       onFinish={handleFinish}
     >
       <Form.Item label="Mã phiếu thu" name="receiptId">
@@ -42,11 +45,10 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
       <Form.Item label="Số điện thoại">
         <Input readOnly value={customer.phoneNumber} className="w-[40%]" />
       </Form.Item>
-      <Form.Item label="Nợ cũ">
+      <Form.Item label="Nợ cũ" name="customerCurrentDebt">
         <InputNumber
           className="w-[55%]"
           readOnly
-          value={customer.receivable}
           formatter={formatCurrency}
           parser={parseCurrency}
           addonAfter="VND"

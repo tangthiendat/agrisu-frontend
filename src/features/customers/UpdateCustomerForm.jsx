@@ -9,12 +9,7 @@ import { useCreateCustomer } from "./hooks/useCreateCustomer";
 import { useUpdateCustomer } from "./hooks/useUpdateCustomer";
 import { setSelectedCustomer } from "./customerSlice";
 
-function UpdateCustomerForm({
-  form,
-  setIsOpenModal,
-  customerToUpdate = {},
-  onCancel,
-}) {
+function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
   const { createCustomer, isCreating } = useCreateCustomer();
   const { updateCustomer, isUpdating } = useUpdateCustomer();
   const isUpdateSession = Boolean(customerToUpdate.customerId);
@@ -60,6 +55,11 @@ function UpdateCustomerForm({
         },
       });
     }
+  }
+
+  function handleCancel() {
+    form.resetFields();
+    setIsOpenModal(false);
   }
 
   return (
@@ -134,7 +134,7 @@ function UpdateCustomerForm({
       </Row>
       <Form.Item className="text-right">
         <Space>
-          <Button onClick={onCancel}>Hủy</Button>
+          <Button onClick={handleCancel}>Hủy</Button>
           <Button
             type="primary"
             className="btn-primary"

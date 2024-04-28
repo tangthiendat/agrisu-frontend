@@ -1,42 +1,39 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
-import { Form, InputNumber, Modal } from "antd";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Form, InputNumber, Modal } from "antd";
+import { getWarehouseExportTotalValue } from "./warehouseExportSlice";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { getOrderTotalValue } from "./orderSlice";
 
-function CreateOrderForm({ form, onFinish }) {
-  const totalOrderValue = useSelector(getOrderTotalValue);
-  const orderDetails = useSelector((state) => state.order.orderDetails);
-  const customer = useSelector((state) => state.order.customer);
-  const [change, setChange] = useState(0);
-
+function CreateWarehouseExportForm({ form, onFinish }) {
+  const totalWarehouseExportValue = useSelector(getWarehouseExportTotalValue);
+  const warehouseExportDetails = useSelector(
+    (state) => state.warehouseExport.warehouseExportDetails,
+  );
+  const customer = useSelector((state) => state.warehouseExport.customer);
   const [modal, contextHolder] = Modal.useModal();
 
   useEffect(() => {
     form.setFieldsValue({
-      totalValue: totalOrderValue,
+      totalValue: totalWarehouseExportValue,
       customerCurrentDebt: customer?.receivable || 0,
       customerNextDebt:
-        customer && orderDetails.length > 0
-          ? customer.receivable + totalOrderValue
+        customer && warehouseExportDetails.length > 0
+          ? customer.receivable + totalWarehouseExportValue
           : customer?.receivable || 0,
     });
-  }, [totalOrderValue, form, customer, orderDetails.length]);
+  }, [
+    totalWarehouseExportValue,
+    customer,
+    warehouseExportDetails.length,
+    form,
+  ]);
 
-  function handleCustomerPaymentChange(customerPayment) {
-    if (customerPayment >= totalOrderValue) {
-      setChange(customerPayment - totalOrderValue);
-    } else {
-      setChange(0);
-    }
-  }
-
-  function handleFinish(submittedOrder) {
-    if (orderDetails.length == 0) {
+  function handleFinish(submittedWarehouseExport) {
+    if (warehouseExportDetails.length == 0) {
       modal.error({
-        title: "Không thể tạo hóa đơn",
-        content: "Vui lòng chọn chi tiết hóa đơn.",
+        title: "Không thể tạo phiếu xuất kho",
+        content: "Vui lòng chọn chi tiết phiếu xuất kho.",
         okButtonProps: {
           className: "btn-primary",
         },
@@ -45,7 +42,7 @@ function CreateOrderForm({ form, onFinish }) {
     }
     if (!customer) {
       modal.error({
-        title: "Không thể tạo hóa đơn",
+        title: "Không thể tạo phiếu xuất kho",
         content: "Vui lòng chọn khách hàng.",
         okButtonProps: {
           className: "btn-primary",
@@ -53,10 +50,10 @@ function CreateOrderForm({ form, onFinish }) {
       });
       return;
     }
-    submittedOrder.customer = customer;
-    submittedOrder.orderDetails = orderDetails;
-    setChange(0);
-    onFinish(submittedOrder);
+    submittedWarehouseExport.customer = customer;
+    submittedWarehouseExport.warehouseExportDetails = warehouseExportDetails;
+
+    onFinish(submittedWarehouseExport);
   }
 
   return (
@@ -64,7 +61,7 @@ function CreateOrderForm({ form, onFinish }) {
       {contextHolder}
       <Form
         form={form}
-        name="createOrderForm"
+        name="createWarehouseExportForm"
         onFinish={handleFinish}
         initialValues={{ customerPayment: 0 }}
         labelCol={{ span: 7 }}
@@ -87,37 +84,22 @@ function CreateOrderForm({ form, onFinish }) {
           />
         </Form.Item>
 
-        <Form.Item
-          label="Thanh toán"
-          name="customerPayment"
-          rules={[
-            {
-              validator: (_, value) => {
-                if (value < totalOrderValue) {
-                  return Promise.reject("Số tiền thanh toán không hợp lệ");
-                }
-                return Promise.resolve();
-              },
-            },
-          ]}
-          colon={false}
-        >
+        <Form.Item label="Nợ cũ" name="customerCurrentDebt" colon={false}>
           <InputNumber
             className="w-full"
+            readOnly={true}
             formatter={formatCurrency}
             parser={parseCurrency}
             min={0}
             max={1000000000000}
             addonAfter="VND"
-            onChange={handleCustomerPaymentChange}
           />
         </Form.Item>
 
-        <Form.Item label="Còn lại" colon={false}>
+        <Form.Item label="Nợ sau" name="customerNextDebt" colon={false}>
           <InputNumber
             className="w-full"
             readOnly={true}
-            value={change}
             formatter={formatCurrency}
             parser={parseCurrency}
             min={0}
@@ -130,4 +112,4 @@ function CreateOrderForm({ form, onFinish }) {
   );
 }
 
-export default CreateOrderForm;
+export default CreateWarehouseExportForm;

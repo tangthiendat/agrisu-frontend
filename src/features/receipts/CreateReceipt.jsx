@@ -13,7 +13,7 @@ function CreateReceipt({ customer }) {
   if (!customer || customer.receivable === 0) {
     return (
       <Button type="primary" className="btn-primary" disabled>
-        Thanh toán
+        Lập phiếu thu
       </Button>
     );
   }
@@ -29,7 +29,7 @@ function CreateReceipt({ customer }) {
   return (
     <>
       <Button type="primary" className="btn-primary" onClick={showModal}>
-        Thanh toán
+        Lập phiếu thu
       </Button>
 
       <Modal

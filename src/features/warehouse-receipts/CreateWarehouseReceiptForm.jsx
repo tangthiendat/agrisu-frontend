@@ -3,30 +3,35 @@
 import { Form, InputNumber, Modal } from "antd";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getGoodReceiptTotalValue } from "./goodReceiptSlice";
+import { getWarehouseReceiptTotalValue } from "./warehouseReceiptSlice";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 
-function CreateGoodReceiptForm({ form, onFinish }) {
-  const totalGoodReceiptValue = useSelector(getGoodReceiptTotalValue);
-  const goodReceiptDetails = useSelector(
-    (state) => state.goodReceipt.goodReceiptDetails,
+function CreateWarehouseReceiptForm({ form, onFinish }) {
+  const totalWarehouseReceiptValue = useSelector(getWarehouseReceiptTotalValue);
+  const warehouseReceiptDetails = useSelector(
+    (state) => state.warehouseReceipt.warehouseReceiptDetails,
   );
-  const supplier = useSelector((state) => state.goodReceipt.supplier);
+  const supplier = useSelector((state) => state.warehouseReceipt.supplier);
   const [modal, contextHolder] = Modal.useModal();
 
   useEffect(() => {
     form.setFieldsValue({
-      totalValue: totalGoodReceiptValue,
+      totalValue: totalWarehouseReceiptValue,
       supplierCurrentDebt: supplier?.payable || 0,
       supplierNextDebt:
-        supplier && goodReceiptDetails.length > 0
-          ? supplier.payable + totalGoodReceiptValue
+        supplier && warehouseReceiptDetails.length > 0
+          ? supplier.payable + totalWarehouseReceiptValue
           : supplier?.payable || 0,
     });
-  }, [totalGoodReceiptValue, supplier, goodReceiptDetails.length, form]);
+  }, [
+    totalWarehouseReceiptValue,
+    supplier,
+    warehouseReceiptDetails.length,
+    form,
+  ]);
 
-  function handleFinish(submittedGoodReceipt) {
-    if (getGoodReceiptTotalValue.length == 0) {
+  function handleFinish(submittedWarehouseReceipt) {
+    if (getWarehouseReceiptTotalValue.length == 0) {
       modal.error({
         title: "Không thể tạo phiếu nhập hàng",
         content: "Vui lòng chọn chi tiết phiếu nhập hàng.",
@@ -46,10 +51,10 @@ function CreateGoodReceiptForm({ form, onFinish }) {
       });
       return;
     }
-    submittedGoodReceipt.supplier = supplier;
-    submittedGoodReceipt.goodReceiptDetails = goodReceiptDetails;
+    submittedWarehouseReceipt.supplier = supplier;
+    submittedWarehouseReceipt.warehouseReceiptDetails = warehouseReceiptDetails;
 
-    onFinish(submittedGoodReceipt);
+    onFinish(submittedWarehouseReceipt);
   }
 
   return (
@@ -57,7 +62,7 @@ function CreateGoodReceiptForm({ form, onFinish }) {
       {contextHolder}
       <Form
         form={form}
-        name="createGoodReceiptForm"
+        name="createWarehouseReceiptForm"
         onFinish={handleFinish}
         initialValues={{ customerPayment: 0 }}
         labelCol={{ span: 7 }}
@@ -108,4 +113,4 @@ function CreateGoodReceiptForm({ form, onFinish }) {
   );
 }
 
-export default CreateGoodReceiptForm;
+export default CreateWarehouseReceiptForm;

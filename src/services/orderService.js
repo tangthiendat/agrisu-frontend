@@ -23,10 +23,6 @@ class OrderService {
   async count() {
     return (await axios.get(`${BASE_API_URL}/orders/count`)).data;
   }
-  async getOrdersByCustomer(customerId) {
-    return (await axios.get(`${BASE_API_URL}/orders/customer/${customerId}`))
-      .data;
-  }
 }
 
 export const orderService = new OrderService();

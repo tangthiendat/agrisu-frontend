@@ -1,12 +1,14 @@
 import { Layout, Menu } from "antd";
-import Logo from "./Logo";
+import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { MdDashboard, MdHomeWork, MdTrolley } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { FaFileInvoiceDollar, FaUser, FaUsers } from "react-icons/fa";
 import { FaBox, FaCartPlus } from "react-icons/fa6";
-import { useState } from "react";
 import { AiOutlineTransaction } from "react-icons/ai";
+import { FiActivity } from "react-icons/fi";
+import { TbTruckDelivery } from "react-icons/tb";
+import Logo from "./Logo";
 
 const items = [
   {
@@ -25,12 +27,12 @@ const items = [
     icon: <FaUsers />,
     children: [
       {
-        label: <NavLink to="/suppliers">Nhà cung cấp</NavLink>,
+        label: <NavLink to="partners/suppliers">Nhà cung cấp</NavLink>,
         key: "suppliers",
         icon: <MdHomeWork />,
       },
       {
-        label: <NavLink to="/customers">Khách hàng</NavLink>,
+        label: <NavLink to="partners/customers">Khách hàng</NavLink>,
         key: "customers",
         icon: <FaUser />,
       },
@@ -42,7 +44,7 @@ const items = [
     icon: <GrTransaction />,
     children: [
       {
-        label: <NavLink to="/invoices">Hóa đơn</NavLink>,
+        label: <NavLink to="/transactions/invoices">Hóa đơn</NavLink>,
         key: "invoices",
         icon: <FaFileInvoiceDollar />,
       },
@@ -54,33 +56,47 @@ const items = [
     icon: <AiOutlineTransaction />,
   },
   {
-    label: <NavLink to="/retail">Bán hàng</NavLink>,
-    key: "retail",
-    icon: <FaCartPlus />,
-  },
-  {
-    label: <NavLink to="/good-receipt">Nhập hàng</NavLink>,
-    key: "good-receipt",
-    icon: <MdTrolley />,
+    label: "Kinh doanh",
+    key: "sales",
+    icon: <FiActivity />,
+    children: [
+      {
+        label: <NavLink to="/sales/orders/new">Bán lẻ</NavLink>,
+        key: "orders",
+        icon: <FaCartPlus />,
+      },
+      {
+        label: <NavLink to="/sales/warehouse-receipts/new">Nhập kho</NavLink>,
+        key: "warehouse-receipts",
+        icon: <MdTrolley />,
+      },
+      {
+        label: <NavLink to="/sales/warehouse-exports/new">Xuất kho</NavLink>,
+        key: "warehouse-exports",
+        icon: <TbTruckDelivery />,
+      },
+    ],
   },
 ];
 
 function Header() {
   const location = useLocation();
-  const [selectedKey, setSelectedKey] = useState(
-    location.pathname.slice(1) || "dashboard",
+  const [selectedKeys, setSelectedKeys] = useState(
+    location.pathname.slice(1).split("/") || [],
   );
 
   return (
-    <Layout.Header className="flex  items-center">
+    <Layout.Header className="flex items-center">
       <Logo />
       <Menu
         className="flex-1"
         theme="dark"
         mode="horizontal"
-        selectedKeys={[selectedKey]}
+        selectedKeys={selectedKeys}
         items={items}
-        onClick={({ key }) => setSelectedKey(key)}
+        onClick={({ key }) => {
+          setSelectedKeys([key]);
+        }}
       />
     </Layout.Header>
   );

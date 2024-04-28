@@ -9,7 +9,7 @@ import SearchOrderCustomer from "../features/orders/SearchOrderCustomer";
 import CreateReceipt from "../features/receipts/CreateReceipt";
 import { useCreateOrder } from "../features/orders/hooks/useCreateOrder";
 
-function Retail() {
+function NewOrder() {
   const dispatch = useDispatch();
   const [createOrderForm] = Form.useForm();
   const customer = useSelector((state) => state.order.customer);
@@ -56,11 +56,11 @@ function Retail() {
           block
           loading={isCreating}
         >
-          THANH TOÁN
+          LẬP HÓA ĐƠN
         </Button>
       </div>
     </div>
   );
 }
 
-export default Retail;
+export default NewOrder;

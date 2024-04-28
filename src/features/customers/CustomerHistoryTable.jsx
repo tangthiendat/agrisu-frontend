@@ -11,7 +11,7 @@ function CustomerHistoryTable({ customerId }) {
       title: "Mã phiếu",
       dataIndex: "id",
       key: "id",
-      width: "15%",
+      width: "12%",
     },
     {
       title: "Thời gian",
@@ -23,19 +23,47 @@ function CustomerHistoryTable({ customerId }) {
       title: "Loại",
       dataIndex: "type",
       key: "type",
+      render: (type) => {
+        switch (type) {
+          case "WAREHOUSE_EXPORT":
+            return "Mua hàng";
+          case "RECEIPT":
+            return "Thanh toán nợ";
+          default:
+            return "";
+        }
+      },
     },
     {
-      title: "Giá trị",
+      title: "Nợ cũ",
+      dataIndex: "currentDebt",
+      key: "currentDebt",
+      render: (currentDebt) => formatCurrency(currentDebt),
+    },
+    {
+      title: "Phát sinh",
       dataIndex: "value",
       key: "value",
-      render: (value) => (
-        <span className={`${value > 0 ? "text-green-500" : "text-red-500"}`}>
-          {formatCurrency(value)}
-        </span>
-      ),
+      render: (value) =>
+        value > 0 ? (
+          <span className="text-green-500">{formatCurrency(value)}</span>
+        ) : (
+          ""
+        ),
     },
     {
-      title: "Dư nợ khách hàng",
+      title: "Thanh toán",
+      dataIndex: "payment",
+      key: "payment",
+      render: (payment) =>
+        payment > 0 ? (
+          <span className="text-red-500">{formatCurrency(payment)}</span>
+        ) : (
+          ""
+        ),
+    },
+    {
+      title: "Còn lại",
       dataIndex: "nextDebt",
       key: "nextDebt",
       render: (value) => formatCurrency(value),

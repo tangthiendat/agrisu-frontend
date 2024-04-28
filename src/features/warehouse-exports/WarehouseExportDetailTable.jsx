@@ -5,12 +5,12 @@ import {
   removeItem,
   updateItemQuantity,
   updateItemUnit,
-} from "./goodReceiptSlice";
+} from "./warehouseExportSlice";
 import { formatCurrency } from "../../utils/helper";
 
-function GoodReceiptDetailTable() {
-  const goodReceiptDetails = useSelector(
-    (state) => state.goodReceipt.goodReceiptDetails,
+function WarehouseExportDetailTable() {
+  const warehouseExportDetails = useSelector(
+    (state) => state.warehouseExport.warehouseExportDetails,
   );
   const dispatch = useDispatch();
 
@@ -121,7 +121,7 @@ function GoodReceiptDetailTable() {
   return (
     <Table
       rowKey={(record) => record.product.productId}
-      dataSource={goodReceiptDetails}
+      dataSource={warehouseExportDetails}
       columns={columns}
       pagination={false}
       size="middle"
@@ -129,4 +129,4 @@ function GoodReceiptDetailTable() {
   );
 }
 
-export default GoodReceiptDetailTable;
+export default WarehouseExportDetailTable;

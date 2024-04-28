@@ -6,11 +6,11 @@ export function useCreateOrder() {
   const { mutate: createOrder, isPending: isCreating } = useMutation({
     mutationFn: orderService.create,
     onSuccess: () => {
-      toast.success("Thêm đơn hàng thành công");
+      toast.success("Thêm hoá đơn thành công");
       queryClient.invalidateQueries("orders");
     },
     onError: () => {
-      toast.error("Có lỗi xảy ra khi thêm đơn hàng");
+      toast.error("Có lỗi xảy ra khi thêm hóa đơn");
     },
   });
   return { createOrder, isCreating };
