@@ -62,17 +62,17 @@ const items = [
     children: [
       {
         label: <NavLink to="/sales/orders/new">Bán lẻ</NavLink>,
-        key: "retail",
+        key: "orders",
         icon: <FaCartPlus />,
       },
       {
         label: <NavLink to="/sales/warehouse-receipts/new">Nhập kho</NavLink>,
-        key: "warehouse-receipt",
+        key: "warehouse-receipts",
         icon: <MdTrolley />,
       },
       {
         label: <NavLink to="/sales/warehouse-exports/new">Xuất kho</NavLink>,
-        key: "warehouse-export",
+        key: "warehouse-exports",
         icon: <TbTruckDelivery />,
       },
     ],
@@ -81,8 +81,8 @@ const items = [
 
 function Header() {
   const location = useLocation();
-  const [selectedKey, setSelectedKey] = useState(
-    location.pathname.slice(1) || "dashboard",
+  const [selectedKeys, setSelectedKeys] = useState(
+    location.pathname.slice(1).split("/") || [],
   );
 
   return (
@@ -92,9 +92,11 @@ function Header() {
         className="flex-1"
         theme="dark"
         mode="horizontal"
-        selectedKeys={[selectedKey]}
+        selectedKeys={selectedKeys}
         items={items}
-        onClick={({ key }) => setSelectedKey(key)}
+        onClick={({ key }) => {
+          setSelectedKeys([key]);
+        }}
       />
     </Layout.Header>
   );
