@@ -56,7 +56,7 @@ function Retail() {
           block
           loading={isCreating}
         >
-          THANH TOÁN
+          LẬP HÓA ĐƠN
         </Button>
       </div>
     </div>
