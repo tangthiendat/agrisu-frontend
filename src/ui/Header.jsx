@@ -61,17 +61,17 @@ const items = [
     icon: <FiActivity />,
     children: [
       {
-        label: <NavLink to="/sales/retail">Bán lẻ</NavLink>,
+        label: <NavLink to="/sales/orders/new">Bán lẻ</NavLink>,
         key: "retail",
         icon: <FaCartPlus />,
       },
       {
-        label: <NavLink to="/sales/warehouse-receipt">Nhập kho</NavLink>,
+        label: <NavLink to="/sales/warehouse-receipts/new">Nhập kho</NavLink>,
         key: "warehouse-receipt",
         icon: <MdTrolley />,
       },
       {
-        label: <NavLink to="/sales/warehouse-export">Xuất kho</NavLink>,
+        label: <NavLink to="/sales/warehouse-exports/new">Xuất kho</NavLink>,
         key: "warehouse-export",
         icon: <TbTruckDelivery />,
       },
@@ -86,7 +86,7 @@ function Header() {
   );
 
   return (
-    <Layout.Header className="flex  items-center">
+    <Layout.Header className="flex items-center">
       <Logo />
       <Menu
         className="flex-1"
