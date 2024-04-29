@@ -108,14 +108,17 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
           >
             <Input allowClear className="w-[60%]" />
           </Form.Item>
-        </Col>
-        <Col span={12}>
           <Form.Item label="Địa chỉ" name="address">
             <TextArea
               allowClear
               autoSize={{ minRows: 2, maxRows: 4 }}
               className="w-[90%]"
             />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Mã số thuế" name="taxCode">
+            <Input allowClear className="w-[60%]" />
           </Form.Item>
           <Form.Item
             label={`Công nợ${isUpdateSession ? "" : " bắt đầu"}`}
