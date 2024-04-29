@@ -10,7 +10,7 @@ function DeleteCustomer({ customerId }) {
   const dispatch = useDispatch();
   return (
     <Popconfirm
-      title="Xóa sản phẩm"
+      title="Xóa khách hàng"
       description="Bạn có chắc muốn xóa khách hàng này không?"
       okText="Xóa"
       cancelText="Hủy"

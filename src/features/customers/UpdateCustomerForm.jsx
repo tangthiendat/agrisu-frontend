@@ -141,7 +141,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
             htmlType="submit"
             loading={isCreating || isUpdating}
           >
-            Thêm
+            {isUpdateSession ? "Cập nhật" : "Thêm mới"}
           </Button>
         </Space>
       </Form.Item>

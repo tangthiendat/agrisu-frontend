@@ -361,7 +361,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
               className="btn-primary"
               loading={isCreating || isUpdating}
             >
-              {isUpdateSession ? "Cập nhật" : "Thêm"}
+              {isUpdateSession ? "Cập nhật" : "Thêm mới"}
             </Button>
           </Space>
         </Form.Item>
