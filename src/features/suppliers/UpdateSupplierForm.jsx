@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, Input, InputNumber, Row, Space } from "antd";
-import { useCreateSupplier } from "./hooks/useCreateSupplier";
 import TextArea from "antd/es/input/TextArea";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
+import { useCreateSupplier } from "./hooks/useCreateSupplier";
 import { useUpdateSupplier } from "./hooks/useUpdateSupplier";
+import { formatCurrency, parseCurrency } from "../../utils/helper";
+import { setSelectedSupplier } from "./supplierSlice";
 
 /* eslint-disable react/prop-types */
 function UpdateSupplierForm({
@@ -16,6 +18,10 @@ function UpdateSupplierForm({
   const { createSupplier, isCreating } = useCreateSupplier();
   const { updateSupplier, isUpdating } = useUpdateSupplier();
   const isUpdateSession = Boolean(supplierToUpdate.supplierId);
+  const selectedSupplier = useSelector(
+    (state) => state.supplier.selectedSupplier,
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isUpdateSession) {
@@ -38,6 +44,9 @@ function UpdateSupplierForm({
         },
         {
           onSuccess: () => {
+            if (selectedSupplier.length > 0) {
+              dispatch(setSelectedSupplier([submittedSupplier]));
+            }
             setIsOpenModal(false);
           },
         },

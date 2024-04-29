@@ -6,6 +6,7 @@ import { formatCurrency } from "../../utils/helper";
 import Spinner from "../../ui/Spinner";
 import UpdateSupplier from "./UpdateSupplier";
 import DeleteSupplier from "./DeleteSupplier";
+import { useSelector } from "react-redux";
 
 function SupplierTable() {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -14,6 +15,9 @@ function SupplierTable() {
     pagination.pageSize,
   );
   const { suppliersNum } = useCountSuppliers();
+  const selectedSupplier = useSelector(
+    (state) => state.supplier.selectedSupplier,
+  );
 
   const columns = [
     {
@@ -65,7 +69,7 @@ function SupplierTable() {
     <Table
       rowKey={(record) => record.supplierId}
       columns={columns}
-      dataSource={suppliers}
+      dataSource={selectedSupplier.length > 0 ? selectedSupplier : suppliers}
       pagination={{
         current: pagination.current,
         pageSize: pagination.pageSize,
