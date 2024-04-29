@@ -82,7 +82,9 @@ const items = [
 function Header() {
   const location = useLocation();
   const [selectedKeys, setSelectedKeys] = useState(
-    location.pathname.slice(1).split("/") || [],
+    location.pathname === "/"
+      ? ["dashboard"]
+      : location.pathname.slice(1).split("/"),
   );
 
   return (
