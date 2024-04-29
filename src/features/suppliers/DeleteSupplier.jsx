@@ -1,24 +1,24 @@
 /* eslint-disable react/prop-types */
-import { MdDelete } from "react-icons/md";
 import { Popconfirm, Tooltip } from "antd";
-import { useDeleteCustomer } from "./hooks/useDeleteCustomer";
+import { MdDelete } from "react-icons/md";
+import { useDeleteSupplier } from "./hooks/useDeleteSuppliers";
 import { useDispatch } from "react-redux";
-import { setSelectedCustomer } from "./customerSlice";
+import { setSelectedSupplier } from "./supplierSlice";
 
-function DeleteCustomer({ customerId }) {
-  const { deleteCustomer, isDeleting } = useDeleteCustomer();
+function DeleteSupplier({ supplierId }) {
+  const { deleteSupplier, isDeleting } = useDeleteSupplier();
   const dispatch = useDispatch();
   return (
     <Popconfirm
-      title="Xóa khách hàng"
-      description="Bạn có chắc muốn xóa khách hàng này không?"
+      title="Xóa nhà cung cấp"
+      description="Bạn có chắc muốn xóa nhà cung cấp này không?"
       okText="Xóa"
       cancelText="Hủy"
       okButtonProps={{ danger: true, loading: isDeleting }}
       onConfirm={() =>
-        deleteCustomer(customerId, {
+        deleteSupplier(supplierId, {
           onSuccess: () => {
-            dispatch(setSelectedCustomer([]));
+            dispatch(setSelectedSupplier([]));
           },
         })
       }
@@ -30,4 +30,4 @@ function DeleteCustomer({ customerId }) {
   );
 }
 
-export default DeleteCustomer;
+export default DeleteSupplier;

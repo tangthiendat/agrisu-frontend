@@ -8,7 +8,7 @@ export function useCreateWarehouseReceipt() {
     {
       mutationFn: warehouseReceiptService.create,
       onSuccess: () => {
-        toast.success("Thêm phiếu nhập hàng thành công");
+        toast.success("Thêm phiếu nhập kho thành công");
         queryClient.invalidateQueries("warehouseReceipts");
       },
       onError: () => {

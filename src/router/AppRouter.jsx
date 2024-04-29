@@ -7,10 +7,13 @@ import Products from "../pages/Products";
 import Suppliers from "../pages/Suppliers";
 import Customers from "../pages/Customers";
 import NewOrder from "../pages/NewOrder";
-import Invoices from "../pages/Invoices";
+import Orders from "../pages/Orders";
+import WarehouseReceipts from "../pages/WarehouseReceipts";
+import WarehouseExports from "../pages/WarehouseExports";
 import CashFlow from "../pages/CashFlow";
 import NewWarehouseReceipt from "../pages/NewWarehouseReceipt";
 import NewWarehouseExport from "../pages/NewWarehouseExport";
+import Reports from "../pages/Reports";
 
 const router = createBrowserRouter([
   {
@@ -44,9 +47,19 @@ const router = createBrowserRouter([
         element: <Customers />,
       },
       {
-        path: "/transactions/invoices",
+        path: "/transactions/orders",
         errorElement: <Error />,
-        element: <Invoices />,
+        element: <Orders />,
+      },
+      {
+        path: "/transactions/warehouse-receipts",
+        errorElement: <Error />,
+        element: <WarehouseReceipts />,
+      },
+      {
+        path: "/transactions/warehouse-exports",
+        errorElement: <Error />,
+        element: <WarehouseExports />,
       },
       {
         path: "/sales/orders/new",
@@ -67,6 +80,11 @@ const router = createBrowserRouter([
         path: "/cash-flow",
         errorElement: <Error />,
         element: <CashFlow />,
+      },
+      {
+        path: "/reports",
+        errorElement: <Error />,
+        element: <Reports />,
       },
     ],
   },
