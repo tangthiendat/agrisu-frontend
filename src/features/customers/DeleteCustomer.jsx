@@ -2,9 +2,12 @@
 import { MdDelete } from "react-icons/md";
 import { Popconfirm, Tooltip } from "antd";
 import { useDeleteCustomer } from "./hooks/useDeleteCustomer";
+import { useDispatch } from "react-redux";
+import { setSelectedCustomer } from "./customerSlice";
 
 function DeleteCustomer({ customerId }) {
   const { deleteCustomer, isDeleting } = useDeleteCustomer();
+  const dispatch = useDispatch();
   return (
     <Popconfirm
       title="Xóa sản phẩm"
@@ -12,7 +15,13 @@ function DeleteCustomer({ customerId }) {
       okText="Xóa"
       cancelText="Hủy"
       okButtonProps={{ danger: true, loading: isDeleting }}
-      onConfirm={() => deleteCustomer(customerId)}
+      onConfirm={() =>
+        deleteCustomer(customerId, {
+          onSuccess: () => {
+            dispatch(setSelectedCustomer([]));
+          },
+        })
+      }
     >
       <Tooltip title="Xóa" placement="bottom">
         <MdDelete className="icon" color="var(--color-red-500)" />
