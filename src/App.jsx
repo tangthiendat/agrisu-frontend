@@ -62,6 +62,7 @@ function App() {
           position="bottom-right"
           autoClose={3000}
           theme="colored"
+          pauseOnHover={false}
         />
       </QueryClientProvider>
     </ConfigProvider>

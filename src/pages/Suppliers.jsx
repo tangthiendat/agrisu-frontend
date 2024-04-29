@@ -1,5 +1,6 @@
 import Title from "antd/es/typography/Title";
 import AddSupplier from "../features/suppliers/AddSupplier";
+import SupplierTable from "../features/suppliers/SupplierTable";
 
 function Suppliers() {
   return (
@@ -9,7 +10,9 @@ function Suppliers() {
         <div className="basis-[20%]"></div>
         <AddSupplier />
       </div>
-      <div></div>
+      <div>
+        <SupplierTable />
+      </div>
     </div>
   );
 }

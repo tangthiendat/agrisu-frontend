@@ -134,7 +134,7 @@ function UpdateSupplierForm({
             htmlType="submit"
             loading={isCreating || isUpdating}
           >
-            Thêm
+            {isUpdateSession ? "Cập nhật" : "Thêm"}
           </Button>
         </Space>
       </Form.Item>
