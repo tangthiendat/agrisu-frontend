@@ -96,11 +96,18 @@ function ProductTable() {
         const defaultProductUnit = record.productUnits.find(
           (productUnit) => productUnit.isDefault,
         );
-        return parseFloat(
+        const currentStockQuantity = parseFloat(
           (
             (stockQuantity * defaultProductUnit.baseQuantity) /
             record.displayedProductUnit.baseQuantity
           ).toFixed(2),
+        );
+        return (
+          <span
+            className={`${currentStockQuantity === 0 ? " text-red-500" : ""}`}
+          >
+            {currentStockQuantity}
+          </span>
         );
       },
     },

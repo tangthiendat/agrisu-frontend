@@ -59,7 +59,7 @@ function NewWarehouseReceipt() {
           block
           loading={isCreating}
         >
-          THANH TOÁN
+          LẬP PHIẾU NHẬP KHO
         </Button>
       </div>
     </div>

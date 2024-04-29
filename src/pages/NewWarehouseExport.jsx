@@ -61,7 +61,7 @@ function NewWarehouseExport() {
           block
           loading={isCreating}
         >
-          THANH TOÁN
+          LẬP PHIẾU XUẤT KHO
         </Button>
       </div>
     </div>
