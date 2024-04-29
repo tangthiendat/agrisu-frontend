@@ -7,7 +7,7 @@ function CustomerHistory({ customer, onCancel }) {
   return (
     <>
       <CustomerHistoryTable customerId={customer.customerId} />
-      <div className="text-right">
+      <div className="mt-4 text-right">
         <Space>
           <Button onClick={onCancel}>Đóng</Button>
           <CreateReceipt customer={customer} />

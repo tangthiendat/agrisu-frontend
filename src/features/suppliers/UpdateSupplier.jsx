@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Form, Modal, Tabs, Tooltip } from "antd";
 import { MdOutlineEdit } from "react-icons/md";
 import UpdateSupplierForm from "./UpdateSupplierForm";
+import SupplierHistory from "./SupplierHistory";
 
 function UpdateSupplier({ supplier }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -32,7 +33,7 @@ function UpdateSupplier({ supplier }) {
     {
       key: "2",
       label: "Công nợ",
-      children: "CONG NO",
+      children: <SupplierHistory supplier={supplier} onCancel={handleCancel} />,
     },
   ];
 

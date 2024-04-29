@@ -90,7 +90,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
               },
             ]}
           >
-            <Input className="w-[80%]" />
+            <Input allowClear className="w-[80%]" />
           </Form.Item>
           <Form.Item
             label="Số điện thoại"
