@@ -54,7 +54,7 @@ function UpdateSupplierForm({
 
   return (
     <Form
-      name="updateCustomerForm"
+      name="updateSupplierForm"
       form={form}
       onKeyDown={preventSubmission}
       onFinish={handleFinish}
