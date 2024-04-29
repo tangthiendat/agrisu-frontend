@@ -1,11 +1,23 @@
+/* eslint-disable react/prop-types */
 import { MdDelete } from "react-icons/md";
-import { Tooltip } from "antd";
+import { Popconfirm, Tooltip } from "antd";
+import { useDeleteCustomer } from "./hooks/useDeleteCustomer";
 
-function DeleteCustomer() {
+function DeleteCustomer({ customerId }) {
+  const { deleteCustomer, isDeleting } = useDeleteCustomer();
   return (
-    <Tooltip title="Xóa" placement="bottom">
-      <MdDelete className="icon" color="var(--color-red-500)" />
-    </Tooltip>
+    <Popconfirm
+      title="Xóa sản phẩm"
+      description="Bạn có chắc muốn xóa khách hàng này không?"
+      okText="Xóa"
+      cancelText="Hủy"
+      okButtonProps={{ danger: true, loading: isDeleting }}
+      onConfirm={() => deleteCustomer(customerId)}
+    >
+      <Tooltip title="Xóa" placement="bottom">
+        <MdDelete className="icon" color="var(--color-red-500)" />
+      </Tooltip>
+    </Popconfirm>
   );
 }
 
