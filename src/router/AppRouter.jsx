@@ -64,17 +64,17 @@ const router = createBrowserRouter([
         element: <WarehouseExports />,
       },
       {
-        path: "/sales/orders/new",
+        path: "/sales/new-order",
         errorElement: <Error />,
         element: <NewOrder />,
       },
       {
-        path: "/sales/warehouse-receipts/new",
+        path: "/sales/new-warehouse-receipt",
         errorElement: <Error />,
         element: <NewWarehouseReceipt />,
       },
       {
-        path: "/sales/warehouse-exports/new",
+        path: "/sales/new-warehouse-export",
         errorElement: <Error />,
         element: <NewWarehouseExport />,
       },
