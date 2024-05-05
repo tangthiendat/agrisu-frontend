@@ -41,7 +41,7 @@ const warehouseExportSlice = createSlice({
           (productUnit) => productUnit.unit.unitId === unit.unitId,
         );
       warehouseExportDetail.product.displayedProductUnit = currentProductUnit;
-      warehouseExportDetail.unitPrice = currentProductUnit.salePrice;
+      warehouseExportDetail.unitPrice = currentProductUnit.sellingPrice;
     },
     clearWarehouseExportDetails(state) {
       state.warehouseExportDetails = [];

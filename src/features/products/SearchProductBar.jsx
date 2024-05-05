@@ -9,6 +9,7 @@ function SearchProductBar({
   onSelectProduct,
   onClear,
   showSelectedLabel = true,
+  useOriginalPrice = false,
 }) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,7 +38,11 @@ function SearchProductBar({
             </span>
           </div>
           <div className="text-sky-600">
-            {formatCurrency(product.displayedProductUnit.sellingPrice)}
+            {formatCurrency(
+              useOriginalPrice
+                ? product.displayedProductUnit.originalPrice
+                : product.displayedProductUnit.sellingPrice,
+            )}
           </div>
         </div>
         <div>
