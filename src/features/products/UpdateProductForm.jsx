@@ -206,7 +206,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
           </Col>
           <Col span={12}>
             <Form.Item
-              label="Tồn kho"
+              label="Số lượng tồn kho"
               name="stockQuantity"
               tooltip="Số lượng tồn kho tương ứng với đơn vị tính mặc định"
             >
