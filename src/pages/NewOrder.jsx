@@ -48,16 +48,26 @@ function NewOrder() {
           <CreateOrderForm form={createOrderForm} onFinish={handleFinish} />
         </div>
 
-        <Button
-          className="btn-primary h-12 text-base"
-          type="primary"
-          htmlType="submit"
-          form="createOrderForm"
-          block
-          loading={isCreating}
-        >
-          LẬP HÓA ĐƠN
-        </Button>
+        <div className="flex flex-col items-center justify-between gap-4">
+          <Button
+            className="btn-primary h-12 text-base"
+            type="primary"
+            htmlType="submit"
+            form="createOrderForm"
+            block
+            loading={isCreating}
+          >
+            LẬP HÓA ĐƠN
+          </Button>
+          <Button
+            className="btn-primary h-12 text-base"
+            type="primary"
+            block
+            loading={isCreating}
+          >
+            LẬP VÀ IN HÓA ĐƠN
+          </Button>
+        </div>
       </div>
     </div>
   );

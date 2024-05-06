@@ -51,16 +51,26 @@ function NewWarehouseReceipt() {
           />
         </div>
 
-        <Button
-          className="btn-primary h-12 text-base"
-          type="primary"
-          htmlType="submit"
-          form="createWarehouseReceiptForm"
-          block
-          loading={isCreating}
-        >
-          LẬP PHIẾU NHẬP KHO
-        </Button>
+        <div className="flex flex-col items-center justify-between gap-4">
+          <Button
+            className="btn-primary h-12 text-base"
+            type="primary"
+            htmlType="submit"
+            form="createWarehouseReceiptForm"
+            block
+            loading={isCreating}
+          >
+            LẬP PHIẾU NHẬP KHO
+          </Button>
+          <Button
+            className="btn-primary h-12 text-base"
+            type="primary"
+            block
+            loading={isCreating}
+          >
+            LẬP VÀ IN PHIẾU NHẬP KHO
+          </Button>
+        </div>
       </div>
     </div>
   );
