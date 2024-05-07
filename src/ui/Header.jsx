@@ -113,7 +113,7 @@ function Header() {
     <Layout.Header className="flex items-center">
       <Logo />
       <Menu
-        className="flex-1"
+        className="min-w-0 flex-1"
         theme="dark"
         mode="horizontal"
         selectedKeys={selectedKeys}

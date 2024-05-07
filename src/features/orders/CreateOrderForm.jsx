@@ -1,15 +1,28 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { Form, InputNumber, Modal } from "antd";
+import { Form, InputNumber, Modal, Grid } from "antd";
 import { useSelector } from "react-redux";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { getOrderTotalValue } from "./orderSlice";
 
+const { useBreakpoint } = Grid;
 function CreateOrderForm({ form, onFinish }) {
   const totalOrderValue = useSelector(getOrderTotalValue);
   const orderDetails = useSelector((state) => state.order.orderDetails);
   const customer = useSelector((state) => state.order.customer);
   const [change, setChange] = useState(0);
+  const screens = useBreakpoint();
+  const formItemLayout = screens.xl
+    ? {
+        labelCol: {
+          span: 6,
+        },
+        wrapperCol: {
+          span: 14,
+          offset: 4,
+        },
+      }
+    : null;
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -63,12 +76,12 @@ function CreateOrderForm({ form, onFinish }) {
     <>
       {contextHolder}
       <Form
+        layout={screens.xl ? "horizontal" : "vertical"}
         form={form}
         name="createOrderForm"
         onFinish={handleFinish}
+        {...formItemLayout}
         initialValues={{ customerPayment: 0 }}
-        labelCol={{ span: 7 }}
-        wrapperCol={{ span: 12, offset: 5 }}
       >
         <Form.Item
           label="Tổng tiền"

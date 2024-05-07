@@ -2,11 +2,15 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
-import { Form, Modal, Tooltip } from "antd";
+import { Form, Modal, Tooltip, Grid } from "antd";
 import UpdateProductForm from "./UpdateProductForm";
+
+const { useBreakpoint } = Grid;
 function UpdateProduct({ product }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [updateProductForm] = Form.useForm();
+  const screens = useBreakpoint();
+
   function showModal() {
     setIsOpenModal(true);
   }
@@ -29,7 +33,7 @@ function UpdateProduct({ product }) {
         open={isOpenModal}
         destroyOnClose
         title={<span className="text-xl">Cập nhật sản phẩm</span>}
-        width={1000}
+        width={screens.lg ? "900px" : "85%"}
         footer={null}
         onCancel={handleCancel}
       >

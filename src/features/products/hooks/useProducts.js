@@ -14,7 +14,7 @@ export function useProducts(page, pageSize) {
   });
   useEffect(() => {
     if (error) {
-      toast.error("Failed to fetch products");
+      toast.error("Có lỗi xảy ra khi tải dữ liệu sản phẩm");
     }
   }, [error]);
   return { isLoading, products };

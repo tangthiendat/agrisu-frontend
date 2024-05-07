@@ -1,14 +1,15 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Col, Form, Input, InputNumber, Row, Space } from "antd";
+import { Button, Col, Form, Input, InputNumber, Row, Space, Grid } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useCreateSupplier } from "./hooks/useCreateSupplier";
 import { useUpdateSupplier } from "./hooks/useUpdateSupplier";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { setSelectedSupplier } from "./supplierSlice";
 
-/* eslint-disable react/prop-types */
+const { useBreakpoint } = Grid;
 function UpdateSupplierForm({
   form,
   supplierToUpdate = {},
@@ -22,6 +23,17 @@ function UpdateSupplierForm({
     (state) => state.supplier.selectedSupplier,
   );
   const dispatch = useDispatch();
+  const screens = useBreakpoint();
+  const formItemLayout = screens.lg
+    ? {
+        labelCol: {
+          span: 8,
+        },
+        wrapperCol: {
+          span: 16,
+        },
+      }
+    : null;
 
   useEffect(() => {
     if (isUpdateSession) {
@@ -63,11 +75,12 @@ function UpdateSupplierForm({
 
   return (
     <Form
+      layout={screens.lg ? "horizontal" : "vertical"}
       name="updateSupplierForm"
       form={form}
       onKeyDown={preventSubmission}
       onFinish={handleFinish}
-      labelCol={{ span: 7 }}
+      {...formItemLayout}
       initialValues={{ payable: 0 }}
     >
       <Row gutter={24}>
@@ -134,7 +147,7 @@ function UpdateSupplierForm({
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item className="text-right">
+      <Form.Item className="text-right" wrapperCol={{ span: 24 }}>
         <Space>
           <Button onClick={onCancel}>Hủy</Button>
           <Button

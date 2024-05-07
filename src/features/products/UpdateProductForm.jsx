@@ -12,6 +12,7 @@ import {
   Row,
   Select,
   Space,
+  Grid,
 } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper";
@@ -22,6 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedProduct } from "./productSlice";
 import { useEffect } from "react";
 
+const { useBreakpoint } = Grid;
+
 function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
   const { units } = useUnits();
   const isUpdateSession = Boolean(productToUpdate.productId);
@@ -30,6 +33,17 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
   const [modal, contextHolder] = Modal.useModal();
   const dispatch = useDispatch();
   const selectedProduct = useSelector((state) => state.product.selectedProduct);
+  const screens = useBreakpoint();
+  const formItemLayout = screens.lg
+    ? {
+        labelCol: {
+          span: 8,
+        },
+        wrapperCol: {
+          span: 16,
+        },
+      }
+    : null;
 
   useEffect(() => {
     if (isUpdateSession) {
@@ -179,11 +193,12 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
     <>
       {contextHolder}
       <Form
+        layout={screens.lg ? "horizontal" : "vertical"}
         form={form}
         name="updateProductForm"
         onKeyDown={preventSubmission}
         onFinish={handleFinish}
-        labelCol={{ span: 7 }}
+        {...formItemLayout}
         initialValues={{ stockQuantity: 0 }}
       >
         <Row gutter={24}>
@@ -192,7 +207,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
               <Input
                 disabled={!isUpdateSession}
                 readOnly={isUpdateSession}
-                className="w-[50%]"
+                className="w-[70%]"
                 placeholder="Mã tự động"
               />
             </Form.Item>
@@ -206,11 +221,11 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
           </Col>
           <Col span={12}>
             <Form.Item
-              label="Số lượng tồn kho"
+              label="Tồn kho"
               name="stockQuantity"
               tooltip="Số lượng tồn kho tương ứng với đơn vị tính mặc định"
             >
-              <InputNumber className="w-[30%]" min={0} max={1000000} />
+              <InputNumber className="w-[50%]" min={0} max={1000000} />
             </Form.Item>
           </Col>
         </Row>
@@ -225,7 +240,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
                   key: "1",
                   label: "Đơn vị tính",
                   children: (
-                    <Form.Item>
+                    <Form.Item wrapperCol={{ span: 24 }}>
                       <Form.List name="productUnits">
                         {(unitFields, { add: addUnit, remove: removeUnit }) => {
                           return (
@@ -233,7 +248,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
                               <div className="flex flex-col ">
                                 {unitFields.length > 0 && (
                                   <div className="mb-2 flex items-center justify-between font-semibold">
-                                    <div className="basis-[10%] ">Đơn vị</div>
+                                    <div className="basis-[12%] ">Đơn vị</div>
                                     <div className="basis-[12%]">
                                       Giá trị cơ bản
                                     </div>
@@ -250,7 +265,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
                                       key={unitField.key}
                                     >
                                       <Form.Item
-                                        className="basis-[10%]"
+                                        className="basis-[12%]"
                                         name={[
                                           unitField.name,
                                           "unit",
@@ -291,7 +306,6 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
                                           parser={parseCurrency}
                                           min={0}
                                           max={1000000000}
-                                          addonAfter="VND"
                                         />
                                       </Form.Item>
                                       <Form.Item
@@ -304,11 +318,10 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
                                           parser={parseCurrency}
                                           min={0}
                                           max={1000000000}
-                                          addonAfter="VND"
                                         />
                                       </Form.Item>
                                       <Form.Item
-                                        className="basis-[10%]"
+                                        className="basis-[12%]"
                                         name={[unitField.name, "isDefault"]}
                                         valuePropName="checked"
                                       >
@@ -352,7 +365,7 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
             ></Collapse>
           </Col>
         </Row>
-        <Form.Item className="mt-5 text-right">
+        <Form.Item className="mt-5 text-right" wrapperCol={{ span: 24 }}>
           <Space>
             <Button onClick={handleCancel}>Hủy</Button>
             <Button

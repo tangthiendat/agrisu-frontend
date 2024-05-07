@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Button, Form, Modal } from "antd";
+import { Button, Form, Modal, Grid } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import UpdateSupplierForm from "./UpdateSupplierForm";
 
+const { useBreakpoint } = Grid;
 function AddSupplier() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [addSupplierForm] = Form.useForm();
+  const screens = useBreakpoint();
 
   function showModal() {
     setIsOpenModal(true);
@@ -29,7 +31,7 @@ function AddSupplier() {
       <Modal
         open={isOpenModal}
         title={<span className="text-xl">Thêm nhà cung cấp</span>}
-        width={1000}
+        width={screens.lg ? "900px" : "85%"}
         destroyOnClose
         footer={null}
         onCancel={handleCancel}

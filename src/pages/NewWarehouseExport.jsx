@@ -44,7 +44,7 @@ function NewWarehouseExport() {
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
         <div className="flex items-center justify-between">
           <SearchWarehouseExportCustomer />
-          <CreateReceipt customer={customer} />
+          {screen.xl && <CreateReceipt customer={customer} />}
         </div>
         <div className="flex-1">
           <CreateWarehouseExportForm
