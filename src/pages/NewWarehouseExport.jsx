@@ -1,4 +1,4 @@
-import { Button, Form } from "antd";
+import { Button, Form, Grid } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import SearchWarehouseExportCustomer from "../features/warehouse-exports/SearchWarehouseExportCustomer";
 import SearchWarehouseExportDetail from "../features/warehouse-exports/SearchWarehouseExportDetail";
@@ -11,11 +11,13 @@ import {
 } from "../features/warehouse-exports/warehouseExportSlice";
 import { useCreateWarehouseExport } from "../features/warehouse-exports/hooks/useCreateWarehouseExport";
 
+const { useBreakpoint } = Grid;
 function NewWarehouseExport() {
   const dispatch = useDispatch();
   const [createWarehouseExportForm] = Form.useForm();
   const customer = useSelector((state) => state.warehouseExport.customer);
   const { createWarehouseExport, isCreating } = useCreateWarehouseExport();
+  const screen = useBreakpoint();
 
   function handleFinish(submittedWareHouseExport) {
     createWarehouseExport(submittedWareHouseExport, {
@@ -68,7 +70,7 @@ function NewWarehouseExport() {
             className="btn-primary h-12 text-base"
             type="primary"
             block
-            loading={isCreating}
+            // loading={isCreating}
           >
             LẬP VÀ IN PHIẾU XUẤT KHO
           </Button>

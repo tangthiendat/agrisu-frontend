@@ -16,6 +16,7 @@ function CustomerHistoryTable({ customerId }) {
     {
       title: "Thời gian",
       dataIndex: "createdAt",
+      width: "16%",
       key: "createdAt",
       render: (createdAt) => formatDateTime(createdAt),
     },

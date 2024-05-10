@@ -102,6 +102,22 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
     const hasProductUnit = submittedProduct.productUnits?.length > 0;
     //Check whether the product has a default unit
     if (hasProductUnit) {
+      const hasBlankField = submittedProduct.productUnits.some((productUnit) =>
+        Object.keys(productUnit).some(
+          (key) => key !== "isDefault" && !productUnit[key],
+        ),
+      );
+      if (hasBlankField) {
+        modal.error({
+          title: "Thiếu thông tin",
+          content: "Hãy điền đầy đủ thông tin cho các đơn vị tính.",
+          centered: true,
+          okButtonProps: {
+            className: "btn-primary",
+          },
+        });
+        return;
+      }
       const hasDefaultUnit = submittedProduct.productUnits.some(
         (productUnit) => productUnit.isDefault,
       );
@@ -140,23 +156,6 @@ function UpdateProductForm({ form, productToUpdate = {}, setIsOpenModal }) {
     submittedProduct.displayedProductUnit = submittedProduct.productUnits.find(
       (productUnit) => productUnit.isDefault,
     );
-
-    const hasBlankField = submittedProduct.productUnits.some((productUnit) =>
-      Object.keys(productUnit).some(
-        (key) => key !== "isDefault" && !productUnit[key],
-      ),
-    );
-    if (hasBlankField) {
-      modal.error({
-        title: "Thiếu thông tin",
-        content: "Hãy điền đầy đủ thông tin cho các đơn vị tính.",
-        centered: true,
-        okButtonProps: {
-          className: "btn-primary",
-        },
-      });
-      return;
-    }
 
     //Handle update or create product based on the session
     if (isUpdateSession) {

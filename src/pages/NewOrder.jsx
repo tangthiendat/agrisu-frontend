@@ -65,7 +65,7 @@ function NewOrder() {
             className="btn-primary h-12 text-base"
             type="primary"
             block
-            loading={isCreating}
+            // loading={isCreating}
           >
             LẬP VÀ IN HÓA ĐƠN
           </Button>

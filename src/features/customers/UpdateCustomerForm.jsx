@@ -139,7 +139,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
             name="receivable"
           >
             <InputNumber
-              className="w-[55%]"
+              className="w-[70%]"
               formatter={formatCurrency}
               parser={parseCurrency}
               min={0}
