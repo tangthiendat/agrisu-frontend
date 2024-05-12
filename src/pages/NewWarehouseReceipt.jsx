@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Button, Form } from "antd";
+import { Button, Form, Grid } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import SearchWarehouseReceiptDetail from "../features/warehouse-receipts/SearchWarehouseReceiptDetail";
 import { clearWarehouseReceiptDetails } from "../features/warehouse-receipts/warehouseReceiptSlice";
@@ -9,11 +9,13 @@ import { useCreateWarehouseReceipt } from "../features/warehouse-receipts/hooks/
 import SearchWarehouseReceiptSupplier from "../features/warehouse-receipts/SearchWarehouseReceiptSupplier";
 import CreatePayment from "../features/payments/CreatePayment";
 
+const { useBreakpoint } = Grid;
 function NewWarehouseReceipt() {
   const dispatch = useDispatch();
   const [createWarehouseReceiptForm] = Form.useForm();
   const { createWarehouseReceipt, isCreating } = useCreateWarehouseReceipt();
   const supplier = useSelector((state) => state.warehouseReceipt.supplier);
+  const screens = useBreakpoint();
 
   function handleFinish(submittedWarehouseReceipt) {
     createWarehouseReceipt(submittedWarehouseReceipt, {
@@ -42,7 +44,7 @@ function NewWarehouseReceipt() {
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
         <div className="flex items-center justify-between">
           <SearchWarehouseReceiptSupplier />
-          <CreatePayment supplier={supplier} />
+          {screens.xl && <CreatePayment supplier={supplier} />}
         </div>
         <div className="flex-1">
           <CreateWarehouseReceiptForm
@@ -51,16 +53,26 @@ function NewWarehouseReceipt() {
           />
         </div>
 
-        <Button
-          className="btn-primary h-12 text-base"
-          type="primary"
-          htmlType="submit"
-          form="createWarehouseReceiptForm"
-          block
-          loading={isCreating}
-        >
-          LẬP PHIẾU NHẬP KHO
-        </Button>
+        <div className="flex flex-col items-center justify-between gap-4">
+          <Button
+            className="btn-primary h-12 text-base"
+            type="primary"
+            htmlType="submit"
+            form="createWarehouseReceiptForm"
+            block
+            loading={isCreating}
+          >
+            LẬP PHIẾU NHẬP KHO
+          </Button>
+          <Button
+            className="btn-primary h-12 text-base"
+            type="primary"
+            block
+            // loading={isCreating}
+          >
+            LẬP VÀ IN PHIẾU NHẬP KHO
+          </Button>
+        </div>
       </div>
     </div>
   );

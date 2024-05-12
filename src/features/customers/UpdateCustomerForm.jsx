@@ -2,12 +2,14 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Form, Input, InputNumber, Row, Space, Button } from "antd";
+import { Col, Form, Input, InputNumber, Row, Space, Button, Grid } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { useCreateCustomer } from "./hooks/useCreateCustomer";
 import { useUpdateCustomer } from "./hooks/useUpdateCustomer";
 import { setSelectedCustomer } from "./customerSlice";
+
+const { useBreakpoint } = Grid;
 
 function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
   const { createCustomer, isCreating } = useCreateCustomer();
@@ -17,6 +19,17 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
     (state) => state.customer.selectedCustomer,
   );
   const dispatch = useDispatch();
+  const screens = useBreakpoint();
+  const formItemLayout = screens.lg
+    ? {
+        labelCol: {
+          span: 8,
+        },
+        wrapperCol: {
+          span: 16,
+        },
+      }
+    : null;
 
   useEffect(() => {
     if (isUpdateSession) {
@@ -64,11 +77,12 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
 
   return (
     <Form
+      layout={screens.lg ? "horizontal" : "vertical"}
       name="updateCustomerForm"
       form={form}
+      {...formItemLayout}
       onKeyDown={preventSubmission}
       onFinish={handleFinish}
-      labelCol={{ span: 7 }}
       initialValues={{ receivable: 0 }}
     >
       <Row gutter={24}>
@@ -125,7 +139,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
             name="receivable"
           >
             <InputNumber
-              className="w-[55%]"
+              className="w-[70%]"
               formatter={formatCurrency}
               parser={parseCurrency}
               min={0}
@@ -135,7 +149,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item className="text-right">
+      <Form.Item className="text-right" wrapperCol={{ span: 24 }}>
         <Space>
           <Button onClick={handleCancel}>Hủy</Button>
           <Button

@@ -119,7 +119,7 @@ function ProductTable() {
         return (
           <Space size="middle">
             <UpdateProduct product={record} />
-            <DeleteProduct productId={record.productId} />
+            {/* <DeleteProduct productId={record.productId} /> */}
           </Space>
         );
       },

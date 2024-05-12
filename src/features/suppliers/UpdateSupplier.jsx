@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Form, Modal, Tabs, Tooltip } from "antd";
+import { Form, Modal, Tabs, Tooltip, Grid } from "antd";
 import { MdOutlineEdit } from "react-icons/md";
 import UpdateSupplierForm from "./UpdateSupplierForm";
 import SupplierHistory from "./SupplierHistory";
 
+const { useBreakpoint } = Grid;
 function UpdateSupplier({ supplier }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [updateSupplierForm] = Form.useForm();
+  const screens = useBreakpoint();
 
   function showModal() {
     setIsOpenModal(true);
@@ -49,7 +51,7 @@ function UpdateSupplier({ supplier }) {
       <Modal
         open={isOpenModal}
         title={<span className="text-xl">Cập nhật nhà cung cấp</span>}
-        width={1000}
+        width={screens.lg ? "900px" : "85%"}
         footer={null}
         destroyOnClose
         onCancel={handleCancel}

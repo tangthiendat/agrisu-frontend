@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { MdOutlineEdit } from "react-icons/md";
-import { Tooltip, Form, Modal, Tabs } from "antd";
+import { Tooltip, Form, Modal, Tabs, Grid } from "antd";
 import { useState } from "react";
 import UpdateCustomerForm from "./UpdateCustomerForm";
 import CustomerHistory from "./CustomerHistory";
 
+const { useBreakpoint } = Grid;
 function UpdateCustomer({ customer }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [updateCustomerForm] = Form.useForm();
+  const screens = useBreakpoint();
 
   function showModal() {
     setIsOpenModal(true);
@@ -49,7 +51,7 @@ function UpdateCustomer({ customer }) {
       <Modal
         open={isOpenModal}
         title={<span className="text-xl">Cập nhật khách hàng</span>}
-        width={1000}
+        width={screens.lg ? "900px" : "85%"}
         footer={null}
         destroyOnClose
         onCancel={handleCancel}

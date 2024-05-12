@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Form, InputNumber, Modal } from "antd";
+import { Form, InputNumber, Modal, Grid } from "antd";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getWarehouseReceiptTotalValue } from "./warehouseReceiptSlice";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 
+const { useBreakpoint } = Grid;
 function CreateWarehouseReceiptForm({ form, onFinish }) {
   const totalWarehouseReceiptValue = useSelector(getWarehouseReceiptTotalValue);
   const warehouseReceiptDetails = useSelector(
@@ -13,6 +14,18 @@ function CreateWarehouseReceiptForm({ form, onFinish }) {
   );
   const supplier = useSelector((state) => state.warehouseReceipt.supplier);
   const [modal, contextHolder] = Modal.useModal();
+  const screens = useBreakpoint();
+  const formItemLayout = screens.xl
+    ? {
+        labelCol: {
+          span: 6,
+        },
+        wrapperCol: {
+          span: 14,
+          offset: 4,
+        },
+      }
+    : null;
 
   useEffect(() => {
     form.setFieldsValue({
@@ -61,12 +74,12 @@ function CreateWarehouseReceiptForm({ form, onFinish }) {
     <>
       {contextHolder}
       <Form
+        layout={screens.xl ? "horizontal" : "vertical"}
         form={form}
         name="createWarehouseReceiptForm"
         onFinish={handleFinish}
+        {...formItemLayout}
         initialValues={{ customerPayment: 0 }}
-        labelCol={{ span: 7 }}
-        wrapperCol={{ span: 12, offset: 5 }}
       >
         <Form.Item
           label="Tổng tiền"

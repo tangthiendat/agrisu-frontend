@@ -40,7 +40,7 @@ const warehouseReceiptSlice = createSlice({
           (productUnit) => productUnit.unit.unitId === unit.unitId,
         );
       warehouseReceiptDetail.product.displayedProductUnit = currentProductUnit;
-      warehouseReceiptDetail.unitPrice = currentProductUnit.purchasePrice;
+      warehouseReceiptDetail.unitPrice = currentProductUnit.originalPrice;
     },
     clearWarehouseReceiptDetails(state) {
       state.warehouseReceiptDetails = [];

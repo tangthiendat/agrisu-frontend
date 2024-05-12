@@ -26,6 +26,7 @@ function OrderDetailsTable() {
     {
       title: "STT",
       dataIndex: "product",
+      width: "5%",
       key: "index",
       render: (product, _, index) => index + 1,
     },
@@ -38,11 +39,12 @@ function OrderDetailsTable() {
     {
       title: "Đơn vị tính",
       dataIndex: "unit",
+      width: "15%",
       key: "unit",
       render: (unit, record) => {
         return (
           <Select
-            style={{ width: 85 }}
+            style={{ width: "90%" }}
             value={unit.unitId}
             options={record.product.productUnits?.map((productUnit) => ({
               key: productUnit.unit.unitId,
@@ -68,10 +70,12 @@ function OrderDetailsTable() {
     {
       title: "Số lượng",
       dataIndex: "quantity",
+      width: "15%",
       key: "quantity",
       render: (quantity, record) => {
         return (
           <InputNumber
+            style={{ width: "90%" }}
             min={1}
             max={100000}
             value={quantity}

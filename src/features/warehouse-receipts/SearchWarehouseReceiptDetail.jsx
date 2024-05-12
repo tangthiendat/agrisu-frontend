@@ -51,7 +51,7 @@ function SearchWarehouseReceiptDetail() {
             product: selectedProduct,
             quantity: 1,
             unit: selectedProduct.displayedProductUnit.unit,
-            unitPrice: selectedProduct.displayedProductUnit.sellingPrice,
+            unitPrice: selectedProduct.displayedProductUnit.originalPrice,
           }),
         );
       }
@@ -61,11 +61,12 @@ function SearchWarehouseReceiptDetail() {
   return (
     <>
       {contextHolder}
-      <Space.Compact className="w-[40%]">
+      <Space.Compact className="w-[60%] lg:w-[50%]">
         <SearchProductBar
           cartItems={warehouseReceiptDetails}
           onSelectProduct={handleSelectProduct}
           showSelectedLabel={false}
+          useOriginalPrice={true}
         />
         <Tooltip title="Thêm sản phẩm" placement="bottom">
           <Button

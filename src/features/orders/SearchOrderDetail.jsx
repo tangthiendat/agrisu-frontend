@@ -59,7 +59,7 @@ function SearchOrderDetail() {
   return (
     <>
       {contextHolder}
-      <Space.Compact className="w-[40%]">
+      <Space.Compact className="w-[60%] xl:w-[40%]">
         <SearchProductBar
           cartItems={orderDetails}
           onSelectProduct={handleSelectProduct}

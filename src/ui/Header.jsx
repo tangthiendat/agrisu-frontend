@@ -28,12 +28,12 @@ const items = [
     icon: <FaUsers />,
     children: [
       {
-        label: <NavLink to="partners/suppliers">Nhà cung cấp</NavLink>,
+        label: <NavLink to="/partners/suppliers">Nhà cung cấp</NavLink>,
         key: "suppliers",
         icon: <MdHomeWork />,
       },
       {
-        label: <NavLink to="partners/customers">Khách hàng</NavLink>,
+        label: <NavLink to="/partners/customers">Khách hàng</NavLink>,
         key: "customers",
         icon: <FaUser />,
       },
@@ -78,17 +78,17 @@ const items = [
     icon: <FiActivity />,
     children: [
       {
-        label: <NavLink to="/sales/orders/new">Bán lẻ</NavLink>,
+        label: <NavLink to="/sales/new-order">Bán lẻ</NavLink>,
         key: "new-order",
         icon: <FaCartPlus />,
       },
       {
-        label: <NavLink to="/sales/warehouse-receipts/new">Nhập kho</NavLink>,
+        label: <NavLink to="/sales/new-warehouse-receipt">Nhập kho</NavLink>,
         key: "new-warehouse-receipt",
         icon: <MdTrolley />,
       },
       {
-        label: <NavLink to="/sales/warehouse-exports/new">Xuất kho</NavLink>,
+        label: <NavLink to="/sales/new-warehouse-export">Xuất kho</NavLink>,
         key: "new-warehouse-export",
         icon: <TbTruckDelivery />,
       },
@@ -113,7 +113,7 @@ function Header() {
     <Layout.Header className="flex items-center">
       <Logo />
       <Menu
-        className="flex-1"
+        className="min-w-0 flex-1"
         theme="dark"
         mode="horizontal"
         selectedKeys={selectedKeys}

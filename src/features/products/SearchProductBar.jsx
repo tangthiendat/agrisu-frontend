@@ -9,6 +9,7 @@ function SearchProductBar({
   onSelectProduct,
   onClear,
   showSelectedLabel = true,
+  useOriginalPrice = false,
 }) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,15 +30,19 @@ function SearchProductBar({
     value: product.productId,
     label: (
       <div className="px-1 py-2">
-        <div className="mb-1 flex justify-between font-semibold">
-          <div>
+        <div className="mb-1 flex flex-wrap justify-between font-semibold">
+          <div className="text-wrap">
             {product.productName}{" "}
             <span className="bg-sky-100 px-[3px] py-[3px] text-sky-600">
               {product.displayedProductUnit.unit.unitName}
             </span>
           </div>
           <div className="text-sky-600">
-            {formatCurrency(product.displayedProductUnit.sellingPrice)}
+            {formatCurrency(
+              useOriginalPrice
+                ? product.displayedProductUnit.originalPrice
+                : product.displayedProductUnit.sellingPrice,
+            )}
           </div>
         </div>
         <div>

@@ -14,6 +14,8 @@ import CashFlow from "../pages/CashFlow";
 import NewWarehouseReceipt from "../pages/NewWarehouseReceipt";
 import NewWarehouseExport from "../pages/NewWarehouseExport";
 import Reports from "../pages/Reports";
+import AuthLayout from "../layouts/AuthLayout";
+import Login from "../pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -62,17 +64,17 @@ const router = createBrowserRouter([
         element: <WarehouseExports />,
       },
       {
-        path: "/sales/orders/new",
+        path: "/sales/new-order",
         errorElement: <Error />,
         element: <NewOrder />,
       },
       {
-        path: "/sales/warehouse-receipts/new",
+        path: "/sales/new-warehouse-receipt",
         errorElement: <Error />,
         element: <NewWarehouseReceipt />,
       },
       {
-        path: "/sales/warehouse-exports/new",
+        path: "/sales/new-warehouse-export",
         errorElement: <Error />,
         element: <NewWarehouseExport />,
       },
@@ -85,6 +87,16 @@ const router = createBrowserRouter([
         path: "/reports",
         errorElement: <Error />,
         element: <Reports />,
+      },
+    ],
+  },
+  {
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/login",
+        errorElement: <Error />,
+        element: <Login />,
       },
     ],
   },
