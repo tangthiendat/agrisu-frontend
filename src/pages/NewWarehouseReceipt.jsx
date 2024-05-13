@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { Button, Form, Grid } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Form } from "antd";
+import { useDispatch } from "react-redux";
 import SearchWarehouseReceiptDetail from "../features/warehouse-receipts/SearchWarehouseReceiptDetail";
 import { clearWarehouseReceiptDetails } from "../features/warehouse-receipts/warehouseReceiptSlice";
 import WarehouseReceiptDetailTable from "../features/warehouse-receipts/WarehouseReceiptDetailTable";
@@ -9,13 +9,10 @@ import { useCreateWarehouseReceipt } from "../features/warehouse-receipts/hooks/
 import SearchWarehouseReceiptSupplier from "../features/warehouse-receipts/SearchWarehouseReceiptSupplier";
 import CreatePayment from "../features/payments/CreatePayment";
 
-const { useBreakpoint } = Grid;
 function NewWarehouseReceipt() {
   const dispatch = useDispatch();
   const [createWarehouseReceiptForm] = Form.useForm();
   const { createWarehouseReceipt, isCreating } = useCreateWarehouseReceipt();
-  const supplier = useSelector((state) => state.warehouseReceipt.supplier);
-  const screens = useBreakpoint();
 
   function handleFinish(submittedWarehouseReceipt) {
     createWarehouseReceipt(submittedWarehouseReceipt, {
@@ -42,10 +39,7 @@ function NewWarehouseReceipt() {
         <WarehouseReceiptDetailTable />
       </div>
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
-        <div className="flex items-center justify-between">
-          <SearchWarehouseReceiptSupplier />
-          {screens.xl && <CreatePayment supplier={supplier} />}
-        </div>
+        <SearchWarehouseReceiptSupplier />
         <div className="flex-1">
           <CreateWarehouseReceiptForm
             form={createWarehouseReceiptForm}

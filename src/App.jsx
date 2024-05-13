@@ -27,10 +27,8 @@ function App() {
           },
           Menu: {
             darkItemHoverBg: "#1677ff",
-            horizontalItemHoverBg: "#1677ff",
-            iconSize: 16,
+            iconSize: 18,
           },
-
           Table: {
             headerBg: "#e5e7eb",
             cellPaddingBlockMD: 10,
@@ -40,7 +38,6 @@ function App() {
           Button: {
             onlyIconSize: 14,
             onlyIconSizeSM: 10,
-            paddingInlineSM: 10,
             defaultBorderColor: "#d1d5db",
           },
           Typography: {

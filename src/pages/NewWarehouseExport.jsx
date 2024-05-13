@@ -1,23 +1,19 @@
-import { Button, Form, Grid } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Form } from "antd";
+import { useDispatch } from "react-redux";
 import SearchWarehouseExportCustomer from "../features/warehouse-exports/SearchWarehouseExportCustomer";
 import SearchWarehouseExportDetail from "../features/warehouse-exports/SearchWarehouseExportDetail";
 import WarehouseExportDetailTable from "../features/warehouse-exports/WarehouseExportDetailTable";
 import CreateWarehouseExportForm from "../features/warehouse-exports/CreateWarehouseExportForm";
-import CreateReceipt from "../features/receipts/CreateReceipt";
 import {
   clearWarehouseExport,
   clearWarehouseExportDetails,
 } from "../features/warehouse-exports/warehouseExportSlice";
 import { useCreateWarehouseExport } from "../features/warehouse-exports/hooks/useCreateWarehouseExport";
 
-const { useBreakpoint } = Grid;
 function NewWarehouseExport() {
   const dispatch = useDispatch();
   const [createWarehouseExportForm] = Form.useForm();
-  const customer = useSelector((state) => state.warehouseExport.customer);
   const { createWarehouseExport, isCreating } = useCreateWarehouseExport();
-  const screen = useBreakpoint();
 
   function handleFinish(submittedWareHouseExport) {
     createWarehouseExport(submittedWareHouseExport, {
@@ -44,10 +40,7 @@ function NewWarehouseExport() {
         <WarehouseExportDetailTable />
       </div>
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
-        <div className="flex items-center justify-between">
-          <SearchWarehouseExportCustomer />
-          {screen.xl && <CreateReceipt customer={customer} />}
-        </div>
+        <SearchWarehouseExportCustomer />
         <div className="flex-1">
           <CreateWarehouseExportForm
             form={createWarehouseExportForm}

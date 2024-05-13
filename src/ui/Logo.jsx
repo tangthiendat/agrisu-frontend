@@ -1,5 +1,9 @@
 function Logo() {
-  return <h1 className="mx-4 text-3xl uppercase text-gray-200">Agrisu</h1>;
+  return (
+    <div className="my-4 text-center text-3xl uppercase text-gray-200">
+      Agrisu
+    </div>
+  );
 }
 
 export default Logo;
