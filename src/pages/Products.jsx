@@ -20,7 +20,7 @@ function Products() {
     <div className="card min-h-[calc(100vh-64px-1.5rem*2)]">
       <Title className="mb-2">Sản phẩm</Title>
       <div className="mb-4 flex items-center justify-between">
-        <div className="basis-[30%]">
+        <div className="basis-[35%]">
           <SearchProductBar
             onSelectProduct={handleSelectProduct}
             onClear={handleClear}
