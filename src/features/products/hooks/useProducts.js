@@ -16,7 +16,7 @@ export function useProducts() {
     error: errorProducts,
   } = useQuery({
     queryKey: ["products", { page, pageSize }],
-    queryFn: () => productService.getProducts(page, pageSize),
+    queryFn: () => productService.getProducts({ page, pageSize }),
   });
 
   const {
@@ -42,14 +42,14 @@ export function useProducts() {
   if (page < pageCount) {
     queryClient.prefetchQuery({
       queryKey: ["products", { page: page + 1, pageSize }],
-      queryFn: () => productService.getProducts(page + 1, pageSize),
+      queryFn: () => productService.getProducts({ page: page + 1, pageSize }),
     });
   }
 
   if (page > 1) {
     queryClient.prefetchQuery({
       queryKey: ["products", { page: page - 1, pageSize }],
-      queryFn: () => productService.getProducts(page - 1, pageSize),
+      queryFn: () => productService.getProducts({ page: page - 1, pageSize }),
     });
   }
 
