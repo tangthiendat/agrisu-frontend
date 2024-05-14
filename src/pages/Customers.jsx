@@ -21,7 +21,7 @@ function Customers() {
     <div className="card min-h-[calc(100vh-64px-1.5rem*2)]">
       <Title className="mb-2">Khách hàng</Title>
       <div className="mb-4 flex content-center items-center justify-between">
-        <div className="basis-[20%]">
+        <div className="basis-[30%]">
           <SearchCustomerBar
             onSelectCustomer={handleSelectCustomer}
             onClear={handleClear}
