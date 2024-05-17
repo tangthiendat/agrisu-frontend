@@ -11,25 +11,13 @@ export function useCustomers() {
 
   //PAGINATION
   const {
-    isLoading: isLoadingCustomers,
-    data: customers,
-    error: errorCustomers,
+    isLoading: isLoading,
+    data: { content: customers, totalElements: customersNum, totalPages } = {},
+    error,
   } = useQuery({
     queryKey: ["customers", { page, pageSize }],
     queryFn: () => customerService.getCustomers({ page, pageSize }),
   });
-
-  const {
-    isLoading: iaLoadingCustomersNum,
-    data: customersNum,
-    error: errorCustomersNum,
-  } = useQuery({
-    queryKey: ["customersNum"],
-    queryFn: customerService.count,
-  });
-
-  const isLoading = isLoadingCustomers || iaLoadingCustomersNum;
-  const error = errorCustomers || errorCustomersNum;
 
   useEffect(() => {
     if (error) {
@@ -38,8 +26,7 @@ export function useCustomers() {
   }, [error]);
 
   //PREFETCH
-  const pageCount = Math.ceil(customersNum / pageSize);
-  if (page < pageCount) {
+  if (page < totalPages) {
     queryClient.prefetchQuery({
       queryKey: ["customers", { page: page + 1, pageSize }],
       queryFn: () => customerService.getCustomers({ page: page + 1, pageSize }),
