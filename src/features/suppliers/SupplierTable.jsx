@@ -1,23 +1,33 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Space, Table } from "antd";
+import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { useSuppliers } from "./hooks/useSuppliers";
-import { useCountSuppliers } from "./hooks/useCountSuppliers";
 import { formatCurrency } from "../../utils/helper";
 import Spinner from "../../ui/Spinner";
 import UpdateSupplier from "./UpdateSupplier";
 import DeleteSupplier from "./DeleteSupplier";
-import { useSelector } from "react-redux";
 
 function SupplierTable() {
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
-  const { isLoadingSuppliers, suppliers } = useSuppliers(
-    pagination.current,
-    pagination.pageSize,
-  );
-  const { suppliersNum } = useCountSuppliers();
+  const { isLoading, suppliers, suppliersNum } = useSuppliers();
   const selectedSupplier = useSelector(
     (state) => state.supplier.selectedSupplier,
   );
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page"));
+  const pageSize = Number(searchParams.get("pageSize"));
+
+  //Set default page and pageSize in the URL
+  useEffect(() => {
+    if (!page) {
+      searchParams.set("page", 1);
+    }
+    if (!pageSize) {
+      searchParams.set("pageSize", 10);
+    }
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams, page, pageSize]);
 
   const columns = [
     {
@@ -71,18 +81,20 @@ function SupplierTable() {
       columns={columns}
       dataSource={selectedSupplier.length > 0 ? selectedSupplier : suppliers}
       pagination={{
-        current: pagination.current,
-        pageSize: pagination.pageSize,
+        current: page || 1,
+        pageSize: pageSize || 10,
         total: suppliersNum,
         showSizeChanger: true,
         showTotal: (total) => `Tổng ${total} khách hàng`,
         onChange: (page, pageSize) => {
-          setPagination({ current: page, pageSize });
+          searchParams.set("page", page);
+          searchParams.set("pageSize", pageSize);
+          setSearchParams(searchParams);
         },
       }}
       loading={{
         indicator: <Spinner />,
-        spinning: isLoadingSuppliers,
+        spinning: isLoading,
       }}
       size="middle"
     />

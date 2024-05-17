@@ -61,7 +61,7 @@ function SearchWarehouseExportDetail() {
   return (
     <>
       {contextHolder}
-      <Space.Compact className="w-[60%] xl:w-[40%]">
+      <Space.Compact className="w-[50%]">
         <SearchProductBar
           cartItems={warehouseExportDetails}
           onSelectProduct={handleSelectProduct}

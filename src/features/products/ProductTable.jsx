@@ -4,25 +4,35 @@ import { useEffect, useState } from "react";
 import { Select, Space, Table } from "antd";
 
 import { useProducts } from "./hooks/useProducts";
-import { useCountProducts } from "./hooks/useCountProducts";
+// import { useCountProducts } from "./hooks/useCountProducts";
 import UpdateProduct from "./UpdateProduct";
-import DeleteProduct from "./DeleteProduct";
 import Spinner from "../../ui/Spinner";
 import { formatCurrency } from "../../utils/helper";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 function ProductTable() {
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
-  const { productsNum } = useCountProducts();
-  const { isLoading, products } = useProducts(
-    pagination.current,
-    pagination.pageSize,
-  );
+  const { isLoading, products, productsNum } = useProducts();
   const [productsDataSource, setProductsDataSource] = useState(products);
   const selectedProduct = useSelector((state) => state.product.selectedProduct);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page"));
+  const pageSize = Number(searchParams.get("pageSize"));
+
+  //Set default page and pageSize in the URL
+  useEffect(() => {
+    if (!page) {
+      searchParams.set("page", 1);
+    }
+    if (!pageSize) {
+      searchParams.set("pageSize", 10);
+    }
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams, page, pageSize]);
+
   useEffect(() => {
     setProductsDataSource(products);
-  }, [products]);
+  }, [products, searchParams, setSearchParams]);
 
   function handleUnitChange(productId, newProductUnitId) {
     setProductsDataSource((products) =>
@@ -134,13 +144,15 @@ function ProductTable() {
       }
       columns={columns}
       pagination={{
-        current: pagination.current,
-        pageSize: pagination.pageSize,
+        current: page || 1,
+        pageSize: pageSize || 10,
         total: productsNum,
         showSizeChanger: true,
         showTotal: (total) => `Tổng ${total} sản phẩm`,
         onChange: (page, pageSize) => {
-          setPagination({ current: page, pageSize });
+          searchParams.set("page", page);
+          searchParams.set("pageSize", pageSize);
+          setSearchParams(searchParams);
         },
       }}
       loading={{

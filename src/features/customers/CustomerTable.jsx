@@ -1,23 +1,33 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Space, Table } from "antd";
 import UpdateCustomer from "./UpdateCustomer";
 import DeleteCustomer from "./DeleteCustomer";
 import Spinner from "../../ui/Spinner";
 import { useCustomers } from "./hooks/useCustomers";
-import { useCountCustomers } from "./hooks/useCountCustomers";
 import { formatCurrency } from "../../utils/helper";
 
 function CustomerTable() {
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
-  const { isLoadingCustomers, customers } = useCustomers(
-    pagination.current,
-    pagination.pageSize,
-  );
-  const { customersNum } = useCountCustomers();
+  const { isLoading, customers, customersNum } = useCustomers();
   const selectedCustomer = useSelector(
     (state) => state.customer.selectedCustomer,
   );
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page"));
+  const pageSize = Number(searchParams.get("pageSize"));
+
+  //Set default page and pageSize in the URL
+  useEffect(() => {
+    if (!page) {
+      searchParams.set("page", 1);
+    }
+    if (!pageSize) {
+      searchParams.set("pageSize", 10);
+    }
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams, page, pageSize]);
+
   const columns = [
     {
       title: "Mã khách hàng",
@@ -70,18 +80,20 @@ function CustomerTable() {
       columns={columns}
       dataSource={selectedCustomer.length > 0 ? selectedCustomer : customers}
       pagination={{
-        current: pagination.current,
-        pageSize: pagination.pageSize,
+        current: page || 1,
+        pageSize: pageSize || 10,
         total: customersNum,
         showSizeChanger: true,
         showTotal: (total) => `Tổng ${total} khách hàng`,
         onChange: (page, pageSize) => {
-          setPagination({ current: page, pageSize });
+          searchParams.set("page", page);
+          searchParams.set("pageSize", pageSize);
+          setSearchParams(searchParams);
         },
       }}
       loading={{
         indicator: <Spinner />,
-        spinning: isLoadingCustomers,
+        spinning: isLoading,
       }}
       size="middle"
     />

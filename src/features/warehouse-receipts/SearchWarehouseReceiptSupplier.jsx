@@ -29,7 +29,7 @@ function SearchWarehouseReceiptSupplier() {
   }
 
   return (
-    <Space.Compact className="w-full xl:w-[60%]">
+    <Space.Compact className="w-full">
       <SearchSupplierBar
         onSelectSupplier={handleSelectSupplier}
         onClear={handleClear}

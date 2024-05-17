@@ -29,7 +29,7 @@ function SearchWarehouseExportCustomer() {
   }
 
   return (
-    <Space.Compact className="w-full xl:w-[60%]">
+    <Space.Compact className="w-full">
       <SearchCustomerBar
         onSelectCustomer={handleSelectCustomer}
         onClear={handleClear}

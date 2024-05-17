@@ -61,7 +61,7 @@ function SearchWarehouseReceiptDetail() {
   return (
     <>
       {contextHolder}
-      <Space.Compact className="w-[60%] lg:w-[50%]">
+      <Space.Compact className="w-[50%] ">
         <SearchProductBar
           cartItems={warehouseReceiptDetails}
           onSelectProduct={handleSelectProduct}

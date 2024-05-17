@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ConfigProvider } from "antd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,10 +27,8 @@ function App() {
           },
           Menu: {
             darkItemHoverBg: "#1677ff",
-            horizontalItemHoverBg: "#1677ff",
-            iconSize: 16,
+            iconSize: 18,
           },
-
           Table: {
             headerBg: "#e5e7eb",
             cellPaddingBlockMD: 10,
@@ -40,7 +38,6 @@ function App() {
           Button: {
             onlyIconSize: 14,
             onlyIconSizeSM: 10,
-            paddingInlineSM: 10,
             defaultBorderColor: "#d1d5db",
           },
           Typography: {
@@ -55,7 +52,7 @@ function App() {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <ReactQueryDevtools initialIsOpen={false} />
         <AppRouter />
         <ToastContainer
           position="bottom-right"
