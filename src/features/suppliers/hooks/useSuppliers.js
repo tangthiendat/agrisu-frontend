@@ -11,25 +11,13 @@ export function useSuppliers() {
   const pageSize = Number(searchParams.get("pageSize")) || 10;
 
   const {
-    data: suppliers,
-    isLoading: isLoadingSuppliers,
-    error: errorSuppliers,
+    isLoading: isLoading,
+    data: { content: suppliers, totalElements: suppliersNum, totalPages } = {},
+    error,
   } = useQuery({
     queryKey: ["suppliers", { page, pageSize }],
     queryFn: () => supplierService.getSuppliers({ page, pageSize }),
   });
-
-  const {
-    data: suppliersNum,
-    isLoading: isLoadingSuppliersNum,
-    error: errorSuppliersNum,
-  } = useQuery({
-    queryKey: ["suppliersNum"],
-    queryFn: supplierService.count,
-  });
-
-  const isLoading = isLoadingSuppliers || isLoadingSuppliersNum;
-  const error = errorSuppliers || errorSuppliersNum;
 
   useEffect(() => {
     if (error) {
@@ -37,8 +25,8 @@ export function useSuppliers() {
     }
   }, [error]);
 
-  const pageCount = Math.ceil(suppliersNum / pageSize);
-  if (page < pageCount) {
+  //PREFETCH
+  if (page < totalPages) {
     queryClient.prefetchQuery({
       queryKey: ["suppliers", { page: page + 1, pageSize }],
       queryFn: () => supplierService.getSuppliers({ page: page + 1, pageSize }),
