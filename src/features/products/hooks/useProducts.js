@@ -11,25 +11,13 @@ export function useProducts() {
   const pageSize = Number(searchParams.get("pageSize")) || 10;
 
   const {
-    isLoading: isLoadingProducts,
-    data: products,
-    error: errorProducts,
+    isLoading: isLoading,
+    data: { content: products, totalElements: productsNum, totalPages } = {},
+    error,
   } = useQuery({
     queryKey: ["products", { page, pageSize }],
     queryFn: () => productService.getProducts({ page, pageSize }),
   });
-
-  const {
-    isLoading: isLoadingProductsNum,
-    data: productsNum,
-    error: errorProductsNum,
-  } = useQuery({
-    queryKey: ["productsNum"],
-    queryFn: productService.count,
-  });
-
-  const isLoading = isLoadingProducts || isLoadingProductsNum;
-  const error = errorProducts || errorProductsNum;
 
   useEffect(() => {
     if (error) {
@@ -38,8 +26,7 @@ export function useProducts() {
   }, [error]);
 
   //PREFETCH
-  const pageCount = Math.ceil(productsNum / pageSize);
-  if (page < pageCount) {
+  if (page < totalPages) {
     queryClient.prefetchQuery({
       queryKey: ["products", { page: page + 1, pageSize }],
       queryFn: () => productService.getProducts({ page: page + 1, pageSize }),
