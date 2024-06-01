@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { MdDelete } from "react-icons/md";
 import { Popconfirm, Tooltip } from "antd";
 import { useDeleteCustomer } from "./hooks/useDeleteCustomer";

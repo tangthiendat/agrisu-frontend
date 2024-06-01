@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { Button, Space } from "antd";
 import CreatePayment from "../payments/CreatePayment";
 import SupplierHistoryTable from "./SupplierHistoryTable";

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Button, Form, Modal } from "antd";
 import { useState } from "react";
 import CreatePaymentForm from "./CreatePaymentForm";

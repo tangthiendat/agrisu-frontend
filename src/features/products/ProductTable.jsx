@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Select, Space, Table } from "antd";
 

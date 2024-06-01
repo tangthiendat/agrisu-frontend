@@ -1,7 +1,3 @@
-/* eslint-disable react/prop-types */
-// import { Form } from "antd";
-// import { useState } from "react";
-
 import { Button, Form, Modal } from "antd";
 import CreateReceiptForm from "./CreateReceiptForm";
 import { useState } from "react";

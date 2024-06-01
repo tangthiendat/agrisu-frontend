@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Button, Form } from "antd";
 import { useDispatch } from "react-redux";
 import OrderDetailsTable from "../features/orders/OrderDetailsTable";

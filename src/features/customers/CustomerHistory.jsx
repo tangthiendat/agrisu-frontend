@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Button, Space } from "antd";
 import CreateReceipt from "../receipts/CreateReceipt";
 import CustomerHistoryTable from "./CustomerHistoryTable";

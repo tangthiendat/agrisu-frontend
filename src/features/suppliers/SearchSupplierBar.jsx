@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useCallback, useEffect, useState } from "react";
 import { useSearchSuppliers } from "./hooks/useSearchSuppliers";
 import { AutoComplete } from "antd";

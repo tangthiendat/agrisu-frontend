@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { Form, Modal, Tooltip, Grid } from "antd";

@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { Button, Form, Input, InputNumber, Space } from "antd";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { useCreatePayment } from "./hooks/useCreatePayment";

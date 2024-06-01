@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Form, InputNumber, Modal, Grid } from "antd";
 import { useSelector } from "react-redux";

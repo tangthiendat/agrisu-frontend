@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Button, Form, Modal, Grid } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";

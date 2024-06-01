@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Button, Form, Input, InputNumber, Space } from "antd";
 import { formatCurrency, parseCurrency } from "../../utils/helper";
 import { useCreateReceipt } from "./hooks/useCreateReceipt";

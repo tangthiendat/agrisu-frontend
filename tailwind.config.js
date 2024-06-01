@@ -2,9 +2,6 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx,html}"],
   theme: {
-    fontFamily: {
-      sans: "Open Sans, sans-serif",
-    },
     extend: {
       colors: {
         "dodger-blue": {

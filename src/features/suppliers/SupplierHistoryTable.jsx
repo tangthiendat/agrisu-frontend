@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Table } from "antd";
 import Spinner from "../../ui/Spinner";
 import { formatCurrency, formatDateTime } from "../../utils/helper";

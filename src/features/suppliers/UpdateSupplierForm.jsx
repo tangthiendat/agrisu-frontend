@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, Input, InputNumber, Row, Space, Grid } from "antd";

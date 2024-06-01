@@ -7,7 +7,6 @@ import WarehouseReceiptDetailTable from "../features/warehouse-receipts/Warehous
 import CreateWarehouseReceiptForm from "../features/warehouse-receipts/CreateWarehouseReceiptForm";
 import { useCreateWarehouseReceipt } from "../features/warehouse-receipts/hooks/useCreateWarehouseReceipt";
 import SearchWarehouseReceiptSupplier from "../features/warehouse-receipts/SearchWarehouseReceiptSupplier";
-import CreatePayment from "../features/payments/CreatePayment";
 
 function NewWarehouseReceipt() {
   const dispatch = useDispatch();
