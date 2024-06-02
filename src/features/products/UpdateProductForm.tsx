@@ -35,7 +35,7 @@ const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
   setIsOpenModal,
 }) => {
   const { units } = useUnits();
-  const isUpdateSession: boolean = Boolean(productToUpdate.productId);
+  const isUpdateSession: boolean = Boolean(productToUpdate?.productId);
   const { updateProduct, isUpdating } = useUpdateProduct();
   const { createProduct, isCreating } = useCreateProduct();
   const [modal, contextHolder] = Modal.useModal();

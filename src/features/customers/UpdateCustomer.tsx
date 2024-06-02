@@ -1,25 +1,31 @@
 import { MdOutlineEdit } from "react-icons/md";
-import { Tooltip, Form, Modal, Tabs, Grid } from "antd";
+import { Tooltip, Form, Modal, Tabs, Grid, TabsProps } from "antd";
 import { useState } from "react";
-import UpdateCustomerForm from "./UpdateCustomerForm";
-import CustomerHistory from "./CustomerHistory";
+import UpdateCustomerForm from "./UpdateCustomerForm.tsx";
+import CustomerHistory from "./CustomerHistory.tsx";
+import { ICustomer } from "../../interfaces";
+
+interface UpdateCustomerProps {
+  customer: ICustomer;
+}
 
 const { useBreakpoint } = Grid;
-function UpdateCustomer({ customer }) {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [updateCustomerForm] = Form.useForm();
+
+const UpdateCustomer: React.FC<UpdateCustomerProps> = ({ customer }) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [updateCustomerForm] = Form.useForm<ICustomer>();
   const screens = useBreakpoint();
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     updateCustomerForm.resetFields();
     setIsOpenModal(false);
   }
 
-  const items = [
+  const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Thông tin",
@@ -59,6 +65,6 @@ function UpdateCustomer({ customer }) {
       </Modal>
     </>
   );
-}
+};
 
 export default UpdateCustomer;

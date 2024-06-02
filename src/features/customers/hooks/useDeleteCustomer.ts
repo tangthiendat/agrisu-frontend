@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { customerService } from "../../../services/customerService";
 import { toast } from "react-toastify";
+import { customerService } from "../../../services/customer-service.ts";
 
 export function useDeleteCustomer() {
   const queryClient = useQueryClient();
@@ -8,7 +8,9 @@ export function useDeleteCustomer() {
     mutationFn: customerService.delete,
     onSuccess: () => {
       toast.success("Xóa khách hàng thành công");
-      queryClient.invalidateQueries("customers");
+      queryClient.invalidateQueries({
+        queryKey: ["customers"],
+      });
     },
     onError: () => {
       toast.error("Có lỗi xảy ra khi xóa khách hàng");

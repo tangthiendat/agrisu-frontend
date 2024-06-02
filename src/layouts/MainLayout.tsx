@@ -95,7 +95,7 @@ const items = [
 
 function MainLayout() {
   const location = useLocation();
-  const [selectedKeys, setSelectedKeys] = useState(
+  const [selectedKeys, setSelectedKeys] = useState<string[]>(
     location.pathname === "/"
       ? ["dashboard"]
       : location.pathname.slice(1).split("/"),

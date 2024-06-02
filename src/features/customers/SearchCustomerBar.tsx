@@ -2,14 +2,21 @@ import { useCallback, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { AutoComplete } from "antd";
 import { useSearchCustomers } from "./hooks/useSearchCustomers";
+import { type ICustomer } from "../../interfaces";
 
-function SearchCustomerBar({
+interface SearchCustomerBarProps {
+  onSelectCustomer: (customer: ICustomer) => void;
+  onClear?: () => void;
+  showSelectedLabel?: boolean;
+}
+
+const SearchCustomerBar: React.FC<SearchCustomerBarProps> = ({
   onSelectCustomer,
   onClear,
   showSelectedLabel = true,
-}) {
-  const [inputValue, setInputValue] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+}) => {
+  const [inputValue, setInputValue] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const { searchedCustomers } = useSearchCustomers(searchQuery);
 
   useEffect(() => {
@@ -18,7 +25,7 @@ function SearchCustomerBar({
     }
   }, [inputValue, onClear]);
 
-  function handleSearch(value) {
+  function handleSearch(value: string) {
     setSearchQuery(value);
   }
 
@@ -29,7 +36,7 @@ function SearchCustomerBar({
     label: customer.customerName,
   }));
 
-  function handleSelect(value) {
+  function handleSelect(value: string) {
     const selectedCustomer = searchedCustomers.find(
       (customer) => customer.customerId === value,
     );
@@ -54,6 +61,6 @@ function SearchCustomerBar({
       onSelect={handleSelect}
     />
   );
-}
+};
 
 export default SearchCustomerBar;

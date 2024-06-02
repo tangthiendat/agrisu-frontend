@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { type ICustomer } from "../../interfaces";
 
-const initialState = {
+interface CustomerState {
+  selectedCustomer: ICustomer[];
+}
+
+const initialState: CustomerState = {
   selectedCustomer: [],
 };
 
-const customerSlice = createSlice({
+export const customerSlice = createSlice({
   name: "customer",
   initialState,
   reducers: {
@@ -15,4 +20,3 @@ const customerSlice = createSlice({
 });
 
 export const { setSelectedCustomer } = customerSlice.actions;
-export default customerSlice.reducer;

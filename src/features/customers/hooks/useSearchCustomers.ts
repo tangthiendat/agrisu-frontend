@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { customerService } from "../../../services/customerService";
-export function useSearchCustomers(query) {
+import { customerService } from "../../../services/customer-service.ts";
+
+export function useSearchCustomers(query: string) {
   const { data: searchedCustomers } = useQuery({
     queryKey: ["searchedCustomers", query],
     queryFn: () => customerService.search(query),
-    keepPreviousData: true,
     enabled: query !== "",
   });
   return { searchedCustomers };

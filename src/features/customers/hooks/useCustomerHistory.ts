@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { customerService } from "../../../services/customerService";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { customerService } from "../../../services/customer-service.ts";
 
-export function useCustomerHistory(customerId) {
+export function useCustomerHistory(customerId: string) {
   const {
     data: customerHistory,
     isLoading,

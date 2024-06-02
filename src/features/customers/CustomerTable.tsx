@@ -1,34 +1,42 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Space, Table } from "antd";
-import UpdateCustomer from "./UpdateCustomer";
-import DeleteCustomer from "./DeleteCustomer";
-import Spinner from "../../ui/Spinner";
-import { useCustomers } from "./hooks/useCustomers";
-import { formatCurrency } from "../../utils/helper";
+import { Space, Table, type TableProps } from "antd";
+import { toast } from "react-toastify";
+import UpdateCustomer from "./UpdateCustomer.tsx";
+import DeleteCustomer from "./DeleteCustomer.tsx";
+import Spinner from "../../ui/Spinner.tsx";
+import { useCustomers } from "./hooks";
+import { formatCurrency } from "../../utils/helper.ts";
+import { useAppSelector } from "../../store/hooks.ts";
+import { type ICustomer } from "../../interfaces";
 
-function CustomerTable() {
-  const { isLoading, customers, customersNum } = useCustomers();
-  const selectedCustomer = useSelector(
+const CustomerTable: React.FC = () => {
+  const { isLoading, customers, numCustomers, error } = useCustomers();
+  const selectedCustomer = useAppSelector(
     (state) => state.customer.selectedCustomer,
   );
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get("page"));
-  const pageSize = Number(searchParams.get("pageSize"));
+  const page: number = Number(searchParams.get("page"));
+  const pageSize: number = Number(searchParams.get("pageSize"));
 
   //Set default page and pageSize in the URL
   useEffect(() => {
     if (!page) {
-      searchParams.set("page", 1);
+      searchParams.set("page", "1");
     }
     if (!pageSize) {
-      searchParams.set("pageSize", 10);
+      searchParams.set("pageSize", "10");
     }
     setSearchParams(searchParams);
   }, [searchParams, setSearchParams, page, pageSize]);
 
-  const columns = [
+  useEffect(() => {
+    if (error) {
+      toast.error("Có lỗi xảy ra khi tải dữ liệu khách hàng. ");
+    }
+  }, [error]);
+
+  const columns: TableProps<ICustomer>["columns"] = [
     {
       title: "Mã khách hàng",
       dataIndex: "customerId",
@@ -59,14 +67,14 @@ function CustomerTable() {
       dataIndex: "receivable",
       key: "receivable",
       width: "15%",
-      render: (receivable) => {
+      render: (receivable: number) => {
         return formatCurrency(receivable);
       },
     },
 
     {
       key: "action",
-      render: (_, record) => (
+      render: (record: ICustomer) => (
         <Space size="middle">
           <UpdateCustomer customer={record} />
           <DeleteCustomer customerId={record.customerId} />
@@ -82,12 +90,12 @@ function CustomerTable() {
       pagination={{
         current: page || 1,
         pageSize: pageSize || 10,
-        total: customersNum,
+        total: numCustomers,
         showSizeChanger: true,
         showTotal: (total) => `Tổng ${total} khách hàng`,
-        onChange: (page, pageSize) => {
-          searchParams.set("page", page);
-          searchParams.set("pageSize", pageSize);
+        onChange: (page: number, pageSize: number) => {
+          searchParams.set("page", `${page}`);
+          searchParams.set("pageSize", `${pageSize}`);
           setSearchParams(searchParams);
         },
       }}
@@ -98,6 +106,6 @@ function CustomerTable() {
       size="middle"
     />
   );
-}
+};
 
 export default CustomerTable;

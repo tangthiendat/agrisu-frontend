@@ -1,22 +1,42 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Col, Form, Input, InputNumber, Row, Space, Button, Grid } from "antd";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
+import {
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Space,
+  Button,
+  Grid,
+  FormInstance,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { useCreateCustomer } from "./hooks/useCreateCustomer";
-import { useUpdateCustomer } from "./hooks/useUpdateCustomer";
-import { setSelectedCustomer } from "./customerSlice";
+import { formatCurrency, parseCurrency } from "../../utils/helper.ts";
+import { setSelectedCustomer } from "./customerSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import { useCreateCustomer, useUpdateCustomer } from "./hooks";
+import { type ICustomer } from "../../interfaces";
+
+interface UpdateCustomerFormProps {
+  form: FormInstance<ICustomer>;
+  customerToUpdate?: ICustomer;
+  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
+}
 
 const { useBreakpoint } = Grid;
 
-function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
+const UpdateCustomerForm: React.FC<UpdateCustomerFormProps> = ({
+  form,
+  customerToUpdate,
+  setIsOpenModal,
+}) => {
   const { createCustomer, isCreating } = useCreateCustomer();
   const { updateCustomer, isUpdating } = useUpdateCustomer();
-  const isUpdateSession = Boolean(customerToUpdate.customerId);
-  const selectedCustomer = useSelector(
+  const isUpdateSession: boolean = Boolean(customerToUpdate?.customerId);
+  const selectedCustomer: ICustomer[] = useAppSelector(
     (state) => state.customer.selectedCustomer,
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const screens = useBreakpoint();
   const formItemLayout = screens.lg
     ? {
@@ -35,13 +55,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
     }
   }, [customerToUpdate, form, isUpdateSession]);
 
-  function preventSubmission(e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-    }
-  }
-
-  function handleFinish(submittedCustomer) {
+  function handleFinish(submittedCustomer: ICustomer): void {
     if (isUpdateSession) {
       updateCustomer(
         {
@@ -50,7 +64,6 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
         },
         {
           onSuccess: () => {
-            submittedCustomer.totalSales = customerToUpdate.totalSales;
             if (selectedCustomer.length > 0) {
               dispatch(setSelectedCustomer([submittedCustomer]));
             }
@@ -68,7 +81,7 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
     }
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     form.resetFields();
     setIsOpenModal(false);
   }
@@ -79,7 +92,6 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
       name="updateCustomerForm"
       form={form}
       {...formItemLayout}
-      onKeyDown={preventSubmission}
       onFinish={handleFinish}
       initialValues={{ receivable: 0 }}
     >
@@ -162,6 +174,6 @@ function UpdateCustomerForm({ form, setIsOpenModal, customerToUpdate = {} }) {
       </Form.Item>
     </Form>
   );
-}
+};
 
 export default UpdateCustomerForm;

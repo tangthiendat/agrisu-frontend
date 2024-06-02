@@ -1,19 +1,21 @@
 import { Button, Form, Modal, Grid } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import UpdateCustomerForm from "./UpdateCustomerForm";
+import UpdateCustomerForm from "./UpdateCustomerForm.tsx";
+import { type ICustomer } from "../../interfaces";
 
 const { useBreakpoint } = Grid;
-function AddCustomer() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [addCustomerForm] = Form.useForm();
+
+const AddCustomer: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [addCustomerForm] = Form.useForm<ICustomer>();
   const screens = useBreakpoint();
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     addCustomerForm.resetFields();
     setIsOpenModal(false);
   }
@@ -43,6 +45,6 @@ function AddCustomer() {
       </Modal>
     </>
   );
-}
+};
 
 export default AddCustomer;

@@ -1,11 +1,18 @@
-import { Table } from "antd";
-import { formatCurrency, formatDateTime } from "../../utils/helper";
-import Spinner from "../../ui/Spinner";
-import { useCustomerHistory } from "./hooks/useCustomerHistory";
+import { Table, TableProps } from "antd";
+import Spinner from "../../ui/Spinner.tsx";
+import { formatCurrency, formatDateTime } from "../../utils/helper.ts";
+import { useCustomerHistory } from "./hooks";
+import { type ICustomerHistory } from "../../interfaces";
 
-function CustomerHistoryTable({ customerId }) {
+interface CustomerHistoryTableProps {
+  customerId: string;
+}
+
+const CustomerHistoryTable: React.FC<CustomerHistoryTableProps> = ({
+  customerId,
+}) => {
   const { customerHistory, isLoading } = useCustomerHistory(customerId);
-  const columns = [
+  const columns: TableProps<ICustomerHistory>["columns"] = [
     {
       title: "Mã phiếu",
       dataIndex: "id",
@@ -17,13 +24,13 @@ function CustomerHistoryTable({ customerId }) {
       dataIndex: "createdAt",
       width: "16%",
       key: "createdAt",
-      render: (createdAt) => formatDateTime(createdAt),
+      render: (createdAt: Date) => formatDateTime(createdAt),
     },
     {
       title: "Loại",
       dataIndex: "type",
       key: "type",
-      render: (type) => {
+      render: (type: string) => {
         switch (type) {
           case "WAREHOUSE_EXPORT":
             return "Mua hàng";
@@ -38,13 +45,13 @@ function CustomerHistoryTable({ customerId }) {
       title: "Nợ cũ",
       dataIndex: "currentDebt",
       key: "currentDebt",
-      render: (currentDebt) => formatCurrency(currentDebt),
+      render: (currentDebt: number) => formatCurrency(currentDebt),
     },
     {
       title: "Phát sinh",
       dataIndex: "value",
       key: "value",
-      render: (value) =>
+      render: (value: number) =>
         value > 0 ? (
           <span className="text-green-500">{formatCurrency(value)}</span>
         ) : (
@@ -55,7 +62,7 @@ function CustomerHistoryTable({ customerId }) {
       title: "Thanh toán",
       dataIndex: "payment",
       key: "payment",
-      render: (payment) =>
+      render: (payment: number) =>
         payment > 0 ? (
           <span className="text-red-500">{formatCurrency(payment)}</span>
         ) : (
@@ -66,7 +73,7 @@ function CustomerHistoryTable({ customerId }) {
       title: "Còn lại",
       dataIndex: "nextDebt",
       key: "nextDebt",
-      render: (value) => formatCurrency(value),
+      render: (value: number) => formatCurrency(value),
     },
   ];
   return (
@@ -83,6 +90,6 @@ function CustomerHistoryTable({ customerId }) {
       scroll={{ y: 300 }}
     />
   );
-}
+};
 
 export default CustomerHistoryTable;

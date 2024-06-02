@@ -1,29 +1,22 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom";
-import { customerService } from "../../../services/customerService";
+import { customerService } from "../../../services/customer-service.ts";
+
 export function useCustomers() {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
-  const page = Number(searchParams.get("page")) || 1;
-  const pageSize = Number(searchParams.get("pageSize")) || 10;
+  const page: number = Number(searchParams.get("page")) || 1;
+  const pageSize: number = Number(searchParams.get("pageSize")) || 10;
 
   //PAGINATION
   const {
     isLoading: isLoading,
-    data: { content: customers, totalElements: customersNum, totalPages } = {},
+    data: { content: customers, totalElements: numCustomers, totalPages } = {},
     error,
   } = useQuery({
     queryKey: ["customers", { page, pageSize }],
     queryFn: () => customerService.getCustomers({ page, pageSize }),
   });
-
-  useEffect(() => {
-    if (error) {
-      toast.error("Có lỗi xảy ra khi tải dữ liệu khách hàng");
-    }
-  }, [error]);
 
   //PREFETCH
   if (page < totalPages) {
@@ -40,5 +33,5 @@ export function useCustomers() {
     });
   }
 
-  return { isLoading, customers, customersNum };
+  return { isLoading, customers, numCustomers, error };
 }

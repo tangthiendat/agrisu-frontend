@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { customerService } from "../../../services/customerService";
+import { customerService } from "../../../services/customer-service.ts";
 
 export function useCreateCustomer() {
   const queryClient = useQueryClient();
@@ -8,9 +8,12 @@ export function useCreateCustomer() {
     mutationFn: customerService.create,
     onSuccess: () => {
       toast.success("Thêm khách hàng thành công");
-      queryClient.invalidateQueries("customers");
+      queryClient.invalidateQueries({
+        queryKey: ["customers"],
+      });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error(error);
       toast.error("Có lỗi xảy ra khi thêm khách hàng");
     },
   });

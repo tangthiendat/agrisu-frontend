@@ -1,8 +1,17 @@
 import { Button, Space } from "antd";
 import CreateReceipt from "../receipts/CreateReceipt";
-import CustomerHistoryTable from "./CustomerHistoryTable";
+import CustomerHistoryTable from "./CustomerHistoryTable.tsx";
+import { type ICustomer } from "../../interfaces";
 
-function CustomerHistory({ customer, onCancel }) {
+interface CustomerHistoryProps {
+  customer: ICustomer;
+  onCancel: () => void;
+}
+
+const CustomerHistory: React.FC<CustomerHistoryProps> = ({
+  customer,
+  onCancel,
+}) => {
   return (
     <>
       <CustomerHistoryTable customerId={customer.customerId} />
@@ -14,6 +23,6 @@ function CustomerHistory({ customer, onCancel }) {
       </div>
     </>
   );
-}
+};
 
 export default CustomerHistory;

@@ -1,19 +1,21 @@
 import { Typography } from "antd";
-import AddCustomer from "../features/customers/AddCustomer";
-import CustomerTable from "../features/customers/CustomerTable";
-import SearchCustomerBar from "../features/customers/SearchCustomerBar";
-import { useDispatch } from "react-redux";
-import { setSelectedCustomer } from "../features/customers/customerSlice";
+import AddCustomer from "../features/customers/AddCustomer.tsx";
+import CustomerTable from "../features/customers/CustomerTable.tsx";
+import SearchCustomerBar from "../features/customers/SearchCustomerBar.tsx";
+import { setSelectedCustomer } from "../features/customers/customerSlice.ts";
+import { useAppDispatch } from "../store/hooks.ts";
+import { type ICustomer } from "../interfaces";
 
 const { Title } = Typography;
-function Customers() {
-  const dispatch = useDispatch();
 
-  function handleSelectCustomer(selectedCustomer) {
+const Customers: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  function handleSelectCustomer(selectedCustomer: ICustomer): void {
     dispatch(setSelectedCustomer([selectedCustomer]));
   }
 
-  function handleClear() {
+  function handleClear(): void {
     dispatch(setSelectedCustomer([]));
   }
 
@@ -34,6 +36,6 @@ function Customers() {
       </div>
     </div>
   );
-}
+};
 
 export default Customers;

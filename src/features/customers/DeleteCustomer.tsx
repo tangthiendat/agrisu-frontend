@@ -1,12 +1,16 @@
 import { MdDelete } from "react-icons/md";
 import { Popconfirm, Tooltip } from "antd";
-import { useDeleteCustomer } from "./hooks/useDeleteCustomer";
-import { useDispatch } from "react-redux";
-import { setSelectedCustomer } from "./customerSlice";
+import { useDeleteCustomer } from "./hooks";
+import { setSelectedCustomer } from "./customerSlice.ts";
+import { useAppDispatch } from "../../store/hooks.ts";
 
-function DeleteCustomer({ customerId }) {
+interface DeleteCustomerProps {
+  customerId: string;
+}
+
+const DeleteCustomer: React.FC<DeleteCustomerProps> = ({ customerId }) => {
   const { deleteCustomer, isDeleting } = useDeleteCustomer();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
     <Popconfirm
       title="Xóa khách hàng"
@@ -27,6 +31,6 @@ function DeleteCustomer({ customerId }) {
       </Tooltip>
     </Popconfirm>
   );
-}
+};
 
 export default DeleteCustomer;
