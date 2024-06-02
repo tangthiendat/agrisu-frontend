@@ -1,11 +1,11 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import MainLayout from "../layouts/MainLayout";
-import AuthLayout from "../layouts/AuthLayout";
+import MainLayout from "../layouts/MainLayout.tsx";
+import AuthLayout from "../layouts/AuthLayout.tsx";
 import Dashboard from "../pages/Dashboard.tsx";
 import Products from "../pages/Products.tsx";
 import Suppliers from "../pages/Suppliers";
-import Customers from "../pages/Customers";
+import Customers from "../pages/Customers.tsx";
 import NewOrder from "../pages/NewOrder";
 import Orders from "../pages/Orders";
 import WarehouseReceipts from "../pages/WarehouseReceipts.tsx";

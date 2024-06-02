@@ -6,20 +6,20 @@ import {
 } from "react-router-dom";
 
 const ErrorPage: React.FC = () => {
-  const error = useRouteError();
+  const routeError = useRouteError();
   const navigate = useNavigate();
   let errorMessage: string;
 
-  if (isRouteErrorResponse(error)) {
-    errorMessage = error.data;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
-  } else if (typeof error === "string") {
-    errorMessage = error;
+  if (isRouteErrorResponse(routeError)) {
+    errorMessage = routeError.data;
+  } else if (routeError instanceof Error) {
+    errorMessage = routeError.message;
+  } else if (typeof routeError === "string") {
+    errorMessage = routeError;
   } else {
-    console.error(error);
     errorMessage = "Unknown error";
   }
+
   return (
     <div className="flex flex-col items-center justify-center text-center">
       <img
@@ -30,13 +30,14 @@ const ErrorPage: React.FC = () => {
       />
 
       <p className="my-4">{errorMessage}</p>
+
       <Button
         className="btn-primary"
         size="large"
         type="primary"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/")}
       >
-        Go back
+        Trở về trang chủ
       </Button>
     </div>
   );
