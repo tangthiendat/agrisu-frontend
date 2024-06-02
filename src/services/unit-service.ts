@@ -1,6 +1,6 @@
 import { type AxiosInstance } from "axios";
 import { type IUnit } from "../interfaces";
-import { createApiClient } from "./api";
+import { createApiClient } from "./api-client.ts";
 
 interface IUnitService {
   apiClient: AxiosInstance;

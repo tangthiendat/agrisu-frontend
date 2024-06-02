@@ -157,8 +157,8 @@ const ProductTable: React.FC = () => {
         showSizeChanger: true,
         showTotal: (total: number) => `Tổng ${total} sản phẩm`,
         onChange: (page: number, pageSize: number) => {
-          searchParams.set("page", String(page));
-          searchParams.set("pageSize", String(pageSize));
+          searchParams.set("page", `${page}`);
+          searchParams.set("pageSize", `${pageSize}`);
           setSearchParams(searchParams);
         },
       }}

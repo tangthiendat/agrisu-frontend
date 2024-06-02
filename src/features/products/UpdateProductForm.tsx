@@ -21,17 +21,17 @@ import { type IProductUnit, type IProduct } from "../../interfaces";
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
 import { useCreateProduct, useUnits, useUpdateProduct } from "./hooks";
 
-const { useBreakpoint } = Grid;
-
 interface UpdateProductFormProps {
   form: FormInstance<IProduct>;
   productToUpdate?: IProduct;
   setIsOpenModal: Dispatch<SetStateAction<boolean>>;
 }
 
+const { useBreakpoint } = Grid;
+
 const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
   form,
-  productToUpdate = {},
+  productToUpdate,
   setIsOpenModal,
 }) => {
   const { units } = useUnits();
@@ -199,7 +199,7 @@ const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
     }
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     form.resetFields();
     setIsOpenModal(false);
   }

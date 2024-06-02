@@ -1,6 +1,6 @@
 import { type AxiosInstance } from "axios";
 import { type IPage, type IPagination, type IProduct } from "../interfaces";
-import { createApiClient } from "./api";
+import { createApiClient } from "./api-client.ts";
 
 interface IProductService {
   apiClient: AxiosInstance;
