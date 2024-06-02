@@ -1,9 +1,9 @@
-import axios from "axios";
-import { IPage, IPagination, IProduct } from "../interfaces";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { type AxiosInstance } from "axios";
+import { type IPage, type IPagination, type IProduct } from "../interfaces";
+import { createApiClient } from "./api";
 
 interface IProductService {
+  apiClient: AxiosInstance;
   getProducts: (pagination: IPagination) => Promise<IPage<IProduct>>;
   create: (newProduct: Omit<IProduct, "productId">) => Promise<IProduct>;
   update: (productId: string, updatedProduct: IProduct) => Promise<IProduct>;
@@ -11,9 +11,15 @@ interface IProductService {
 }
 
 class ProductService implements IProductService {
+  public apiClient: AxiosInstance;
+
+  constructor() {
+    this.apiClient = createApiClient("products");
+  }
+
   public async getProducts(pagination: IPagination): Promise<IPage<IProduct>> {
     return (
-      await axios.get(`${API_URL}/products`, {
+      await this.apiClient.get("", {
         params: { page: pagination.page - 1, pageSize: pagination.pageSize },
       })
     ).data;
@@ -22,20 +28,19 @@ class ProductService implements IProductService {
   public async create(
     newProduct: Omit<IProduct, "productId">,
   ): Promise<IProduct> {
-    return (await axios.post(`${API_URL}/products`, newProduct)).data;
+    return (await this.apiClient.post("", newProduct)).data;
   }
 
   public async update(
     productId: string,
     updatedProduct: IProduct,
   ): Promise<IProduct> {
-    return (await axios.put(`${API_URL}/products/${productId}`, updatedProduct))
-      .data;
+    return (await this.apiClient.put(`/${productId}`, updatedProduct)).data;
   }
 
   public async search(query: string): Promise<IProduct[]> {
     return (
-      await axios.get(`${API_URL}/products/search`, {
+      await this.apiClient.get("/search", {
         params: { query },
       })
     ).data;

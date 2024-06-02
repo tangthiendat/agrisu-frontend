@@ -1,15 +1,21 @@
-import axios from "axios";
-import { IUnit } from "../interfaces";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { type AxiosInstance } from "axios";
+import { type IUnit } from "../interfaces";
+import { createApiClient } from "./api";
 
 interface IUnitService {
+  apiClient: AxiosInstance;
   getAll: () => Promise<IUnit[]>;
 }
 
 class UnitService implements IUnitService {
+  public apiClient: AxiosInstance;
+
+  constructor() {
+    this.apiClient = createApiClient("units");
+  }
+
   public async getAll(): Promise<IUnit[]> {
-    return (await axios.get(`${API_URL}/units`)).data;
+    return (await this.apiClient.get("")).data;
   }
 }
 

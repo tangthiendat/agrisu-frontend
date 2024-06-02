@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { Form, Modal, Tooltip, Grid } from "antd";
 import UpdateProductForm from "./UpdateProductForm.tsx";
-import { IProduct } from "../../interfaces";
+import { type IProduct } from "../../interfaces";
 
 const { useBreakpoint } = Grid;
 
