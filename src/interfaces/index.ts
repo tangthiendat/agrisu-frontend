@@ -10,3 +10,7 @@ export * from "./products/IUnit.ts";
 /** CUSTOMERS */
 export * from "./customers/ICustomer.ts";
 export * from "./customers/ICustomerHistory.ts";
+
+/** SUPPLIERS */
+export * from "./suppliers/ISupplier.ts";
+export * from "./suppliers/ISupplierHistory.ts";

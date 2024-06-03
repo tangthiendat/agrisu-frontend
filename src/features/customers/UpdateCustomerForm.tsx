@@ -21,6 +21,7 @@ interface UpdateCustomerFormProps {
   form: FormInstance<ICustomer>;
   customerToUpdate?: ICustomer;
   setIsOpenModal: Dispatch<SetStateAction<boolean>>;
+  onCancel: () => void;
 }
 
 const { useBreakpoint } = Grid;
@@ -29,6 +30,7 @@ const UpdateCustomerForm: React.FC<UpdateCustomerFormProps> = ({
   form,
   customerToUpdate,
   setIsOpenModal,
+  onCancel,
 }) => {
   const { createCustomer, isCreating } = useCreateCustomer();
   const { updateCustomer, isUpdating } = useUpdateCustomer();
@@ -79,11 +81,6 @@ const UpdateCustomerForm: React.FC<UpdateCustomerFormProps> = ({
         },
       });
     }
-  }
-
-  function handleCancel(): void {
-    form.resetFields();
-    setIsOpenModal(false);
   }
 
   return (
@@ -161,7 +158,7 @@ const UpdateCustomerForm: React.FC<UpdateCustomerFormProps> = ({
       </Row>
       <Form.Item className="text-right" wrapperCol={{ span: 24 }}>
         <Space>
-          <Button onClick={handleCancel}>Hủy</Button>
+          <Button onClick={onCancel}>Hủy</Button>
           <Button
             type="primary"
             className="btn-primary"

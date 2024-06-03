@@ -1,25 +1,31 @@
 import { useState } from "react";
-import { Form, Modal, Tabs, Tooltip, Grid } from "antd";
+import { Form, Modal, Tabs, Tooltip, Grid, type TabsProps } from "antd";
 import { MdOutlineEdit } from "react-icons/md";
-import UpdateSupplierForm from "./UpdateSupplierForm";
-import SupplierHistory from "./SupplierHistory";
+import UpdateSupplierForm from "./UpdateSupplierForm.tsx";
+import SupplierHistory from "./SupplierHistory.tsx";
+import { type ISupplier } from "../../interfaces";
 
 const { useBreakpoint } = Grid;
-function UpdateSupplier({ supplier }) {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [updateSupplierForm] = Form.useForm();
+
+interface UpdateSupplierProps {
+  supplier: ISupplier;
+}
+
+const UpdateSupplier: React.FC<UpdateSupplierProps> = ({ supplier }) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [updateSupplierForm] = Form.useForm<ISupplier>();
   const screens = useBreakpoint();
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     updateSupplierForm.resetFields();
     setIsOpenModal(false);
   }
 
-  const items = [
+  const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Thông tin",
@@ -28,6 +34,7 @@ function UpdateSupplier({ supplier }) {
           supplierToUpdate={supplier}
           setIsOpenModal={setIsOpenModal}
           form={updateSupplierForm}
+          onCancel={handleCancel}
         />
       ),
     },
@@ -59,6 +66,6 @@ function UpdateSupplier({ supplier }) {
       </Modal>
     </>
   );
-}
+};
 
 export default UpdateSupplier;

@@ -1,14 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSearchSuppliers } from "./hooks/useSearchSuppliers";
 import { AutoComplete } from "antd";
 import { debounce } from "lodash";
-function SearchSupplierBar({
+import { useSearchSuppliers } from "./hooks";
+import { type ISupplier } from "../../interfaces";
+
+interface SearchSupplierBarProps {
+  onSelectSupplier: (supplier: ISupplier) => void;
+  onClear?: () => void;
+  showSelectedLabel?: boolean;
+}
+
+const SearchSupplierBar: React.FC<SearchSupplierBarProps> = ({
   onSelectSupplier,
   onClear,
   showSelectedLabel = true,
-}) {
-  const [inputValue, setInputValue] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+}) => {
+  const [inputValue, setInputValue] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const { searchedSuppliers } = useSearchSuppliers(searchQuery);
 
   useEffect(() => {
@@ -17,7 +25,7 @@ function SearchSupplierBar({
     }
   }, [inputValue, onClear]);
 
-  function handleSearch(value) {
+  function handleSearch(value: string) {
     setSearchQuery(value);
   }
 
@@ -28,7 +36,7 @@ function SearchSupplierBar({
     label: supplier.supplierName,
   }));
 
-  function handleSelect(value) {
+  function handleSelect(value: string) {
     const selectedSupplier = searchedSuppliers.find(
       (supplier) => supplier.supplierId === value,
     );
@@ -53,6 +61,6 @@ function SearchSupplierBar({
       onSelect={handleSelect}
     />
   );
-}
+};
 
 export default SearchSupplierBar;

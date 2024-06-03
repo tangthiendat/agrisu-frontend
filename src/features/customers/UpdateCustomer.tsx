@@ -3,7 +3,7 @@ import { Tooltip, Form, Modal, Tabs, Grid, TabsProps } from "antd";
 import { useState } from "react";
 import UpdateCustomerForm from "./UpdateCustomerForm.tsx";
 import CustomerHistory from "./CustomerHistory.tsx";
-import { ICustomer } from "../../interfaces";
+import { type ICustomer } from "../../interfaces";
 
 interface UpdateCustomerProps {
   customer: ICustomer;
@@ -34,6 +34,7 @@ const UpdateCustomer: React.FC<UpdateCustomerProps> = ({ customer }) => {
           customerToUpdate={customer}
           setIsOpenModal={setIsOpenModal}
           form={updateCustomerForm}
+          onCancel={handleCancel}
         />
       ),
     },

@@ -1,12 +1,16 @@
 import { Popconfirm, Tooltip } from "antd";
 import { MdDelete } from "react-icons/md";
-import { useDeleteSupplier } from "./hooks/useDeleteSuppliers";
-import { useDispatch } from "react-redux";
-import { setSelectedSupplier } from "./supplierSlice";
+import { setSelectedSupplier } from "./supplierSlice.ts";
+import { useDeleteSupplier } from "./hooks/index.ts";
+import { useAppDispatch } from "../../store/hooks.ts";
 
-function DeleteSupplier({ supplierId }) {
+interface DeleteSupplierProps {
+  supplierId: string;
+}
+
+const DeleteSupplier: React.FC<DeleteSupplierProps> = ({ supplierId }) => {
   const { deleteSupplier, isDeleting } = useDeleteSupplier();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
     <Popconfirm
       title="Xóa nhà cung cấp"
@@ -27,6 +31,6 @@ function DeleteSupplier({ supplierId }) {
       </Tooltip>
     </Popconfirm>
   );
-}
+};
 
 export default DeleteSupplier;

@@ -1,8 +1,17 @@
 import { Button, Space } from "antd";
 import CreatePayment from "../payments/CreatePayment";
-import SupplierHistoryTable from "./SupplierHistoryTable";
+import SupplierHistoryTable from "./SupplierHistoryTable.tsx";
+import { type ISupplier } from "../../interfaces";
 
-function SupplierHistory({ supplier, onCancel }) {
+interface SupplierHistoryProps {
+  supplier: ISupplier;
+  onCancel: () => void;
+}
+
+const SupplierHistory: React.FC<SupplierHistoryProps> = ({
+  supplier,
+  onCancel,
+}) => {
   return (
     <>
       <SupplierHistoryTable supplierId={supplier.supplierId} />
@@ -14,6 +23,6 @@ function SupplierHistory({ supplier, onCancel }) {
       </div>
     </>
   );
-}
+};
 
 export default SupplierHistory;

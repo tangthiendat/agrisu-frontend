@@ -1,26 +1,44 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, Col, Form, Input, InputNumber, Row, Space, Grid } from "antd";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Space,
+  Grid,
+  FormInstance,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useCreateSupplier } from "./hooks/useCreateSupplier";
-import { useUpdateSupplier } from "./hooks/useUpdateSupplier";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { setSelectedSupplier } from "./supplierSlice";
+import { formatCurrency, parseCurrency } from "../../utils/helper.ts";
+import { setSelectedSupplier } from "./supplierSlice.ts";
+import { type ISupplier } from "../../interfaces";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import { useCreateSupplier, useUpdateSupplier } from "./hooks";
+
+interface UpdateSupplierFormProps {
+  form: FormInstance<ISupplier>;
+  supplierToUpdate?: ISupplier;
+  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
+  onCancel: () => void;
+}
 
 const { useBreakpoint } = Grid;
-function UpdateSupplierForm({
+
+const UpdateSupplierForm: React.FC<UpdateSupplierFormProps> = ({
   form,
-  supplierToUpdate = {},
+  supplierToUpdate,
   setIsOpenModal,
   onCancel,
-}) {
+}) => {
   const { createSupplier, isCreating } = useCreateSupplier();
   const { updateSupplier, isUpdating } = useUpdateSupplier();
-  const isUpdateSession = Boolean(supplierToUpdate.supplierId);
-  const selectedSupplier = useSelector(
+  const isUpdateSession = Boolean(supplierToUpdate?.supplierId);
+  const selectedSupplier = useAppSelector(
     (state) => state.supplier.selectedSupplier,
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const screens = useBreakpoint();
   const formItemLayout = screens.lg
     ? {
@@ -38,12 +56,6 @@ function UpdateSupplierForm({
       form.setFieldsValue(supplierToUpdate);
     }
   }, [supplierToUpdate, isUpdateSession, form]);
-
-  function preventSubmission(e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-    }
-  }
 
   function handleFinish(submittedSupplier) {
     if (isUpdateSession) {
@@ -76,7 +88,6 @@ function UpdateSupplierForm({
       layout={screens.lg ? "horizontal" : "vertical"}
       name="updateSupplierForm"
       form={form}
-      onKeyDown={preventSubmission}
       onFinish={handleFinish}
       {...formItemLayout}
       initialValues={{ payable: 0 }}
@@ -135,7 +146,7 @@ function UpdateSupplierForm({
             name="payable"
           >
             <InputNumber
-              className="w-[55%]"
+              className="w-[70%]"
               formatter={formatCurrency}
               parser={parseCurrency}
               min={0}
@@ -160,6 +171,6 @@ function UpdateSupplierForm({
       </Form.Item>
     </Form>
   );
-}
+};
 
 export default UpdateSupplierForm;

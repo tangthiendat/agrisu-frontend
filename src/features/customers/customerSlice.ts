@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { type ICustomer } from "../../interfaces";
 
 interface CustomerState {
@@ -13,7 +13,7 @@ export const customerSlice = createSlice({
   name: "customer",
   initialState,
   reducers: {
-    setSelectedCustomer(state, action) {
+    setSelectedCustomer(state, action: PayloadAction<ICustomer[]>) {
       state.selectedCustomer = action.payload;
     },
   },

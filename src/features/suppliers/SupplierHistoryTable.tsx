@@ -1,11 +1,18 @@
-import { Table } from "antd";
-import Spinner from "../../ui/Spinner";
-import { formatCurrency, formatDateTime } from "../../utils/helper";
-import { useSupplierHistory } from "./hooks/useSupplierHistory";
+import { Table, type TableProps } from "antd";
+import Spinner from "../../ui/Spinner.tsx";
+import { formatCurrency, formatDateTime } from "../../utils/helper.ts";
+import { useSupplierHistory } from "./hooks";
+import { type ISupplierHistory } from "../../interfaces";
 
-function SupplierHistoryTable({ supplierId }) {
+interface SupplierHistoryTableProps {
+  supplierId: string;
+}
+
+const SupplierHistoryTable: React.FC<SupplierHistoryTableProps> = ({
+  supplierId,
+}) => {
   const { supplierHistory, isLoading } = useSupplierHistory(supplierId);
-  const columns = [
+  const columns: TableProps<ISupplierHistory>["columns"] = [
     {
       title: "Mã phiếu",
       dataIndex: "id",
@@ -83,6 +90,6 @@ function SupplierHistoryTable({ supplierId }) {
       scroll={{ y: 300 }}
     />
   );
-}
+};
 
 export default SupplierHistoryTable;

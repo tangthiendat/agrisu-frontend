@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { Button, Form, Modal, Grid } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import UpdateSupplierForm from "./UpdateSupplierForm";
+import UpdateSupplierForm from "./UpdateSupplierForm.tsx";
+import { type ISupplier } from "../../interfaces";
 
 const { useBreakpoint } = Grid;
-function AddSupplier() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [addSupplierForm] = Form.useForm();
+
+const AddSupplier: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [addSupplierForm] = Form.useForm<ISupplier>();
   const screens = useBreakpoint();
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     addSupplierForm.resetFields();
     setIsOpenModal(false);
   }
@@ -44,6 +46,6 @@ function AddSupplier() {
       </Modal>
     </>
   );
-}
+};
 
 export default AddSupplier;

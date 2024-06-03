@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { supplierService } from "../../../services/supplierService";
+import { supplierService } from "../../../services/supplier-service.ts";
 
 export function useDeleteSupplier() {
   const queryClient = useQueryClient();
@@ -8,7 +8,9 @@ export function useDeleteSupplier() {
     mutationFn: supplierService.delete,
     onSuccess: () => {
       toast.success("Xóa nhà cung cấp thành công");
-      queryClient.invalidateQueries("suppliers");
+      queryClient.invalidateQueries({
+        queryKey: ["suppliers"],
+      });
     },
     onError: () => {
       toast.error("Có lỗi xảy ra khi xóa nhà cung cấp");

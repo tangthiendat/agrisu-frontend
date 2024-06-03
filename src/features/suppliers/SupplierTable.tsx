@@ -1,16 +1,18 @@
 import { useEffect } from "react";
-import { Space, Table } from "antd";
-import { useSelector } from "react-redux";
+import { Space, Table, type TableProps } from "antd";
+import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom";
-import { useSuppliers } from "./hooks/useSuppliers";
-import { formatCurrency } from "../../utils/helper";
-import Spinner from "../../ui/Spinner";
-import UpdateSupplier from "./UpdateSupplier";
-import DeleteSupplier from "./DeleteSupplier";
+import Spinner from "../../ui/Spinner.tsx";
+import DeleteSupplier from "./DeleteSupplier.tsx";
+import UpdateSupplier from "./UpdateSupplier.tsx";
+import { formatCurrency } from "../../utils/helper.ts";
+import { useSuppliers } from "./hooks/useSuppliers.ts";
+import { type ISupplier } from "../../interfaces";
+import { useAppSelector } from "../../store/hooks.ts";
 
-function SupplierTable() {
-  const { isLoading, suppliers, suppliersNum } = useSuppliers();
-  const selectedSupplier = useSelector(
+const SupplierTable: React.FC = () => {
+  const { isLoading, suppliers, numSuppliers, error } = useSuppliers();
+  const selectedSupplier = useAppSelector(
     (state) => state.supplier.selectedSupplier,
   );
 
@@ -21,15 +23,21 @@ function SupplierTable() {
   //Set default page and pageSize in the URL
   useEffect(() => {
     if (!page) {
-      searchParams.set("page", 1);
+      searchParams.set("page", "1");
     }
     if (!pageSize) {
-      searchParams.set("pageSize", 10);
+      searchParams.set("pageSize", "10");
     }
     setSearchParams(searchParams);
   }, [searchParams, setSearchParams, page, pageSize]);
 
-  const columns = [
+  useEffect(() => {
+    if (error) {
+      toast.error("Có lỗi xảy ra khi tải dữ liệu nhà cung cấp");
+    }
+  }, [error]);
+
+  const columns: TableProps<ISupplier>["columns"] = [
     {
       title: "Mã nhà cung cấp",
       dataIndex: "supplierId",
@@ -60,14 +68,14 @@ function SupplierTable() {
       dataIndex: "payable",
       key: "payable",
       width: "15%",
-      render: (payable) => {
+      render: (payable: number) => {
         return formatCurrency(payable);
       },
     },
 
     {
       key: "action",
-      render: (_, record) => (
+      render: (record: ISupplier) => (
         <Space size="middle">
           <UpdateSupplier supplier={record} />
           <DeleteSupplier supplierId={record.supplierId} />
@@ -83,12 +91,12 @@ function SupplierTable() {
       pagination={{
         current: page || 1,
         pageSize: pageSize || 10,
-        total: suppliersNum,
+        total: numSuppliers,
         showSizeChanger: true,
-        showTotal: (total) => `Tổng ${total} khách hàng`,
-        onChange: (page, pageSize) => {
-          searchParams.set("page", page);
-          searchParams.set("pageSize", pageSize);
+        showTotal: (total: number) => `Tổng ${total} khách hàng`,
+        onChange: (page: number, pageSize: number) => {
+          searchParams.set("page", `${page}`);
+          searchParams.set("pageSize", `${pageSize}`);
           setSearchParams(searchParams);
         },
       }}
@@ -99,6 +107,6 @@ function SupplierTable() {
       size="middle"
     />
   );
-}
+};
 
 export default SupplierTable;

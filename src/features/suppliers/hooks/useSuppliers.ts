@@ -1,29 +1,21 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { supplierService } from "../../../services/supplierService";
+import { supplierService } from "../../../services/supplier-service.ts";
 
 export function useSuppliers() {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
-  const page = Number(searchParams.get("page")) || 1;
-  const pageSize = Number(searchParams.get("pageSize")) || 10;
+  const page: number = Number(searchParams.get("page")) || 1;
+  const pageSize: number = Number(searchParams.get("pageSize")) || 10;
 
   const {
     isLoading: isLoading,
-    data: { content: suppliers, totalElements: suppliersNum, totalPages } = {},
+    data: { content: suppliers, totalElements: numSuppliers, totalPages } = {},
     error,
   } = useQuery({
     queryKey: ["suppliers", { page, pageSize }],
     queryFn: () => supplierService.getSuppliers({ page, pageSize }),
   });
-
-  useEffect(() => {
-    if (error) {
-      toast.error("Có lỗi xảy ra khi tải dữ liệu nhà cung cấp");
-    }
-  }, [error]);
 
   //PREFETCH
   if (page < totalPages) {
@@ -39,5 +31,5 @@ export function useSuppliers() {
     });
   }
 
-  return { suppliers, isLoading, suppliersNum };
+  return { suppliers, isLoading, numSuppliers, error };
 }

@@ -92,7 +92,7 @@ const CustomerTable: React.FC = () => {
         pageSize: pageSize || 10,
         total: numCustomers,
         showSizeChanger: true,
-        showTotal: (total) => `Tổng ${total} khách hàng`,
+        showTotal: (total: number) => `Tổng ${total} khách hàng`,
         onChange: (page: number, pageSize: number) => {
           searchParams.set("page", `${page}`);
           searchParams.set("pageSize", `${pageSize}`);
