@@ -1,5 +1,5 @@
 import { Button, Space } from "antd";
-import CreatePayment from "../payments/CreatePayment";
+import CreatePayment from "../payments/CreatePayment.tsx";
 import SupplierHistoryTable from "./SupplierHistoryTable.tsx";
 import { type ISupplier } from "../../interfaces";
 

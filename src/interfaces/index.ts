@@ -17,3 +17,6 @@ export * from "./suppliers/ISupplierHistory.ts";
 
 /** RECEIPTS */
 export * from "./receipts/IReceipt.ts";
+
+/** PAYMENTS */
+export * from "./payments/IPayment.ts";

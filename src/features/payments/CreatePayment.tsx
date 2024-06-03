@@ -1,12 +1,17 @@
 import { Button, Form, Modal } from "antd";
 import { useState } from "react";
-import CreatePaymentForm from "./CreatePaymentForm";
+import CreatePaymentForm from "./CreatePaymentForm.tsx";
+import { type IPayment, type ISupplier } from "../../interfaces";
 
-function CreatePayment({ supplier }) {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [createPaymentForm] = Form.useForm();
+interface CreatePaymentProps {
+  supplier: ISupplier;
+}
 
-  if (!supplier || supplier.payable === 0) {
+const CreatePayment: React.FC<CreatePaymentProps> = ({ supplier }) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [createPaymentForm] = Form.useForm<IPayment>();
+
+  if (supplier.payable === 0) {
     return (
       <Button type="primary" className="btn-primary" disabled>
         Lập phiếu chi
@@ -14,13 +19,13 @@ function CreatePayment({ supplier }) {
     );
   }
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
-    createPaymentForm.resetFields();
+  function handleCancel(): void {
     setIsOpenModal(false);
+    createPaymentForm.resetFields();
   }
   return (
     <>
@@ -39,11 +44,11 @@ function CreatePayment({ supplier }) {
         <CreatePaymentForm
           form={createPaymentForm}
           supplier={supplier}
-          setIsOpenModal={setIsOpenModal}
+          onCancel={handleCancel}
         />
       </Modal>
     </>
   );
-}
+};
 
 export default CreatePayment;

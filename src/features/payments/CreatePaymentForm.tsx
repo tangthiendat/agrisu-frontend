@@ -1,27 +1,38 @@
-import { Button, Form, Input, InputNumber, Space } from "antd";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { useCreatePayment } from "./hooks/useCreatePayment";
+import {
+  Button,
+  Form,
+  type FormInstance,
+  Input,
+  InputNumber,
+  Space,
+} from "antd";
+import { formatCurrency, parseCurrency } from "../../utils/helper.ts";
+import { useCreatePayment } from "./hooks";
+import { type IPayment, type ISupplier } from "../../interfaces";
 
-function CreatePaymentForm({ form, supplier, setIsOpenModal }) {
+interface CreatePaymentFormProps {
+  form: FormInstance<IPayment>;
+  supplier: ISupplier;
+  onCancel: () => void;
+}
+
+const CreatePaymentForm: React.FC<CreatePaymentFormProps> = ({
+  form,
+  supplier,
+  onCancel,
+}) => {
   const { createPayment, isCreating } = useCreatePayment();
 
-  function handlePaidAmountChange(paidAmount) {
+  function handlePaidAmountChange(paidAmount: number) {
     const supplierNextDebt = supplier.payable - paidAmount;
     form.setFieldsValue({ supplierNextDebt });
   }
 
-  function handleCancel() {
-    form.resetFields();
-    setIsOpenModal(false);
-  }
-
-  function handleFinish(submittedPayment) {
+  function handleFinish(submittedPayment: IPayment) {
     submittedPayment.supplier = supplier;
-    console.log(submittedPayment);
     createPayment(submittedPayment, {
       onSuccess: () => {
-        form.resetFields();
-        setIsOpenModal(false);
+        onCancel();
       },
     });
   }
@@ -63,7 +74,7 @@ function CreatePaymentForm({ form, supplier, setIsOpenModal }) {
             message: "Vui lòng nhập số tiền thanh toán",
           },
           {
-            validator: (_, value) => {
+            validator: (_, value: number) => {
               if (value > supplier.payable) {
                 return Promise.reject("Số tiền thanh toán không hợp lệ");
               }
@@ -91,7 +102,7 @@ function CreatePaymentForm({ form, supplier, setIsOpenModal }) {
       </Form.Item>
       <Form.Item className="text-right">
         <Space>
-          <Button onClick={handleCancel}>Hủy</Button>
+          <Button onClick={onCancel}>Hủy</Button>
           <Button
             type="primary"
             className="btn-primary"
@@ -104,6 +115,6 @@ function CreatePaymentForm({ form, supplier, setIsOpenModal }) {
       </Form.Item>
     </Form>
   );
-}
+};
 
 export default CreatePaymentForm;
