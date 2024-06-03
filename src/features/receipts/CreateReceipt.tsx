@@ -1,12 +1,17 @@
 import { Button, Form, Modal } from "antd";
-import CreateReceiptForm from "./CreateReceiptForm";
+import CreateReceiptForm from "./CreateReceiptForm.tsx";
 import { useState } from "react";
+import { type IReceipt, type ICustomer } from "../../interfaces";
 
-function CreateReceipt({ customer }) {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [createReceiptForm] = Form.useForm();
+interface CreateReceiptProps {
+  customer: ICustomer;
+}
 
-  if (!customer || customer.receivable === 0) {
+const CreateReceipt: React.FC<CreateReceiptProps> = ({ customer }) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [createReceiptForm] = Form.useForm<IReceipt>();
+
+  if (customer.receivable === 0) {
     return (
       <Button type="primary" className="btn-primary" disabled>
         Lập phiếu thu
@@ -14,13 +19,13 @@ function CreateReceipt({ customer }) {
     );
   }
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
-    createReceiptForm.resetFields();
+  function handleCancel(): void {
     setIsOpenModal(false);
+    createReceiptForm.resetFields();
   }
   return (
     <>
@@ -39,11 +44,11 @@ function CreateReceipt({ customer }) {
         <CreateReceiptForm
           form={createReceiptForm}
           customer={customer}
-          setIsOpenModal={setIsOpenModal}
+          onCancel={handleCancel}
         />
       </Modal>
     </>
   );
-}
+};
 
 export default CreateReceipt;

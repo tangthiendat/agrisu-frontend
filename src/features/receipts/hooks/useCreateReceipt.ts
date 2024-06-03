@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { receiptService } from "../../../services/receiptService";
+import { receiptService } from "../../../services/receipt-service.ts";
 import { toast } from "react-toastify";
 
 export function useCreateReceipt() {
@@ -8,7 +8,9 @@ export function useCreateReceipt() {
     mutationFn: receiptService.create,
     onSuccess: () => {
       toast.success("Tạo phiếu thu thành công");
-      queryClient.invalidateQueries("receipts");
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "receipts",
+      });
     },
     onError: () => {
       toast.error("Có lỗi xảy ra khi tạo phiếu thu");

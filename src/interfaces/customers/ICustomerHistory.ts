@@ -1,6 +1,6 @@
 export interface ICustomerHistory {
   id: string;
-  createdDate: Date;
+  createdAt: Date;
   type: string;
   currentDebt: number;
   value: number;

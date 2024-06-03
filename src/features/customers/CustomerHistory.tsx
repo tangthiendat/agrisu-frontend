@@ -1,5 +1,5 @@
 import { Button, Space } from "antd";
-import CreateReceipt from "../receipts/CreateReceipt";
+import CreateReceipt from "../receipts/CreateReceipt.tsx";
 import CustomerHistoryTable from "./CustomerHistoryTable.tsx";
 import { type ICustomer } from "../../interfaces";
 

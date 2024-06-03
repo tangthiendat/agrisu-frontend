@@ -1,26 +1,38 @@
-import { Button, Form, Input, InputNumber, Space } from "antd";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { useCreateReceipt } from "./hooks/useCreateReceipt";
+import {
+  Button,
+  Form,
+  type FormInstance,
+  Input,
+  InputNumber,
+  Space,
+} from "antd";
+import { formatCurrency, parseCurrency } from "../../utils/helper.ts";
+import { useCreateReceipt } from "./hooks";
+import { type ICustomer, type IReceipt } from "../../interfaces";
 
-function CreateReceiptForm({ form, customer, setIsOpenModal }) {
+interface CreateReceiptFormProps {
+  form: FormInstance<IReceipt>;
+  customer: ICustomer;
+  onCancel: () => void;
+}
+
+const CreateReceiptForm: React.FC<CreateReceiptFormProps> = ({
+  form,
+  customer,
+  onCancel,
+}) => {
   const { createReceipt, isCreating } = useCreateReceipt();
 
-  function handlePaidAmountChange(paidAmount) {
+  function handlePaidAmountChange(paidAmount: number): void {
     const customerNextDebt = customer.receivable - paidAmount;
     form.setFieldsValue({ customerNextDebt });
   }
 
-  function handleCancel() {
-    form.resetFields();
-    setIsOpenModal(false);
-  }
-
-  function handleFinish(submittedReceipt) {
+  function handleFinish(submittedReceipt: Omit<IReceipt, "createdAt">): void {
     submittedReceipt.customer = customer;
     createReceipt(submittedReceipt, {
       onSuccess: () => {
-        form.resetFields();
-        setIsOpenModal(false);
+        onCancel();
       },
     });
   }
@@ -62,7 +74,7 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
             message: "Vui lòng nhập số tiền thanh toán",
           },
           {
-            validator: (_, value) => {
+            validator: (_, value: number) => {
               if (value > customer.receivable) {
                 return Promise.reject("Số tiền thanh toán không hợp lệ");
               }
@@ -90,7 +102,7 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
       </Form.Item>
       <Form.Item className="text-right">
         <Space>
-          <Button onClick={handleCancel}>Hủy</Button>
+          <Button onClick={onCancel}>Hủy</Button>
           <Button
             type="primary"
             className="btn-primary"
@@ -103,6 +115,6 @@ function CreateReceiptForm({ form, customer, setIsOpenModal }) {
       </Form.Item>
     </Form>
   );
-}
+};
 
 export default CreateReceiptForm;
