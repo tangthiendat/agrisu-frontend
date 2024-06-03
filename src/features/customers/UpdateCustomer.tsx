@@ -21,7 +21,6 @@ const UpdateCustomer: React.FC<UpdateCustomerProps> = ({ customer }) => {
   }
 
   function handleCancel(): void {
-    updateCustomerForm.resetFields();
     setIsOpenModal(false);
   }
 
@@ -31,9 +30,8 @@ const UpdateCustomer: React.FC<UpdateCustomerProps> = ({ customer }) => {
       label: "Thông tin",
       children: (
         <UpdateCustomerForm
-          customerToUpdate={customer}
-          setIsOpenModal={setIsOpenModal}
           form={updateCustomerForm}
+          customerToUpdate={customer}
           onCancel={handleCancel}
         />
       ),

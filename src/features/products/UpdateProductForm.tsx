@@ -13,7 +13,7 @@ import {
   Grid,
   FormInstance,
 } from "antd";
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { formatCurrency, parseCurrency, roundUp } from "../../utils/helper.ts";
 import { setSelectedProduct } from "./productSlice.ts";
@@ -24,7 +24,7 @@ import { useCreateProduct, useUnits, useUpdateProduct } from "./hooks";
 interface UpdateProductFormProps {
   form: FormInstance<IProduct>;
   productToUpdate?: IProduct;
-  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
+  onCancel: () => void;
 }
 
 const { useBreakpoint } = Grid;
@@ -32,7 +32,7 @@ const { useBreakpoint } = Grid;
 const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
   form,
   productToUpdate,
-  setIsOpenModal,
+  onCancel,
 }) => {
   const { units } = useUnits();
   const isUpdateSession: boolean = Boolean(productToUpdate?.productId);
@@ -185,23 +185,17 @@ const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
             if (selectedProduct.length > 0) {
               dispatch(setSelectedProduct([submittedProduct]));
             }
-            setIsOpenModal(false);
+            onCancel();
           },
         },
       );
     } else {
       createProduct(submittedProduct, {
         onSuccess: () => {
-          form.resetFields();
-          setIsOpenModal(false);
+          onCancel();
         },
       });
     }
-  }
-
-  function handleCancel(): void {
-    form.resetFields();
-    setIsOpenModal(false);
   }
 
   return (
@@ -381,7 +375,7 @@ const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
         </Row>
         <Form.Item className="mt-5 text-right" wrapperCol={{ span: 24 }}>
           <Space>
-            <Button onClick={handleCancel}>Hủy</Button>
+            <Button onClick={onCancel}>Hủy</Button>
             <Button
               type="primary"
               htmlType="submit"

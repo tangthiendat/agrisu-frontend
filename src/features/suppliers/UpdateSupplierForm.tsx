@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Button,
   Col,
@@ -20,7 +20,6 @@ import { useCreateSupplier, useUpdateSupplier } from "./hooks";
 interface UpdateSupplierFormProps {
   form: FormInstance<ISupplier>;
   supplierToUpdate?: ISupplier;
-  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
   onCancel: () => void;
 }
 
@@ -29,7 +28,6 @@ const { useBreakpoint } = Grid;
 const UpdateSupplierForm: React.FC<UpdateSupplierFormProps> = ({
   form,
   supplierToUpdate,
-  setIsOpenModal,
   onCancel,
 }) => {
   const { createSupplier, isCreating } = useCreateSupplier();
@@ -69,15 +67,14 @@ const UpdateSupplierForm: React.FC<UpdateSupplierFormProps> = ({
             if (selectedSupplier.length > 0) {
               dispatch(setSelectedSupplier([submittedSupplier]));
             }
-            setIsOpenModal(false);
+            onCancel();
           },
         },
       );
     } else {
       createSupplier(submittedSupplier, {
         onSuccess: () => {
-          form.resetFields();
-          setIsOpenModal(false);
+          onCancel();
         },
       });
     }

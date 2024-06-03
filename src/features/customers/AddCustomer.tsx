@@ -16,8 +16,8 @@ const AddCustomer: React.FC = () => {
   }
 
   function handleCancel(): void {
-    addCustomerForm.resetFields();
     setIsOpenModal(false);
+    addCustomerForm.resetFields();
   }
 
   return (
@@ -38,11 +38,7 @@ const AddCustomer: React.FC = () => {
         footer={null}
         onCancel={handleCancel}
       >
-        <UpdateCustomerForm
-          form={addCustomerForm}
-          setIsOpenModal={setIsOpenModal}
-          onCancel={handleCancel}
-        />
+        <UpdateCustomerForm form={addCustomerForm} onCancel={handleCancel} />
       </Modal>
     </>
   );

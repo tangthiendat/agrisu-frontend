@@ -16,8 +16,8 @@ const AddProduct: React.FC = () => {
   }
 
   function handleCancel(): void {
-    addProductForm.resetFields();
     setIsOpenModal(false);
+    addProductForm.resetFields();
   }
 
   return (
@@ -38,10 +38,7 @@ const AddProduct: React.FC = () => {
         destroyOnClose
         onCancel={handleCancel}
       >
-        <UpdateProductForm
-          form={addProductForm}
-          setIsOpenModal={setIsOpenModal}
-        />
+        <UpdateProductForm form={addProductForm} onCancel={handleCancel} />
       </Modal>
     </>
   );

@@ -16,8 +16,8 @@ const AddSupplier: React.FC = () => {
   }
 
   function handleCancel(): void {
-    addSupplierForm.resetFields();
     setIsOpenModal(false);
+    addSupplierForm.resetFields();
   }
 
   return (
@@ -38,11 +38,7 @@ const AddSupplier: React.FC = () => {
         footer={null}
         onCancel={handleCancel}
       >
-        <UpdateSupplierForm
-          form={addSupplierForm}
-          onCancel={handleCancel}
-          setIsOpenModal={setIsOpenModal}
-        />
+        <UpdateSupplierForm form={addSupplierForm} onCancel={handleCancel} />
       </Modal>
     </>
   );

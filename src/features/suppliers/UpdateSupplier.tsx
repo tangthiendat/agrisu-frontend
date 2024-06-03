@@ -21,7 +21,6 @@ const UpdateSupplier: React.FC<UpdateSupplierProps> = ({ supplier }) => {
   }
 
   function handleCancel(): void {
-    updateSupplierForm.resetFields();
     setIsOpenModal(false);
   }
 
@@ -32,7 +31,6 @@ const UpdateSupplier: React.FC<UpdateSupplierProps> = ({ supplier }) => {
       children: (
         <UpdateSupplierForm
           supplierToUpdate={supplier}
-          setIsOpenModal={setIsOpenModal}
           form={updateSupplierForm}
           onCancel={handleCancel}
         />

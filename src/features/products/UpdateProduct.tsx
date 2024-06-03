@@ -20,7 +20,6 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ product }) => {
   }
 
   function handleCancel() {
-    updateProductForm.resetFields();
     setIsOpenModal(false);
   }
 
@@ -43,8 +42,8 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ product }) => {
       >
         <UpdateProductForm
           form={updateProductForm}
-          setIsOpenModal={setIsOpenModal}
           productToUpdate={product}
+          onCancel={handleCancel}
         />
       </Modal>
     </>

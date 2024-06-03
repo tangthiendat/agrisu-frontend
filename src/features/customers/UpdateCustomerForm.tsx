@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Col,
   Form,
@@ -20,7 +20,6 @@ import { type ICustomer } from "../../interfaces";
 interface UpdateCustomerFormProps {
   form: FormInstance<ICustomer>;
   customerToUpdate?: ICustomer;
-  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
   onCancel: () => void;
 }
 
@@ -29,7 +28,6 @@ const { useBreakpoint } = Grid;
 const UpdateCustomerForm: React.FC<UpdateCustomerFormProps> = ({
   form,
   customerToUpdate,
-  setIsOpenModal,
   onCancel,
 }) => {
   const { createCustomer, isCreating } = useCreateCustomer();
@@ -69,7 +67,7 @@ const UpdateCustomerForm: React.FC<UpdateCustomerFormProps> = ({
             if (selectedCustomer.length > 0) {
               dispatch(setSelectedCustomer([submittedCustomer]));
             }
-            setIsOpenModal(false);
+            onCancel();
           },
         },
       );
@@ -77,7 +75,7 @@ const UpdateCustomerForm: React.FC<UpdateCustomerFormProps> = ({
       createCustomer(submittedCustomer, {
         onSuccess: () => {
           form.resetFields();
-          setIsOpenModal(false);
+          onCancel();
         },
       });
     }
