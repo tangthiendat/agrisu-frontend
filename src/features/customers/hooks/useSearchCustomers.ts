@@ -3,7 +3,7 @@ import { customerService } from "../../../services/customer-service.ts";
 
 export function useSearchCustomers(query: string) {
   const { data: searchedCustomers } = useQuery({
-    queryKey: ["searchedCustomers", query],
+    queryKey: ["customers", "search", query],
     queryFn: () => customerService.search(query),
     enabled: query !== "",
   });

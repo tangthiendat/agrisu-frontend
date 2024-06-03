@@ -9,7 +9,7 @@ export function useDeleteCustomer() {
     onSuccess: () => {
       toast.success("Xóa khách hàng thành công");
       queryClient.invalidateQueries({
-        queryKey: ["customers"],
+        predicate: (query) => query.queryKey[0] === "customers",
       });
     },
     onError: () => {

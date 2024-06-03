@@ -16,7 +16,7 @@ export function useUpdateCustomer() {
     onSuccess: () => {
       toast.success("Cập nhật khách hàng thành công");
       queryClient.invalidateQueries({
-        queryKey: ["customers"],
+        predicate: (query) => query.queryKey[0] === "customers",
       });
     },
     onError: () => {

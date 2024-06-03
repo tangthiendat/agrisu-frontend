@@ -41,6 +41,7 @@ const AddCustomer: React.FC = () => {
         <UpdateCustomerForm
           form={addCustomerForm}
           setIsOpenModal={setIsOpenModal}
+          onCancel={handleCancel}
         />
       </Modal>
     </>

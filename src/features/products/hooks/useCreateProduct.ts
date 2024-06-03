@@ -9,7 +9,7 @@ export function useCreateProduct() {
     onSuccess: () => {
       toast.success("Thêm sản phẩm thành công");
       queryClient.invalidateQueries({
-        queryKey: ["products"],
+        predicate: (query) => query.queryKey[0] === "products",
       });
     },
     onError: () => {

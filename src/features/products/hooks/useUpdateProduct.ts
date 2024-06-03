@@ -16,7 +16,7 @@ export function useUpdateProduct() {
     onSuccess: () => {
       toast.success("Cập nhật sản phẩm thành công");
       queryClient.invalidateQueries({
-        queryKey: ["products"],
+        predicate: (query) => query.queryKey[0] === "products",
       });
     },
     onError: () => {

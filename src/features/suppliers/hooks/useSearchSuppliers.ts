@@ -3,7 +3,7 @@ import { supplierService } from "../../../services/supplier-service.ts";
 
 export function useSearchSuppliers(query: string) {
   const { data: searchedSuppliers } = useQuery({
-    queryKey: ["searchedSuppliers", query],
+    queryKey: ["suppliers", "search", query],
     queryFn: () => supplierService.search(query),
     enabled: query !== "",
   });

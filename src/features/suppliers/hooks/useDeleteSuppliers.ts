@@ -9,7 +9,7 @@ export function useDeleteSupplier() {
     onSuccess: () => {
       toast.success("Xóa nhà cung cấp thành công");
       queryClient.invalidateQueries({
-        queryKey: ["suppliers"],
+        predicate: (query) => query.queryKey[0] === "suppliers",
       });
     },
     onError: () => {
