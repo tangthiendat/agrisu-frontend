@@ -1,5 +1,7 @@
+import UnderConstruction from "../ui/UnderConstruction.tsx";
+
 const WarehouseReceipts: React.FC = () => {
-  return <div>WAREHOUSE RECEIPTS</div>;
+  return <UnderConstruction />;
 };
 
 export default WarehouseReceipts;

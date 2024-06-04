@@ -1,5 +1,7 @@
+import UnderConstruction from "../ui/UnderConstruction.tsx";
+
 const Orders: React.FC = () => {
-  return <div>INVOICES</div>;
+  return <UnderConstruction />;
 };
 
 export default Orders;

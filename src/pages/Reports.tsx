@@ -1,5 +1,7 @@
+import UnderConstruction from "../ui/UnderConstruction.tsx";
+
 const Reports: React.FC = () => {
-  return <div>REPORT</div>;
+  return <UnderConstruction />;
 };
 
 export default Reports;

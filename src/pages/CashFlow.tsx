@@ -1,9 +1,7 @@
+import UnderConstruction from "../ui/UnderConstruction.tsx";
+
 const CashFlow: React.FC = () => {
-  return (
-    <div>
-      <h1>Cash Flow</h1>
-    </div>
-  );
+  return <UnderConstruction />;
 };
 
 export default CashFlow;
