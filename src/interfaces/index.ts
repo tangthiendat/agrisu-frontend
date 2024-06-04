@@ -21,10 +21,14 @@ export * from "./receipts/IReceipt.ts";
 /** PAYMENTS */
 export * from "./payments/IPayment.ts";
 
-/** ORDER */
+/** ORDERS */
 export * from "./orders/IOrder.ts";
 export * from "./orders/IOrderDetail.ts";
 
-/** WAREHOUSE EXPORT */
+/** WAREHOUSE EXPORTS */
 export * from "./warehouse-exports/IWarehouseExport.ts";
 export * from "./warehouse-exports/IWarehouseExportDetail.ts";
+
+/** WAREHOUSE RECEIPTS */
+export * from "./warehouse-receipts/IWarehouseReceipt.ts";
+export * from "./warehouse-receipts/IWarehouseReceiptDetail.ts";

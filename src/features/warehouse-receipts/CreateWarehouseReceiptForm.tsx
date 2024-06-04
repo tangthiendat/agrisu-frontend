@@ -1,16 +1,34 @@
-import { Form, InputNumber, Modal, Grid } from "antd";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { getWarehouseReceiptTotalValue } from "./warehouseReceiptSlice";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
+import { Form, InputNumber, Modal, Grid, FormInstance } from "antd";
+import { formatCurrency, parseCurrency } from "../../utils/helper.ts";
+import { useAppSelector } from "../../store/hooks.ts";
+import {
+  type INewWarehouseReceipt,
+  type ISupplier,
+  type INewWarehouseReceiptDetail,
+} from "../../interfaces";
+
+interface CreateWarehouseReceiptFormProps {
+  form: FormInstance<INewWarehouseReceipt>;
+  onFinish: (submittedWarehouseReceipt: INewWarehouseReceipt) => void;
+}
 
 const { useBreakpoint } = Grid;
-function CreateWarehouseReceiptForm({ form, onFinish }) {
-  const totalWarehouseReceiptValue = useSelector(getWarehouseReceiptTotalValue);
-  const warehouseReceiptDetails = useSelector(
+
+const CreateWarehouseReceiptForm: React.FC<CreateWarehouseReceiptFormProps> = ({
+  form,
+  onFinish,
+}) => {
+  const warehouseReceiptDetails: INewWarehouseReceiptDetail[] = useAppSelector(
     (state) => state.warehouseReceipt.warehouseReceiptDetails,
   );
-  const supplier = useSelector((state) => state.warehouseReceipt.supplier);
+  const warehouseReceiptTotalValue = warehouseReceiptDetails.reduce(
+    (total, detail) => total + detail.quantity * detail.unitPrice,
+    0,
+  );
+  const supplier: ISupplier = useAppSelector(
+    (state) => state.warehouseReceipt.supplier,
+  );
   const [modal, contextHolder] = Modal.useModal();
   const screens = useBreakpoint();
   const formItemLayout = screens.xl
@@ -27,22 +45,22 @@ function CreateWarehouseReceiptForm({ form, onFinish }) {
 
   useEffect(() => {
     form.setFieldsValue({
-      totalValue: totalWarehouseReceiptValue,
+      totalValue: warehouseReceiptTotalValue,
       supplierCurrentDebt: supplier?.payable || 0,
       supplierNextDebt:
         supplier && warehouseReceiptDetails.length > 0
-          ? supplier.payable + totalWarehouseReceiptValue
+          ? supplier.payable + warehouseReceiptTotalValue
           : supplier?.payable || 0,
     });
   }, [
-    totalWarehouseReceiptValue,
+    warehouseReceiptTotalValue,
     supplier,
     warehouseReceiptDetails.length,
     form,
   ]);
 
-  function handleFinish(submittedWarehouseReceipt) {
-    if (getWarehouseReceiptTotalValue.length == 0) {
+  function handleFinish(submittedWarehouseReceipt: INewWarehouseReceipt): void {
+    if (warehouseReceiptDetails.length == 0) {
       modal.error({
         title: "Không thể tạo phiếu nhập hàng",
         content: "Vui lòng chọn chi tiết phiếu nhập hàng.",
@@ -64,7 +82,6 @@ function CreateWarehouseReceiptForm({ form, onFinish }) {
     }
     submittedWarehouseReceipt.supplier = supplier;
     submittedWarehouseReceipt.warehouseReceiptDetails = warehouseReceiptDetails;
-
     onFinish(submittedWarehouseReceipt);
   }
 
@@ -122,6 +139,6 @@ function CreateWarehouseReceiptForm({ form, onFinish }) {
       </Form>
     </>
   );
-}
+};
 
 export default CreateWarehouseReceiptForm;

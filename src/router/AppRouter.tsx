@@ -11,7 +11,7 @@ import Orders from "../pages/Orders.tsx";
 import WarehouseReceipts from "../pages/WarehouseReceipts.tsx";
 import WarehouseExports from "../pages/WarehouseExports.tsx";
 import CashFlow from "../pages/CashFlow.tsx";
-import NewWarehouseReceipt from "../pages/NewWarehouseReceipt";
+import NewWarehouseReceipt from "../pages/NewWarehouseReceipt.tsx";
 import NewWarehouseExport from "../pages/NewWarehouseExport.tsx";
 import Reports from "../pages/Reports.tsx";
 import Login from "../pages/Login.tsx";

@@ -1,30 +1,31 @@
 import { useState } from "react";
 import { Button, Form, Modal, Space, Tooltip } from "antd";
-import { useDispatch } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
-import { setSupplier } from "./warehouseReceiptSlice";
-import SearchSupplierBar from "../suppliers/SearchSupplierBar";
-import UpdateSupplierForm from "../suppliers/UpdateSupplierForm";
+import SearchSupplierBar from "../suppliers/SearchSupplierBar.tsx";
+import UpdateSupplierForm from "../suppliers/UpdateSupplierForm.tsx";
+import { setSupplier } from "./warehouseReceiptSlice.ts";
+import { useAppDispatch } from "../../store/hooks.ts";
+import { type ISupplier } from "../../interfaces";
 
-function SearchWarehouseReceiptSupplier() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [addSupplierForm] = Form.useForm();
-  const dispatch = useDispatch();
+const SearchWarehouseReceiptSupplier: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [addSupplierForm] = Form.useForm<ISupplier>();
+  const dispatch = useAppDispatch();
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
-    addSupplierForm.resetFields();
+  function handleCancel(): void {
     setIsOpenModal(false);
+    addSupplierForm.resetFields();
   }
 
-  function handleSelectSupplier(selectedSupplier) {
+  function handleSelectSupplier(selectedSupplier: ISupplier): void {
     dispatch(setSupplier(selectedSupplier));
   }
 
-  function handleClear() {
+  function handleClear(): void {
     dispatch(setSupplier(null));
   }
 
@@ -48,10 +49,10 @@ function SearchWarehouseReceiptSupplier() {
         footer={null}
         onCancel={handleCancel}
       >
-        <UpdateSupplierForm form={addSupplierForm} />
+        <UpdateSupplierForm form={addSupplierForm} onCancel={handleCancel} />
       </Modal>
     </Space.Compact>
   );
-}
+};
 
 export default SearchWarehouseReceiptSupplier;

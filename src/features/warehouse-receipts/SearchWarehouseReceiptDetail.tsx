@@ -1,29 +1,34 @@
 import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
-import { addItem } from "./warehouseReceiptSlice";
-import SearchProductBar from "../products/SearchProductBar";
-import UpdateProductForm from "../products/UpdateProductForm";
+import SearchProductBar from "../products/SearchProductBar.tsx";
+import UpdateProductForm from "../products/UpdateProductForm.tsx";
+import { addItem } from "./warehouseReceiptSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import {
+  type INewWarehouseReceiptDetail,
+  type IProduct,
+} from "../../interfaces";
 
-function SearchWarehouseReceiptDetail() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [updateProductForm] = Form.useForm();
+const SearchWarehouseReceiptDetail: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [updateProductForm] = Form.useForm<IProduct>();
   const [modal, contextHolder] = Modal.useModal();
-  const warehouseReceiptDetails = useSelector(
+  const warehouseReceiptDetails: INewWarehouseReceiptDetail[] = useAppSelector(
     (state) => state.warehouseReceipt.warehouseReceiptDetails,
   );
-  const dispatch = useDispatch();
-  function showModal() {
+  const dispatch = useAppDispatch();
+
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
-    updateProductForm.resetFields();
+  function handleCancel(): void {
     setIsOpenModal(false);
+    updateProductForm.resetFields();
   }
 
-  function handleSelectProduct(selectedProduct) {
+  function handleSelectProduct(selectedProduct: IProduct): void {
     if (selectedProduct.stockQuantity === 0) {
       modal.error({
         title: "Sản phẩm đã hết hàng",
@@ -34,7 +39,7 @@ function SearchWarehouseReceiptDetail() {
       });
     } else {
       //check if the selected product is in cart
-      const isProductInCart = warehouseReceiptDetails.some(
+      const isProductInCart: boolean = warehouseReceiptDetails.some(
         (cartItem) => cartItem.product.productId === selectedProduct.productId,
       );
       if (isProductInCart) {
@@ -63,7 +68,6 @@ function SearchWarehouseReceiptDetail() {
       {contextHolder}
       <Space.Compact className="w-[50%] ">
         <SearchProductBar
-          cartItems={warehouseReceiptDetails}
           onSelectProduct={handleSelectProduct}
           showSelectedLabel={false}
           useOriginalPrice={true}
@@ -88,14 +92,11 @@ function SearchWarehouseReceiptDetail() {
           cancelText="Hủy"
           onCancel={handleCancel}
         >
-          <UpdateProductForm
-            form={updateProductForm}
-            setIsOpenModal={setIsOpenModal}
-          />
+          <UpdateProductForm form={updateProductForm} onCancel={handleCancel} />
         </Modal>
       </Space.Compact>
     </>
   );
-}
+};
 
 export default SearchWarehouseReceiptDetail;

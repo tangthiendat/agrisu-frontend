@@ -1,25 +1,30 @@
 /* eslint-disable no-unused-vars */
 import { Button, Form } from "antd";
-import { useDispatch } from "react-redux";
-import SearchWarehouseReceiptDetail from "../features/warehouse-receipts/SearchWarehouseReceiptDetail";
-import { clearWarehouseReceiptDetails } from "../features/warehouse-receipts/warehouseReceiptSlice";
-import WarehouseReceiptDetailTable from "../features/warehouse-receipts/WarehouseReceiptDetailTable";
-import CreateWarehouseReceiptForm from "../features/warehouse-receipts/CreateWarehouseReceiptForm";
-import { useCreateWarehouseReceipt } from "../features/warehouse-receipts/hooks/useCreateWarehouseReceipt";
-import SearchWarehouseReceiptSupplier from "../features/warehouse-receipts/SearchWarehouseReceiptSupplier";
+import SearchWarehouseReceiptSupplier from "../features/warehouse-receipts/SearchWarehouseReceiptSupplier.tsx";
+import SearchWarehouseReceiptDetail from "../features/warehouse-receipts/SearchWarehouseReceiptDetail.tsx";
+import WarehouseReceiptDetailTable from "../features/warehouse-receipts/WarehouseReceiptDetailTable.tsx";
+import CreateWarehouseReceiptForm from "../features/warehouse-receipts/CreateWarehouseReceiptForm.tsx";
+import { useCreateWarehouseReceipt } from "../features/warehouse-receipts/hooks";
+import { useAppDispatch } from "../store/hooks.ts";
+import { type INewWarehouseReceipt } from "../interfaces";
+import { clearWarehouseReceipt } from "../features/warehouse-receipts/warehouseReceiptSlice.ts";
 
 function NewWarehouseReceipt() {
-  const dispatch = useDispatch();
   const [createWarehouseReceiptForm] = Form.useForm();
   const { createWarehouseReceipt, isCreating } = useCreateWarehouseReceipt();
+  const dispatch = useAppDispatch();
 
-  function handleFinish(submittedWarehouseReceipt) {
+  function handleFinish(submittedWarehouseReceipt: INewWarehouseReceipt): void {
     createWarehouseReceipt(submittedWarehouseReceipt, {
       onSuccess: () => {
-        createWarehouseReceiptForm.resetFields();
-        dispatch(clearWarehouseReceiptDetails());
+        handleResetWarehouseReceipt();
       },
     });
+  }
+
+  function handleResetWarehouseReceipt(): void {
+    dispatch(clearWarehouseReceipt());
+    createWarehouseReceiptForm.resetFields();
   }
 
   return (
@@ -30,7 +35,7 @@ function NewWarehouseReceipt() {
           <Button
             type="primary"
             danger
-            onClick={() => dispatch(clearWarehouseReceiptDetails())}
+            onClick={() => dispatch(handleResetWarehouseReceipt)}
           >
             Xóa tất cả chi tiết
           </Button>
@@ -57,12 +62,7 @@ function NewWarehouseReceipt() {
           >
             LẬP PHIẾU NHẬP KHO
           </Button>
-          <Button
-            className="btn-primary h-12 text-base"
-            type="primary"
-            block
-            // loading={isCreating}
-          >
+          <Button className="btn-primary h-12 text-base" type="primary" block>
             LẬP VÀ IN PHIẾU NHẬP KHO
           </Button>
         </div>

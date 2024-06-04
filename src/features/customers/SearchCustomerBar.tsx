@@ -32,12 +32,12 @@ const SearchCustomerBar: React.FC<SearchCustomerBarProps> = ({
     }
   }, [inputValue, onClear]);
 
-  // clear the input value when the selected customer is cleared
+  // Clear the input value when the selected customer is cleared
   useEffect(() => {
     if (!orderCustomer && !warehouseExportCustomer) {
       setInputValue("");
     }
-  }, [orderCustomer, warehouseExportCustomer, showSelectedLabel]);
+  }, [orderCustomer, warehouseExportCustomer]);
 
   function handleSearch(value: string) {
     setSearchQuery(value);

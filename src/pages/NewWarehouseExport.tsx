@@ -1,5 +1,4 @@
 import { Button, Form } from "antd";
-import { useDispatch } from "react-redux";
 import SearchWarehouseExportCustomer from "../features/warehouse-exports/SearchWarehouseExportCustomer.tsx";
 import SearchWarehouseExportDetail from "../features/warehouse-exports/SearchWarehouseExportDetail.tsx";
 import WarehouseExportDetailTable from "../features/warehouse-exports/WarehouseExportDetailTable.tsx";
@@ -7,11 +6,12 @@ import CreateWarehouseExportForm from "../features/warehouse-exports/CreateWareh
 import { clearWarehouseExport } from "../features/warehouse-exports/warehouseExportSlice.ts";
 import { useCreateWarehouseExport } from "../features/warehouse-exports/hooks";
 import { type INewWarehouseExport } from "../interfaces";
+import { useAppDispatch } from "../store/hooks.ts";
 
-function NewWarehouseExport() {
-  const dispatch = useDispatch();
-  const [createWarehouseExportForm] = Form.useForm();
+const NewWarehouseExport: React.FC = () => {
+  const [createWarehouseExportForm] = Form.useForm<INewWarehouseExport>();
   const { createWarehouseExport, isCreating } = useCreateWarehouseExport();
+  const dispatch = useAppDispatch();
 
   function handleFinish(submittedWareHouseExport: INewWarehouseExport): void {
     createWarehouseExport(submittedWareHouseExport, {
@@ -57,18 +57,13 @@ function NewWarehouseExport() {
           >
             LẬP PHIẾU XUẤT KHO
           </Button>
-          <Button
-            className="btn-primary h-12 text-base"
-            type="primary"
-            block
-            // loading={isCreating}
-          >
+          <Button className="btn-primary h-12 text-base" type="primary" block>
             LẬP VÀ IN PHIẾU XUẤT KHO
           </Button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default NewWarehouseExport;

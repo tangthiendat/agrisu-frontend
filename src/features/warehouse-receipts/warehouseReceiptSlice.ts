@@ -1,26 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {
+  type IUnit,
+  type INewWarehouseReceiptDetail,
+  type ISupplier,
+} from "../../interfaces";
 
-const initialState = {
+interface WarehouseReceiptState {
+  supplier: ISupplier;
+  warehouseReceiptDetails: INewWarehouseReceiptDetail[];
+}
+
+const initialState: WarehouseReceiptState = {
   supplier: null,
   warehouseReceiptDetails: [],
 };
-const warehouseReceiptSlice = createSlice({
+
+export const warehouseReceiptSlice = createSlice({
   name: "warehouseReceipt",
   initialState,
   reducers: {
-    setSupplier(state, action) {
+    setSupplier(state, action: PayloadAction<ISupplier>) {
       state.supplier = action.payload;
     },
-    addItem(state, action) {
+    addItem(state, action: PayloadAction<INewWarehouseReceiptDetail>) {
       state.warehouseReceiptDetails.push(action.payload);
     },
-    removeItem(state, action) {
+    removeItem(state, action: PayloadAction<string>) {
       state.warehouseReceiptDetails = state.warehouseReceiptDetails.filter(
         (warehouseReceiptDetail) =>
           warehouseReceiptDetail.product.productId !== action.payload,
       );
     },
-    updateItemQuantity(state, action) {
+    updateItemQuantity(
+      state,
+      action: PayloadAction<{ productId: string; quantity: number }>,
+    ) {
       const { productId, quantity } = action.payload;
       const warehouseReceiptDetail = state.warehouseReceiptDetails.find(
         (warehouseReceiptDetail) =>
@@ -28,7 +42,10 @@ const warehouseReceiptSlice = createSlice({
       );
       warehouseReceiptDetail.quantity = quantity;
     },
-    updateItemUnit(state, action) {
+    updateItemUnit(
+      state,
+      action: PayloadAction<{ productId: string; unit: IUnit }>,
+    ) {
       const { productId, unit } = action.payload;
       const warehouseReceiptDetail = state.warehouseReceiptDetails.find(
         (warehouseReceiptDetail) =>
@@ -41,9 +58,6 @@ const warehouseReceiptSlice = createSlice({
         );
       warehouseReceiptDetail.product.displayedProductUnit = currentProductUnit;
       warehouseReceiptDetail.unitPrice = currentProductUnit.originalPrice;
-    },
-    clearWarehouseReceiptDetails(state) {
-      state.warehouseReceiptDetails = [];
     },
     clearWarehouseReceipt(state) {
       state.supplier = null;
@@ -58,15 +72,6 @@ export const {
   removeItem,
   updateItemQuantity,
   updateItemUnit,
-  clearWarehouseReceiptDetails,
   clearWarehouseReceipt,
 } = warehouseReceiptSlice.actions;
 export default warehouseReceiptSlice.reducer;
-
-export const getWarehouseReceiptTotalValue = (state) =>
-  state.warehouseReceipt.warehouseReceiptDetails.reduce(
-    (total, warehouseReceiptDetail) =>
-      total +
-      warehouseReceiptDetail.unitPrice * warehouseReceiptDetail.quantity,
-    0,
-  );

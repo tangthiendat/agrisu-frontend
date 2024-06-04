@@ -3,6 +3,7 @@ import { AutoComplete } from "antd";
 import { debounce } from "lodash";
 import { useSearchSuppliers } from "./hooks";
 import { type ISupplier } from "../../interfaces";
+import { useAppSelector } from "../../store/hooks.ts";
 
 interface SearchSupplierBarProps {
   onSelectSupplier: (supplier: ISupplier) => void;
@@ -18,12 +19,22 @@ const SearchSupplierBar: React.FC<SearchSupplierBarProps> = ({
   const [inputValue, setInputValue] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { searchedSuppliers } = useSearchSuppliers(searchQuery);
+  const warehouseReceiptSupplier: ISupplier = useAppSelector(
+    (state) => state.warehouseReceipt.supplier,
+  );
 
   useEffect(() => {
     if (inputValue === "") {
       onClear?.();
     }
   }, [inputValue, onClear]);
+
+  // Clear the input value when the selected supplier is cleared
+  useEffect(() => {
+    if (!warehouseReceiptSupplier) {
+      setInputValue("");
+    }
+  }, [warehouseReceiptSupplier]);
 
   function handleSearch(value: string) {
     setSearchQuery(value);

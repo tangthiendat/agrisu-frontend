@@ -1,5 +1,7 @@
+import UnderConstruction from "../ui/UnderConstruction.tsx";
+
 const Dashboard: React.FC = () => {
-  return <div>DASHBOARD</div>;
+  return <UnderConstruction />;
 };
 
 export default Dashboard;
