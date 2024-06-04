@@ -1,29 +1,34 @@
 import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
-import SearchProductBar from "../products/SearchProductBar";
-import { addItem } from "./warehouseExportSlice";
-import UpdateProductForm from "../products/UpdateProductForm";
+import SearchProductBar from "../products/SearchProductBar.tsx";
+import UpdateProductForm from "../products/UpdateProductForm.tsx";
+import { addItem } from "./warehouseExportSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import {
+  type INewWarehouseExportDetail,
+  type IProduct,
+} from "../../interfaces";
 
-function SearchWarehouseExportDetail() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [updateProductForm] = Form.useForm();
+const SearchWarehouseExportDetail: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [updateProductForm] = Form.useForm<IProduct>();
   const [modal, contextHolder] = Modal.useModal();
-  const warehouseExportDetails = useSelector(
+  const warehouseExportDetails: INewWarehouseExportDetail[] = useAppSelector(
     (state) => state.warehouseExport.warehouseExportDetails,
   );
-  const dispatch = useDispatch();
-  function showModal() {
+  const dispatch = useAppDispatch();
+
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
-    updateProductForm.resetFields();
+  function handleCancel(): void {
     setIsOpenModal(false);
+    updateProductForm.resetFields();
   }
 
-  function handleSelectProduct(selectedProduct) {
+  function handleSelectProduct(selectedProduct: IProduct) {
     if (selectedProduct.stockQuantity === 0) {
       modal.error({
         title: "Sản phẩm đã hết hàng",
@@ -34,7 +39,7 @@ function SearchWarehouseExportDetail() {
       });
     } else {
       //check if the selected product is in cart
-      const isProductInCart = warehouseExportDetails.some(
+      const isProductInCart: boolean = warehouseExportDetails.some(
         (cartItem) => cartItem.product.productId === selectedProduct.productId,
       );
       if (isProductInCart) {
@@ -63,7 +68,6 @@ function SearchWarehouseExportDetail() {
       {contextHolder}
       <Space.Compact className="w-[50%]">
         <SearchProductBar
-          cartItems={warehouseExportDetails}
           onSelectProduct={handleSelectProduct}
           showSelectedLabel={false}
         />
@@ -87,14 +91,11 @@ function SearchWarehouseExportDetail() {
           cancelText="Hủy"
           onCancel={handleCancel}
         >
-          <UpdateProductForm
-            form={updateProductForm}
-            setIsOpenModal={setIsOpenModal}
-          />
+          <UpdateProductForm form={updateProductForm} onCancel={handleCancel} />
         </Modal>
       </Space.Compact>
     </>
   );
-}
+};
 
 export default SearchWarehouseExportDetail;

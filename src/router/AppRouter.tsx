@@ -12,7 +12,7 @@ import WarehouseReceipts from "../pages/WarehouseReceipts.tsx";
 import WarehouseExports from "../pages/WarehouseExports.tsx";
 import CashFlow from "../pages/CashFlow.tsx";
 import NewWarehouseReceipt from "../pages/NewWarehouseReceipt";
-import NewWarehouseExport from "../pages/NewWarehouseExport";
+import NewWarehouseExport from "../pages/NewWarehouseExport.tsx";
 import Reports from "../pages/Reports.tsx";
 import Login from "../pages/Login.tsx";
 import ErrorPage from "../pages/ErrorPage.tsx";

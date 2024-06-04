@@ -1,16 +1,34 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Form, InputNumber, Modal, Grid } from "antd";
-import { getWarehouseExportTotalValue } from "./warehouseExportSlice";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
+import { Form, InputNumber, Modal, Grid, FormInstance } from "antd";
+import { formatCurrency, parseCurrency } from "../../utils/helper.ts";
+import { useAppSelector } from "../../store/hooks.ts";
+import {
+  type ICustomer,
+  type INewWarehouseExport,
+  type INewWarehouseExportDetail,
+} from "../../interfaces";
+
+interface CreateWarehouseExportFormProps {
+  form: FormInstance<INewWarehouseExport>;
+  onFinish: (submittedWarehouseExport: INewWarehouseExport) => void;
+}
 
 const { useBreakpoint } = Grid;
-function CreateWarehouseExportForm({ form, onFinish }) {
-  const totalWarehouseExportValue = useSelector(getWarehouseExportTotalValue);
-  const warehouseExportDetails = useSelector(
+
+const CreateWarehouseExportForm: React.FC<CreateWarehouseExportFormProps> = ({
+  form,
+  onFinish,
+}) => {
+  const warehouseExportDetails: INewWarehouseExportDetail[] = useAppSelector(
     (state) => state.warehouseExport.warehouseExportDetails,
   );
-  const customer = useSelector((state) => state.warehouseExport.customer);
+  const warehouseExportTotalValue: number = warehouseExportDetails.reduce(
+    (total, detail) => total + detail.unitPrice * detail.quantity,
+    0,
+  );
+  const customer: ICustomer = useAppSelector(
+    (state) => state.warehouseExport.customer,
+  );
   const [modal, contextHolder] = Modal.useModal();
   const screens = useBreakpoint();
   const formItemLayout = screens.xl
@@ -27,21 +45,21 @@ function CreateWarehouseExportForm({ form, onFinish }) {
 
   useEffect(() => {
     form.setFieldsValue({
-      totalValue: totalWarehouseExportValue,
+      totalValue: warehouseExportTotalValue,
       customerCurrentDebt: customer?.receivable || 0,
       customerNextDebt:
         customer && warehouseExportDetails.length > 0
-          ? customer.receivable + totalWarehouseExportValue
+          ? customer.receivable + warehouseExportTotalValue
           : customer?.receivable || 0,
     });
   }, [
-    totalWarehouseExportValue,
+    warehouseExportTotalValue,
     customer,
     warehouseExportDetails.length,
     form,
   ]);
 
-  function handleFinish(submittedWarehouseExport) {
+  function handleFinish(submittedWarehouseExport: INewWarehouseExport): void {
     if (warehouseExportDetails.length == 0) {
       modal.error({
         title: "Không thể tạo phiếu xuất kho",
@@ -122,6 +140,6 @@ function CreateWarehouseExportForm({ form, onFinish }) {
       </Form>
     </>
   );
-}
+};
 
 export default CreateWarehouseExportForm;

@@ -13,7 +13,6 @@ const { useBreakpoint } = Grid;
 interface CreateOrderFormProps {
   form: FormInstance<INewOrder>;
   onFinish: (submittedOrder: INewOrder) => void;
-  onClear: () => void;
 }
 
 const CreateOrderForm: React.FC<CreateOrderFormProps> = ({

@@ -1,27 +1,29 @@
 import { Button, Form } from "antd";
 import { useDispatch } from "react-redux";
-import SearchWarehouseExportCustomer from "../features/warehouse-exports/SearchWarehouseExportCustomer";
-import SearchWarehouseExportDetail from "../features/warehouse-exports/SearchWarehouseExportDetail";
-import WarehouseExportDetailTable from "../features/warehouse-exports/WarehouseExportDetailTable";
-import CreateWarehouseExportForm from "../features/warehouse-exports/CreateWarehouseExportForm";
-import {
-  clearWarehouseExport,
-  clearWarehouseExportDetails,
-} from "../features/warehouse-exports/warehouseExportSlice";
-import { useCreateWarehouseExport } from "../features/warehouse-exports/hooks/useCreateWarehouseExport";
+import SearchWarehouseExportCustomer from "../features/warehouse-exports/SearchWarehouseExportCustomer.tsx";
+import SearchWarehouseExportDetail from "../features/warehouse-exports/SearchWarehouseExportDetail.tsx";
+import WarehouseExportDetailTable from "../features/warehouse-exports/WarehouseExportDetailTable.tsx";
+import CreateWarehouseExportForm from "../features/warehouse-exports/CreateWarehouseExportForm.tsx";
+import { clearWarehouseExport } from "../features/warehouse-exports/warehouseExportSlice.ts";
+import { useCreateWarehouseExport } from "../features/warehouse-exports/hooks";
+import { type INewWarehouseExport } from "../interfaces";
 
 function NewWarehouseExport() {
   const dispatch = useDispatch();
   const [createWarehouseExportForm] = Form.useForm();
   const { createWarehouseExport, isCreating } = useCreateWarehouseExport();
 
-  function handleFinish(submittedWareHouseExport) {
+  function handleFinish(submittedWareHouseExport: INewWarehouseExport): void {
     createWarehouseExport(submittedWareHouseExport, {
       onSuccess: () => {
-        createWarehouseExportForm.resetFields();
-        dispatch(clearWarehouseExport());
+        handleResetWarehouseExport();
       },
     });
+  }
+
+  function handleResetWarehouseExport(): void {
+    dispatch(clearWarehouseExport());
+    createWarehouseExportForm.resetFields();
   }
 
   return (
@@ -29,11 +31,7 @@ function NewWarehouseExport() {
       <div className="card min-h-[calc(100vh-64px-1.5rem*2)] basis-[68%] space-y-8">
         <div className="flex items-center justify-between">
           <SearchWarehouseExportDetail />
-          <Button
-            type="primary"
-            danger
-            onClick={() => dispatch(clearWarehouseExportDetails())}
-          >
+          <Button type="primary" danger onClick={handleResetWarehouseExport}>
             Xóa tất cả chi tiết
           </Button>
         </div>

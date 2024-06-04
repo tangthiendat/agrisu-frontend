@@ -1,27 +1,31 @@
-import { useDispatch, useSelector } from "react-redux";
-import { InputNumber, Select, Table, Tooltip } from "antd";
+import { InputNumber, Select, Table, TableProps, Tooltip } from "antd";
 import { MdDelete } from "react-icons/md";
 import {
   removeItem,
   updateItemQuantity,
   updateItemUnit,
-} from "./warehouseExportSlice";
-import { formatCurrency } from "../../utils/helper";
+} from "./warehouseExportSlice.ts";
+import { formatCurrency } from "../../utils/helper.ts";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import {
+  type IUnit,
+  type INewWarehouseExportDetail,
+  type IProduct,
+} from "../../interfaces";
 
-function WarehouseExportDetailTable() {
-  const warehouseExportDetails = useSelector(
+const WarehouseExportDetailTable: React.FC = () => {
+  const warehouseExportDetails = useAppSelector(
     (state) => state.warehouseExport.warehouseExportDetails,
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  function handleQuantityChange(product, quantity) {
+  function handleQuantityChange(product: IProduct, quantity: number): void {
     const defaultProductUnit = product.productUnits.find(
       (productUnit) => productUnit.isDefault,
     );
-    const currentStockQuantity = parseFloat(
+    const currentStockQuantity =
       (product.stockQuantity * defaultProductUnit.baseQuantity) /
-        product.displayedProductUnit.baseQuantity,
-    );
+      product.displayedProductUnit.baseQuantity;
     //check if the quantity is greater than the current stock quantity
     if (quantity > currentStockQuantity) {
       return;
@@ -29,26 +33,26 @@ function WarehouseExportDetailTable() {
     dispatch(updateItemQuantity({ productId: product.productId, quantity }));
   }
 
-  const columns = [
+  const columns: TableProps<INewWarehouseExportDetail>["columns"] = [
     {
       title: "STT",
       dataIndex: "product",
       width: "5%",
       key: "index",
-      render: (product, _, index) => index + 1,
+      render: (_, __, index: number) => index + 1,
     },
     {
       title: "Tên sản phẩm",
       dataIndex: "product",
       key: "productName",
-      render: (product) => product.productName,
+      render: (product: IProduct) => product.productName,
     },
     {
       title: "Đơn vị tính",
       dataIndex: "unit",
       width: "15%",
       key: "unit",
-      render: (unit, record) => {
+      render: (unit: IUnit, record: INewWarehouseExportDetail) => {
         return (
           <Select
             style={{ width: "90%" }}
@@ -79,7 +83,7 @@ function WarehouseExportDetailTable() {
       dataIndex: "quantity",
       width: "15%",
       key: "quantity",
-      render: (quantity, record) => {
+      render: (quantity: number, record: INewWarehouseExportDetail) => {
         return (
           <InputNumber
             style={{ width: "90%" }}
@@ -96,13 +100,13 @@ function WarehouseExportDetailTable() {
       dataIndex: "unitPrice",
       key: "unitPrice",
       width: "15%",
-      render: (unitPrice) => formatCurrency(unitPrice),
+      render: (unitPrice: number) => formatCurrency(unitPrice),
     },
     {
       title: "Thành tiền",
       key: "amount",
       width: "15%",
-      render: (record) => (
+      render: (record: INewWarehouseExportDetail) => (
         <span className="font-semibold">
           {formatCurrency(record.unitPrice * record.quantity)}
         </span>
@@ -110,7 +114,7 @@ function WarehouseExportDetailTable() {
     },
     {
       key: "action",
-      render: (record) => (
+      render: (record: INewWarehouseExportDetail) => (
         <Tooltip title="Xóa" placement="top">
           <MdDelete
             className="icon"
@@ -124,13 +128,13 @@ function WarehouseExportDetailTable() {
 
   return (
     <Table
-      rowKey={(record) => record.product.productId}
+      rowKey={(record: INewWarehouseExportDetail) => record.product.productId}
       dataSource={warehouseExportDetails}
       columns={columns}
       pagination={false}
       size="middle"
     />
   );
-}
+};
 
 export default WarehouseExportDetailTable;

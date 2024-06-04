@@ -22,6 +22,9 @@ const SearchCustomerBar: React.FC<SearchCustomerBarProps> = ({
   const orderCustomer: ICustomer = useAppSelector(
     (state) => state.order.customer,
   );
+  const warehouseExportCustomer: ICustomer = useAppSelector(
+    (state) => state.warehouseExport.customer,
+  );
 
   useEffect(() => {
     if (inputValue === "") {
@@ -31,10 +34,10 @@ const SearchCustomerBar: React.FC<SearchCustomerBarProps> = ({
 
   // clear the input value when the selected customer is cleared
   useEffect(() => {
-    if (!orderCustomer) {
+    if (!orderCustomer && !warehouseExportCustomer) {
       setInputValue("");
     }
-  }, [orderCustomer, showSelectedLabel]);
+  }, [orderCustomer, warehouseExportCustomer, showSelectedLabel]);
 
   function handleSearch(value: string) {
     setSearchQuery(value);

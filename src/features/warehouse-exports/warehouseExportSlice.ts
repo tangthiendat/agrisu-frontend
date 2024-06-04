@@ -1,27 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {
+  type INewWarehouseExportDetail,
+  type ICustomer,
+  type IUnit,
+} from "../../interfaces";
 
-const initialState = {
+interface WarehouseExportState {
+  customer: ICustomer;
+  warehouseExportDetails: INewWarehouseExportDetail[];
+}
+
+const initialState: WarehouseExportState = {
   customer: null,
   warehouseExportDetails: [],
 };
 
-const warehouseExportSlice = createSlice({
+export const warehouseExportSlice = createSlice({
   name: "warehouseExport",
   initialState,
   reducers: {
-    setCustomer(state, action) {
+    setCustomer(state, action: PayloadAction<ICustomer>) {
       state.customer = action.payload;
     },
-    addItem(state, action) {
+    addItem(state, action: PayloadAction<INewWarehouseExportDetail>) {
       state.warehouseExportDetails.push(action.payload);
     },
-    removeItem(state, action) {
+    removeItem(state, action: PayloadAction<string>) {
       state.warehouseExportDetails = state.warehouseExportDetails.filter(
         (warehouseExportDetail) =>
           warehouseExportDetail.product.productId !== action.payload,
       );
     },
-    updateItemQuantity(state, action) {
+    updateItemQuantity(
+      state,
+      action: PayloadAction<{ productId: string; quantity: number }>,
+    ) {
       const { productId, quantity } = action.payload;
       const warehouseExportDetail = state.warehouseExportDetails.find(
         (warehouseExportDetail) =>
@@ -29,7 +42,10 @@ const warehouseExportSlice = createSlice({
       );
       warehouseExportDetail.quantity = quantity;
     },
-    updateItemUnit(state, action) {
+    updateItemUnit(
+      state,
+      action: PayloadAction<{ productId: string; unit: IUnit }>,
+    ) {
       const { productId, unit } = action.payload;
       const warehouseExportDetail = state.warehouseExportDetails.find(
         (warehouseExportDetail) =>
@@ -43,9 +59,6 @@ const warehouseExportSlice = createSlice({
       warehouseExportDetail.product.displayedProductUnit = currentProductUnit;
       warehouseExportDetail.unitPrice = currentProductUnit.sellingPrice;
     },
-    clearWarehouseExportDetails(state) {
-      state.warehouseExportDetails = [];
-    },
     clearWarehouseExport(state) {
       state.customer = null;
       state.warehouseExportDetails = [];
@@ -58,14 +71,5 @@ export const {
   removeItem,
   updateItemQuantity,
   updateItemUnit,
-  clearWarehouseExportDetails,
   clearWarehouseExport,
 } = warehouseExportSlice.actions;
-export default warehouseExportSlice.reducer;
-
-export const getWarehouseExportTotalValue = (state) =>
-  state.warehouseExport.warehouseExportDetails.reduce(
-    (total, warehouseExportDetail) =>
-      total + warehouseExportDetail.unitPrice * warehouseExportDetail.quantity,
-    0,
-  );

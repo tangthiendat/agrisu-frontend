@@ -4,7 +4,7 @@ import { productSlice } from "../features/products/productSlice.ts";
 import { customerSlice } from "../features/customers/customerSlice.ts";
 import { supplierSlice } from "../features/suppliers/supplierSlice.ts";
 // import warehouseReceiptReducer from "../features/warehouse-receipts/warehouseReceiptSlice";
-// import warehouseExportReducer from "../features/warehouse-exports/warehouseExportSlice";
+import { warehouseExportSlice } from "../features/warehouse-exports/warehouseExportSlice.ts";
 export const store = configureStore({
   reducer: {
     order: orderSlice.reducer,
@@ -12,7 +12,7 @@ export const store = configureStore({
     customer: customerSlice.reducer,
     supplier: supplierSlice.reducer,
     // warehouseReceipt: warehouseReceiptReducer,
-    // warehouseExport: warehouseExportReducer,
+    warehouseExport: warehouseExportSlice.reducer,
   },
 });
 

@@ -40,11 +40,7 @@ const NewOrder: React.FC = () => {
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
         <SearchOrderCustomer />
         <div className="flex-1">
-          <CreateOrderForm
-            form={createOrderForm}
-            onFinish={handleFinish}
-            onClear={handleResetOrder}
-          />
+          <CreateOrderForm form={createOrderForm} onFinish={handleFinish} />
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4">

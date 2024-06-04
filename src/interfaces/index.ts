@@ -24,3 +24,7 @@ export * from "./payments/IPayment.ts";
 /** ORDER */
 export * from "./orders/IOrder.ts";
 export * from "./orders/IOrderDetail.ts";
+
+/** WAREHOUSE EXPORT */
+export * from "./warehouse-exports/IWarehouseExport.ts";
+export * from "./warehouse-exports/IWarehouseExportDetail.ts";
