@@ -20,3 +20,7 @@ export * from "./receipts/IReceipt.ts";
 
 /** PAYMENTS */
 export * from "./payments/IPayment.ts";
+
+/** ORDER */
+export * from "./orders/IOrder.ts";
+export * from "./orders/IOrderDetail.ts";

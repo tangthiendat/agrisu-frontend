@@ -1,27 +1,31 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import SearchProductBar from "../products/SearchProductBar";
-import UpdateProductForm from "../products/UpdateProductForm";
-import { addItem } from "./orderSlice";
+import SearchProductBar from "../products/SearchProductBar.tsx";
+import UpdateProductForm from "../products/UpdateProductForm.tsx";
+import { addItem } from "./orderSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import { type INewOrderDetail, type IProduct } from "../../interfaces";
 
-function SearchOrderDetail() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [updateProductForm] = Form.useForm();
+const SearchOrderDetail: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [addProductForm] = Form.useForm<IProduct>();
   const [modal, contextHolder] = Modal.useModal();
-  const orderDetails = useSelector((state) => state.order.orderDetails);
-  const dispatch = useDispatch();
-  function showModal() {
+  const orderDetails: INewOrderDetail[] = useAppSelector(
+    (state) => state.order.orderDetails,
+  );
+  const dispatch = useAppDispatch();
+
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
-    updateProductForm.resetFields();
+  function handleCancel(): void {
     setIsOpenModal(false);
+    addProductForm.resetFields();
   }
 
-  function handleSelectProduct(selectedProduct) {
+  function handleSelectProduct(selectedProduct: IProduct): void {
     if (selectedProduct.stockQuantity === 0) {
       modal.error({
         title: "Sản phẩm đã hết hàng",
@@ -32,7 +36,7 @@ function SearchOrderDetail() {
       });
     } else {
       //check if the selected product is in cart
-      const isProductInCart = orderDetails.some(
+      const isProductInCart: boolean = orderDetails.some(
         (cartItem) => cartItem.product.productId === selectedProduct.productId,
       );
       if (isProductInCart) {
@@ -61,7 +65,6 @@ function SearchOrderDetail() {
       {contextHolder}
       <Space.Compact className="w-[50%]">
         <SearchProductBar
-          cartItems={orderDetails}
           onSelectProduct={handleSelectProduct}
           showSelectedLabel={false}
         />
@@ -85,14 +88,11 @@ function SearchOrderDetail() {
           cancelText="Hủy"
           onCancel={handleCancel}
         >
-          <UpdateProductForm
-            form={updateProductForm}
-            setIsOpenModal={setIsOpenModal}
-          />
+          <UpdateProductForm form={addProductForm} onCancel={handleCancel} />
         </Modal>
       </Space.Compact>
     </>
   );
-}
+};
 
 export default SearchOrderDetail;

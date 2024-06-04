@@ -1,24 +1,29 @@
 import { Button, Form } from "antd";
-import { useDispatch } from "react-redux";
-import OrderDetailsTable from "../features/orders/OrderDetailsTable";
-import CreateOrderForm from "../features/orders/CreateOrderForm";
-import { clearOrder, clearOrderDetails } from "../features/orders/orderSlice";
-import SearchOrderDetail from "../features/orders/SearchOrderDetail";
-import SearchOrderCustomer from "../features/orders/SearchOrderCustomer";
-import { useCreateOrder } from "../features/orders/hooks/useCreateOrder";
+import OrderDetailsTable from "../features/orders/OrderDetailsTable.tsx";
+import CreateOrderForm from "../features/orders/CreateOrderForm.tsx";
+import SearchOrderDetail from "../features/orders/SearchOrderDetail.tsx";
+import SearchOrderCustomer from "../features/orders/SearchOrderCustomer.tsx";
+import { clearOrder } from "../features/orders/orderSlice.ts";
+import { useCreateOrder } from "../features/orders/hooks";
+import { useAppDispatch } from "../store/hooks.ts";
+import { type INewOrder } from "../interfaces";
 
-function NewOrder() {
-  const dispatch = useDispatch();
-  const [createOrderForm] = Form.useForm();
+const NewOrder: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [createOrderForm] = Form.useForm<INewOrder>();
   const { createOrder, isCreating } = useCreateOrder();
 
-  function handleFinish(submittedOrder) {
+  function handleFinish(submittedOrder: INewOrder): void {
     createOrder(submittedOrder, {
       onSuccess: () => {
-        createOrderForm.resetFields();
-        dispatch(clearOrder());
+        handleResetOrder();
       },
     });
+  }
+
+  function handleResetOrder(): void {
+    createOrderForm.resetFields();
+    dispatch(clearOrder());
   }
 
   return (
@@ -26,11 +31,7 @@ function NewOrder() {
       <div className="card min-h-[calc(100vh-64px-1.5rem*2)] basis-[68%] space-y-8">
         <div className="flex items-center justify-between">
           <SearchOrderDetail />
-          <Button
-            type="primary"
-            danger
-            onClick={() => dispatch(clearOrderDetails())}
-          >
+          <Button type="primary" danger onClick={handleResetOrder}>
             Xóa tất cả chi tiết
           </Button>
         </div>
@@ -39,7 +40,11 @@ function NewOrder() {
       <div className="card flex min-h-[calc(100vh-64px-1.5rem*2)] basis-[30%] flex-col justify-between gap-8">
         <SearchOrderCustomer />
         <div className="flex-1">
-          <CreateOrderForm form={createOrderForm} onFinish={handleFinish} />
+          <CreateOrderForm
+            form={createOrderForm}
+            onFinish={handleFinish}
+            onClear={handleResetOrder}
+          />
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4">
@@ -65,6 +70,6 @@ function NewOrder() {
       </div>
     </div>
   );
-}
+};
 
 export default NewOrder;

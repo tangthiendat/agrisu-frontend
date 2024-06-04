@@ -1,33 +1,49 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {
+  type INewOrderDetail,
+  type ICustomer,
+  type IUnit,
+} from "../../interfaces";
 
-const initialState = {
+interface OrderState {
+  customer: ICustomer;
+  orderDetails: INewOrderDetail[];
+}
+
+const initialState: OrderState = {
   customer: null,
   orderDetails: [],
 };
 
-const orderSlice = createSlice({
+export const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    setCustomer(state, action) {
+    setCustomer(state, action: PayloadAction<ICustomer>) {
       state.customer = action.payload;
     },
-    addItem(state, action) {
+    addItem(state, action: PayloadAction<INewOrderDetail>) {
       state.orderDetails.push(action.payload);
     },
-    removeItem(state, action) {
+    removeItem(state, action: PayloadAction<string>) {
       state.orderDetails = state.orderDetails.filter(
         (orderDetail) => orderDetail.product.productId !== action.payload,
       );
     },
-    updateItemQuantity(state, action) {
+    updateItemQuantity(
+      state,
+      action: PayloadAction<{ productId: string; quantity: number }>,
+    ) {
       const { productId, quantity } = action.payload;
       const orderDetail = state.orderDetails.find(
         (orderDetail) => orderDetail.product.productId === productId,
       );
       orderDetail.quantity = quantity;
     },
-    updateItemUnit(state, action) {
+    updateItemUnit(
+      state,
+      action: PayloadAction<{ productId: string; unit: IUnit }>,
+    ) {
       const { productId, unit } = action.payload;
       const orderDetail = state.orderDetails.find(
         (orderDetail) => orderDetail.product.productId === productId,
@@ -38,9 +54,6 @@ const orderSlice = createSlice({
       );
       orderDetail.product.displayedProductUnit = currentProductUnit;
       orderDetail.unitPrice = currentProductUnit.sellingPrice;
-    },
-    clearOrderDetails(state) {
-      state.orderDetails = [];
     },
     clearOrder(state) {
       state.customer = null;
@@ -55,15 +68,5 @@ export const {
   removeItem,
   updateItemQuantity,
   updateItemUnit,
-  clearOrderDetails,
   clearOrder,
 } = orderSlice.actions;
-
-export default orderSlice.reducer;
-
-export const getOrderTotalValue = (state) =>
-  state.order.orderDetails.reduce(
-    (total, orderDetail) =>
-      total + orderDetail.unitPrice * orderDetail.quantity,
-    0,
-  );

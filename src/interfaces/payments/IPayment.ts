@@ -1,4 +1,4 @@
-import { ISupplier } from "../suppliers/ISupplier.ts";
+import { type ISupplier } from "../suppliers/ISupplier.ts";
 
 export interface IPayment {
   paymentId: string;

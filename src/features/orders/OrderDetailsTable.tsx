@@ -1,20 +1,31 @@
-import { InputNumber, Select, Table, Tooltip } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { InputNumber, Select, Table, type TableProps, Tooltip } from "antd";
 import { MdDelete } from "react-icons/md";
-import { removeItem, updateItemQuantity, updateItemUnit } from "./orderSlice";
-import { formatCurrency } from "../../utils/helper";
-function OrderDetailsTable() {
-  const orderDetails = useSelector((state) => state.order.orderDetails);
-  const dispatch = useDispatch();
+import {
+  removeItem,
+  updateItemQuantity,
+  updateItemUnit,
+} from "./orderSlice.ts";
+import { formatCurrency } from "../../utils/helper.ts";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import {
+  type IUnit,
+  type IProduct,
+  type INewOrderDetail,
+} from "../../interfaces";
 
-  function handleQuantityChange(product, quantity) {
+const OrderDetailsTable: React.FC = () => {
+  const orderDetails: INewOrderDetail[] = useAppSelector(
+    (state) => state.order.orderDetails,
+  );
+  const dispatch = useAppDispatch();
+
+  function handleQuantityChange(product: IProduct, quantity: number): void {
     const defaultProductUnit = product.productUnits.find(
       (productUnit) => productUnit.isDefault,
     );
-    const currentStockQuantity = parseFloat(
+    const currentStockQuantity: number =
       (product.stockQuantity * defaultProductUnit.baseQuantity) /
-        product.displayedProductUnit.baseQuantity,
-    );
+      product.displayedProductUnit.baseQuantity;
     //check if the quantity is greater than the current stock quantity
     if (quantity > currentStockQuantity) {
       return;
@@ -22,26 +33,26 @@ function OrderDetailsTable() {
     dispatch(updateItemQuantity({ productId: product.productId, quantity }));
   }
 
-  const columns = [
+  const columns: TableProps<INewOrderDetail>["columns"] = [
     {
       title: "STT",
       dataIndex: "product",
       width: "5%",
       key: "index",
-      render: (product, _, index) => index + 1,
+      render: (_, __, index: number) => index + 1,
     },
     {
       title: "Tên sản phẩm",
       dataIndex: "product",
       key: "productName",
-      render: (product) => product.productName,
+      render: (product: IProduct) => product.productName,
     },
     {
       title: "Đơn vị tính",
       dataIndex: "unit",
       width: "15%",
       key: "unit",
-      render: (unit, record) => {
+      render: (unit: IUnit, record: INewOrderDetail) => {
         return (
           <Select
             style={{ width: "90%" }}
@@ -51,7 +62,7 @@ function OrderDetailsTable() {
               value: productUnit.unit.unitId,
               label: <span>{productUnit.unit.unitName}</span>,
             }))}
-            onChange={(newUnitId) => {
+            onChange={(newUnitId: number) => {
               const selectedProductUnit = record.product.productUnits.find(
                 (productUnit) => productUnit.unit.unitId === newUnitId,
               );
@@ -72,7 +83,7 @@ function OrderDetailsTable() {
       dataIndex: "quantity",
       width: "15%",
       key: "quantity",
-      render: (quantity, record) => {
+      render: (quantity: number, record: INewOrderDetail) => {
         return (
           <InputNumber
             style={{ width: "90%" }}
@@ -89,13 +100,13 @@ function OrderDetailsTable() {
       dataIndex: "unitPrice",
       key: "unitPrice",
       width: "15%",
-      render: (unitPrice) => formatCurrency(unitPrice),
+      render: (unitPrice: number) => formatCurrency(unitPrice),
     },
     {
       title: "Thành tiền",
       key: "amount",
       width: "15%",
-      render: (record) => (
+      render: (record: INewOrderDetail) => (
         <span className="font-semibold">
           {formatCurrency(record.unitPrice * record.quantity)}
         </span>
@@ -103,7 +114,7 @@ function OrderDetailsTable() {
     },
     {
       key: "action",
-      render: (record) => (
+      render: (record: INewOrderDetail) => (
         <Tooltip title="Xóa" placement="top">
           <MdDelete
             className="icon"
@@ -117,13 +128,13 @@ function OrderDetailsTable() {
 
   return (
     <Table
-      rowKey={(record) => record.product.productId}
+      rowKey={(record: INewOrderDetail) => record.product.productId}
       dataSource={orderDetails}
       columns={columns}
       pagination={false}
       size="middle"
     />
   );
-}
+};
 
 export default OrderDetailsTable;

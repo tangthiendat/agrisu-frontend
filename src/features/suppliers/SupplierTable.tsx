@@ -85,7 +85,7 @@ const SupplierTable: React.FC = () => {
   ];
   return (
     <Table
-      rowKey={(record) => record.supplierId}
+      rowKey={(record: ISupplier) => record.supplierId}
       columns={columns}
       dataSource={selectedSupplier.length > 0 ? selectedSupplier : suppliers}
       pagination={{

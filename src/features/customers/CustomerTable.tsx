@@ -84,7 +84,7 @@ const CustomerTable: React.FC = () => {
   ];
   return (
     <Table
-      rowKey={(record) => record.customerId}
+      rowKey={(record: ICustomer) => record.customerId}
       columns={columns}
       dataSource={selectedCustomer.length > 0 ? selectedCustomer : customers}
       pagination={{

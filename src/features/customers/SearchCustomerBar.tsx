@@ -3,6 +3,7 @@ import { debounce } from "lodash";
 import { AutoComplete } from "antd";
 import { useSearchCustomers } from "./hooks/useSearchCustomers";
 import { type ICustomer } from "../../interfaces";
+import { useAppSelector } from "../../store/hooks";
 
 interface SearchCustomerBarProps {
   onSelectCustomer: (customer: ICustomer) => void;
@@ -18,12 +19,22 @@ const SearchCustomerBar: React.FC<SearchCustomerBarProps> = ({
   const [inputValue, setInputValue] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { searchedCustomers } = useSearchCustomers(searchQuery);
+  const orderCustomer: ICustomer = useAppSelector(
+    (state) => state.order.customer,
+  );
 
   useEffect(() => {
     if (inputValue === "") {
       onClear?.();
     }
   }, [inputValue, onClear]);
+
+  // clear the input value when the selected customer is cleared
+  useEffect(() => {
+    if (!orderCustomer) {
+      setInputValue("");
+    }
+  }, [orderCustomer, showSelectedLabel]);
 
   function handleSearch(value: string) {
     setSearchQuery(value);

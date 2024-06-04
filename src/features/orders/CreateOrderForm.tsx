@@ -1,15 +1,34 @@
 import { useEffect, useState } from "react";
-import { Form, InputNumber, Modal, Grid } from "antd";
-import { useSelector } from "react-redux";
-import { formatCurrency, parseCurrency } from "../../utils/helper";
-import { getOrderTotalValue } from "./orderSlice";
+import { Form, InputNumber, Modal, Grid, FormInstance } from "antd";
+import { formatCurrency, parseCurrency } from "../../utils/helper.ts";
+import { useAppSelector } from "../../store/hooks.ts";
+import {
+  type INewOrderDetail,
+  type ICustomer,
+  type INewOrder,
+} from "../../interfaces";
 
 const { useBreakpoint } = Grid;
-function CreateOrderForm({ form, onFinish }) {
-  const totalOrderValue = useSelector(getOrderTotalValue);
-  const orderDetails = useSelector((state) => state.order.orderDetails);
-  const customer = useSelector((state) => state.order.customer);
-  const [change, setChange] = useState(0);
+
+interface CreateOrderFormProps {
+  form: FormInstance<INewOrder>;
+  onFinish: (submittedOrder: INewOrder) => void;
+  onClear: () => void;
+}
+
+const CreateOrderForm: React.FC<CreateOrderFormProps> = ({
+  form,
+  onFinish,
+}) => {
+  const orderDetails: INewOrderDetail[] = useAppSelector(
+    (state) => state.order.orderDetails,
+  );
+  const orderTotalValue: number = orderDetails.reduce(
+    (total, detail) => total + detail.unitPrice * detail.quantity,
+    0,
+  );
+  const customer: ICustomer = useAppSelector((state) => state.order.customer);
+  const [change, setChange] = useState<number>(0);
   const screens = useBreakpoint();
   const formItemLayout = screens.xl
     ? {
@@ -27,24 +46,22 @@ function CreateOrderForm({ form, onFinish }) {
 
   useEffect(() => {
     form.setFieldsValue({
-      totalValue: totalOrderValue,
-      customerCurrentDebt: customer?.receivable || 0,
-      customerNextDebt:
-        customer && orderDetails.length > 0
-          ? customer.receivable + totalOrderValue
-          : customer?.receivable || 0,
+      totalValue: orderTotalValue,
     });
-  }, [totalOrderValue, form, customer, orderDetails.length]);
+    if (orderTotalValue === 0) {
+      setChange(0);
+    }
+  }, [orderTotalValue, form]);
 
-  function handleCustomerPaymentChange(customerPayment) {
-    if (customerPayment >= totalOrderValue) {
-      setChange(customerPayment - totalOrderValue);
+  function handleCustomerPaymentChange(customerPayment: number): void {
+    if (customerPayment >= orderTotalValue) {
+      setChange(customerPayment - orderTotalValue);
     } else {
       setChange(0);
     }
   }
 
-  function handleFinish(submittedOrder) {
+  function handleFinish(submittedOrder: INewOrder): void {
     if (orderDetails.length == 0) {
       modal.error({
         title: "Không thể tạo hóa đơn",
@@ -104,8 +121,8 @@ function CreateOrderForm({ form, onFinish }) {
           name="customerPayment"
           rules={[
             {
-              validator: (_, value) => {
-                if (value < totalOrderValue) {
+              validator: (_, value: number) => {
+                if (value < orderTotalValue) {
                   return Promise.reject("Số tiền thanh toán không hợp lệ");
                 }
                 return Promise.resolve();
@@ -140,6 +157,6 @@ function CreateOrderForm({ form, onFinish }) {
       </Form>
     </>
   );
-}
+};
 
 export default CreateOrderForm;

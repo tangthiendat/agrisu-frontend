@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import orderReducer from "../features/orders/orderSlice";
+import { orderSlice } from "../features/orders/orderSlice.ts";
 import { productSlice } from "../features/products/productSlice.ts";
 import { customerSlice } from "../features/customers/customerSlice.ts";
 import { supplierSlice } from "../features/suppliers/supplierSlice.ts";
@@ -7,7 +7,7 @@ import { supplierSlice } from "../features/suppliers/supplierSlice.ts";
 // import warehouseExportReducer from "../features/warehouse-exports/warehouseExportSlice";
 export const store = configureStore({
   reducer: {
-    // order: orderReducer,
+    order: orderSlice.reducer,
     product: productSlice.reducer,
     customer: customerSlice.reducer,
     supplier: supplierSlice.reducer,

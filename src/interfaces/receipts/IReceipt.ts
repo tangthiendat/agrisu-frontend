@@ -1,4 +1,4 @@
-import { ICustomer } from "../customers/ICustomer.ts";
+import { type ICustomer } from "../customers/ICustomer.ts";
 
 export interface IReceipt {
   receiptId: string;

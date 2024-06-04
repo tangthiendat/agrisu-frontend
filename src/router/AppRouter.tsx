@@ -6,7 +6,7 @@ import Dashboard from "../pages/Dashboard.tsx";
 import Products from "../pages/Products.tsx";
 import Suppliers from "../pages/Suppliers.tsx";
 import Customers from "../pages/Customers.tsx";
-import NewOrder from "../pages/NewOrder";
+import NewOrder from "../pages/NewOrder.tsx";
 import Orders from "../pages/Orders.tsx";
 import WarehouseReceipts from "../pages/WarehouseReceipts.tsx";
 import WarehouseExports from "../pages/WarehouseExports.tsx";

@@ -1,30 +1,31 @@
 import { Button, Form, Modal, Space, Tooltip } from "antd";
 import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import UpdateCustomerForm from "../customers/UpdateCustomerForm";
-import SearchCustomerBar from "../customers/SearchCustomerBar";
-import { useDispatch } from "react-redux";
+import UpdateCustomerForm from "../customers/UpdateCustomerForm.tsx";
+import SearchCustomerBar from "../customers/SearchCustomerBar.tsx";
 import { setCustomer } from "./orderSlice";
+import { useAppDispatch } from "../../store/hooks.ts";
+import { type ICustomer } from "../../interfaces";
 
-function SearchOrderCustomer() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [addCustomerForm] = Form.useForm();
-  const dispatch = useDispatch();
+const SearchOrderCustomer: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [addCustomerForm] = Form.useForm<ICustomer>();
+  const dispatch = useAppDispatch();
 
-  function showModal() {
+  function showModal(): void {
     setIsOpenModal(true);
   }
 
-  function handleCancel() {
-    addCustomerForm.resetFields();
+  function handleCancel(): void {
     setIsOpenModal(false);
+    addCustomerForm.resetFields();
   }
 
-  function handleSelectCustomer(selectedCustomer) {
+  function handleSelectCustomer(selectedCustomer: ICustomer): void {
     dispatch(setCustomer(selectedCustomer));
   }
 
-  function handleClear() {
+  function handleClear(): void {
     dispatch(setCustomer(null));
   }
 
@@ -48,13 +49,10 @@ function SearchOrderCustomer() {
         footer={null}
         onCancel={handleCancel}
       >
-        <UpdateCustomerForm
-          form={addCustomerForm}
-          setIsOpenModal={setIsOpenModal}
-        />
+        <UpdateCustomerForm form={addCustomerForm} onCancel={handleCancel} />
       </Modal>
     </Space.Compact>
   );
-}
+};
 
 export default SearchOrderCustomer;
