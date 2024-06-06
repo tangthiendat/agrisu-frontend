@@ -132,6 +132,11 @@ const WarehouseExportDetailTable: React.FC = () => {
       dataSource={warehouseExportDetails}
       columns={columns}
       pagination={false}
+      locale={{
+        emptyText: (
+          <p className="py-8">Chưa có sản phẩm nào trong phiếu xuất kho</p>
+        ),
+      }}
       size="middle"
     />
   );

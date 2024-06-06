@@ -132,6 +132,9 @@ const OrderDetailsTable: React.FC = () => {
       dataSource={orderDetails}
       columns={columns}
       pagination={false}
+      locale={{
+        emptyText: <p className="py-8">Chưa có sản phẩm nào trong hóa đơn</p>,
+      }}
       size="middle"
     />
   );

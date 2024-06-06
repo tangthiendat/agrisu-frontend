@@ -104,6 +104,9 @@ const SupplierTable: React.FC = () => {
         indicator: <Spinner />,
         spinning: isLoading,
       }}
+      locale={{
+        emptyText: <p className="py-8">Không có dữ liệu nhà cung cấp</p>,
+      }}
       size="middle"
     />
   );

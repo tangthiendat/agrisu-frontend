@@ -67,7 +67,6 @@ const SearchProductBar: React.FC<SearchProductBarProps> = ({
     const selectedProduct = searchedProducts.find(
       (product) => product.productId === value,
     );
-    console.log(selectedProduct);
     onSelectProduct(selectedProduct);
 
     if (showSelectedLabel) {

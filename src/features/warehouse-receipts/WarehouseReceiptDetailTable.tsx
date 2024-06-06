@@ -132,6 +132,11 @@ function WarehouseReceiptDetailTable() {
       dataSource={warehouseReceiptDetails}
       columns={columns}
       pagination={false}
+      locale={{
+        emptyText: (
+          <p className="py-8">Chưa có sản phẩm nào trong phiếu nhập kho</p>
+        ),
+      }}
       size="middle"
     />
   );

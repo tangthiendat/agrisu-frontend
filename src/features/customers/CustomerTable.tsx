@@ -103,6 +103,9 @@ const CustomerTable: React.FC = () => {
         indicator: <Spinner />,
         spinning: isLoading,
       }}
+      locale={{
+        emptyText: <p className="py-8">Không có dữ liệu khách hàng</p>,
+      }}
       size="middle"
     />
   );

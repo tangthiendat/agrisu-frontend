@@ -166,6 +166,9 @@ const ProductTable: React.FC = () => {
         indicator: <Spinner />,
         spinning: isLoading,
       }}
+      locale={{
+        emptyText: <p className="py-8">Không có dữ liệu sản phẩm</p>,
+      }}
       size="middle"
     />
   );
