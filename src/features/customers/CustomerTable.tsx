@@ -19,16 +19,16 @@ const CustomerTable: React.FC = () => {
   const page: number = Number(searchParams.get("page"));
   const pageSize: number = Number(searchParams.get("pageSize"));
 
-  //Set default page and pageSize in the URL
-  useEffect(() => {
-    if (!page) {
-      searchParams.set("page", "1");
-    }
-    if (!pageSize) {
-      searchParams.set("pageSize", "10");
-    }
-    setSearchParams(searchParams);
-  }, [searchParams, setSearchParams, page, pageSize]);
+  // //Set default page and pageSize in the URL
+  // useEffect(() => {
+  //   if (!page) {
+  //     searchParams.set("page", "1");
+  //   }
+  //   if (!pageSize) {
+  //     searchParams.set("pageSize", "10");
+  //   }
+  //   setSearchParams(searchParams);
+  // }, [searchParams, setSearchParams, page, pageSize]);
 
   useEffect(() => {
     if (error) {

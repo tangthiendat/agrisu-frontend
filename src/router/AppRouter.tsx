@@ -16,6 +16,9 @@ import NewWarehouseExport from "../pages/NewWarehouseExport.tsx";
 import Reports from "../pages/Reports.tsx";
 import Login from "../pages/Login.tsx";
 import ErrorPage from "../pages/ErrorPage.tsx";
+import PartnersLayout from "../layouts/PartnersLayout.tsx";
+import SalesLayout from "../layouts/SalesLayout.tsx";
+import TransactionsLayout from "../layouts/TransactionsLayout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,44 +42,73 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
-        path: "/partners/suppliers",
+        path: "/partners",
         errorElement: <ErrorPage />,
-        element: <Suppliers />,
+        element: <PartnersLayout />,
+        children: [
+          {
+            path: "suppliers",
+            index: true,
+            errorElement: <ErrorPage />,
+            element: <Suppliers />,
+          },
+          {
+            path: "customers",
+            errorElement: <ErrorPage />,
+            element: <Customers />,
+          },
+        ],
       },
       {
-        path: "/partners/customers",
+        path: "/transactions",
         errorElement: <ErrorPage />,
-        element: <Customers />,
+        element: <TransactionsLayout />,
+        children: [
+          {
+            path: "orders",
+            index: true,
+            errorElement: <ErrorPage />,
+            element: <Orders />,
+          },
+          {
+            path: "warehouse-receipts",
+            errorElement: <ErrorPage />,
+            element: <WarehouseReceipts />,
+          },
+          {
+            path: "warehouse-exports",
+            errorElement: <ErrorPage />,
+            element: <WarehouseExports />,
+          },
+        ],
       },
       {
-        path: "/transactions/orders",
+        path: "/sales",
         errorElement: <ErrorPage />,
-        element: <Orders />,
+        element: <SalesLayout />,
+        children: [
+          {
+            path: "new-order",
+            index: true,
+            errorElement: <ErrorPage />,
+            element: <NewOrder />,
+          },
+          {
+            path: "new-warehouse-receipt",
+            errorElement: <ErrorPage />,
+            element: <NewWarehouseReceipt />,
+          },
+          {
+            path: "new-warehouse-export",
+            errorElement: <ErrorPage />,
+            element: <NewWarehouseExport />,
+          },
+        ],
       },
       {
-        path: "/transactions/warehouse-receipts",
-        errorElement: <ErrorPage />,
-        element: <WarehouseReceipts />,
-      },
-      {
-        path: "/transactions/warehouse-exports",
-        errorElement: <ErrorPage />,
-        element: <WarehouseExports />,
-      },
-      {
-        path: "/sales/new-order",
+        path: "/sales",
         errorElement: <ErrorPage />,
         element: <NewOrder />,
-      },
-      {
-        path: "/sales/new-warehouse-receipt",
-        errorElement: <ErrorPage />,
-        element: <NewWarehouseReceipt />,
-      },
-      {
-        path: "/sales/new-warehouse-export",
-        errorElement: <ErrorPage />,
-        element: <NewWarehouseExport />,
       },
       {
         path: "/cash-flow",
