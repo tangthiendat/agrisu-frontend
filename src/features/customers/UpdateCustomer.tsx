@@ -54,7 +54,7 @@ const UpdateCustomer: React.FC<UpdateCustomerProps> = ({ customer }) => {
       </Tooltip>
       <Modal
         open={isOpenModal}
-        title={<span className="text-xl">Cập nhật khách hàng</span>}
+        title={<span className="text-xl">Thông tin khách hàng</span>}
         width={screens.lg ? "900px" : "85%"}
         footer={null}
         destroyOnClose

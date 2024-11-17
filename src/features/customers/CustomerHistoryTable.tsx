@@ -1,4 +1,4 @@
-import { Table, TableProps } from "antd";
+import { Table, TableProps, Tag } from "antd";
 import Spinner from "../../ui/Spinner.tsx";
 import { formatCurrency, formatDateTime } from "../../utils/helper.ts";
 import { useCustomerHistory } from "./hooks";
@@ -33,9 +33,9 @@ const CustomerHistoryTable: React.FC<CustomerHistoryTableProps> = ({
       render: (type: string) => {
         switch (type) {
           case "WAREHOUSE_EXPORT":
-            return "Mua hàng";
+            return <Tag color="green">Mua hàng</Tag>;
           case "RECEIPT":
-            return "Thanh toán nợ";
+            return <Tag color="red">Thanh toán nợ</Tag>;
           default:
             return "";
         }
