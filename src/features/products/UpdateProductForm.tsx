@@ -345,11 +345,15 @@ const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
                                         </Checkbox>
                                       </Form.Item>
                                       <Form.Item className="basis-[2%]">
-                                        <CloseOutlined
-                                          onClick={() =>
-                                            removeUnit(unitField.name)
-                                          }
-                                        />
+                                        {unitField.name + 1 >
+                                          (productToUpdate?.productUnits
+                                            ?.length || 0) && (
+                                          <CloseOutlined
+                                            onClick={() =>
+                                              removeUnit(unitField.name)
+                                            }
+                                          />
+                                        )}
                                       </Form.Item>
                                     </div>
                                   );
